@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snaryad Shop — Домофон Сервис</title>
+    <title>Snaryad Shop — Admin System</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap');
         :root { --accent: #ffd11a; --bg: #f4f6f9; --border: #e6e8eb; --text: #1a1d21; }
@@ -39,7 +39,8 @@
         .pay-option { background:#f8f9fa; padding:15px; border-radius:15px; margin-bottom:10px; cursor:pointer; font-weight:700; }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 12px; box-sizing: border-box; outline: none; }
         
-        .order-card { background: #fff; padding: 15px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; }
+        .order-card { background: #fff; padding: 15px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { font-size: 10px; text-transform: uppercase; font-weight: 800; padding: 4px 8px; border-radius: 6px; background: #eee; }
     </style>
 </head>
 <body>
@@ -91,7 +92,6 @@
 <div id="address-modal" class="modal">
     <div class="modal-content">
         <h3>Детали заказа</h3>
-        <p>Укажите куда ехать:</p>
         <input type="text" id="order-addr" placeholder="Улица и дом">
         <input type="text" id="order-podezd" placeholder="Номер подъезда">
         <button class="btn-main" style="width:100%" onclick="window.confirmAddress()">Далее к оплате</button>
@@ -115,8 +115,8 @@
             </div>
             <button class="btn-main" style="width:100%; margin-top:10px;" onclick="window.sendMsg()">Отправить</button>
             <div id="admin-btns" style="display:none; margin-top:10px; gap:5px;">
-                <button onclick="window.updStat('Выдан')" style="flex:1; background:#d4edda; border:none; padding:10px; border-radius:10px;">✅ Готово</button>
-                <button onclick="window.updStat('Отклонен')" style="flex:1; background:#f8d7da; border:none; padding:10px; border-radius:10px;">❌ Отмена</button>
+                <button onclick="window.updStat('Выдан')" style="flex:1; background:#d4edda; border:none; padding:10px; border-radius:10px; font-weight:700;">✅ Выдать</button>
+                <button onclick="window.updStat('Отклонен')" style="flex:1; background:#f8d7da; border:none; padding:10px; border-radius:10px; font-weight:700;">❌ Отмена</button>
             </div>
         </div>
         <button onclick="window.closeModals()" style="width:100%; border:none; background:none; margin-top:15px; color:gray; cursor:pointer;">Закрыть</button>
@@ -152,42 +152,51 @@
 
     let user = null, isAdmin = false, selectedOrderId = null, tempItem = null, addressData = null;
 
-    window.openMod = (id) => { document.getElementById(id).style.display='flex'; };
-    window.closeModals = () => { document.querySelectorAll('.modal').forEach(m => m.style.display='none'); };
+    window.openMod = (id) => document.getElementById(id).style.display='flex';
+    window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display='none');
     window.switchTab = (id, btn) => {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active'); btn.classList.add('active');
     };
 
+    // --- ПРОВЕРКА АДМИНА ЧЕРЕЗ DATABASE ---
     onAuthStateChanged(auth, (u) => {
         if (u) {
-            user = u; const nick = u.email.split('@')[0];
-            isAdmin = (nick === 'snaryadadmin');
+            user = u;
+            const nick = u.email.split('@')[0];
             document.getElementById('user-area').innerHTML = `<b>👤 ${nick}</b>`;
             document.getElementById('orders-tab-btn').style.display = 'block';
-            if (isAdmin) document.getElementById('admin-only').style.display = 'block';
-            loadOrders();
+
+            // Ищем в папке admins/ логин пользователя
+            onValue(ref(db, 'admins/' + nick), (snap) => {
+                isAdmin = (snap.val() === true);
+                document.getElementById('admin-only').style.display = isAdmin ? 'block' : 'none';
+                loadOrders(); // Перезагружаем список с учетом прав
+            });
         }
     });
 
     document.getElementById('auth-go').onclick = async () => {
-        const u = document.getElementById('l-user').value, p = document.getElementById('l-pass').value;
-        try { await signInWithEmailAndPassword(auth, u + "@s.com", p); } catch { await createUserWithEmailAndPassword(auth, u + "@s.com", p); }
+        const u = document.getElementById('l-user').value.trim();
+        const p = document.getElementById('l-pass').value;
+        if(!u || !p) return;
+        const email = u + "@snaryad.shop";
+        try { await signInWithEmailAndPassword(auth, email, p); } 
+        catch { await createUserWithEmailAndPassword(auth, email, p); }
         window.closeModals();
     };
 
     window.buyItem = (name, price, img, needAddr = false) => {
-        if(!user) { window.openMod('auth-modal'); return; }
+        if(!user) return window.openMod('auth-modal');
         tempItem = { name, price };
-        addressData = null;
-        if(needAddr) { window.openMod('address-modal'); }
+        if(needAddr) window.openMod('address-modal');
         else { window.openMod('pay-modal'); document.getElementById('pay-options').style.display='block'; document.getElementById('chat-ui').style.display='none'; }
     };
 
     window.confirmAddress = () => {
         const a = document.getElementById('order-addr').value, p = document.getElementById('order-podezd').value;
-        if(!a || !p) return alert("Заполни данные!");
+        if(!a || !p) return;
         addressData = `📍 Адрес: ${a}, Подъезд: ${p}`;
         window.closeModals();
         window.openMod('pay-modal');
@@ -199,14 +208,13 @@
         const nick = user.email.split('@')[0];
         const newRef = push(ref(db, 'orders'));
         const orderId = newRef.key;
-        let startMsg = `Заказ создан! Оплата: ${method}. Ожидайте.`;
+        let startMsg = `Заказ создан! Оплата: ${method}.`;
         if(addressData) startMsg += `\n${addressData}`;
 
-        const data = {
+        await set(newRef, {
             id: orderId, user: nick, item: tempItem.name, status: 'Ожидание',
             chat: [{ from: 'Система', text: startMsg }]
-        };
-        await set(newRef, data);
+        });
         
         // TG NOTIFY
         let tgText = `🆕 ЗАКАЗ: ${tempItem.name}\nЮзер: ${nick}\nОплата: ${method}`;
@@ -223,7 +231,7 @@
                 const o = child.val(); const nick = user.email.split('@')[0];
                 if (isAdmin || o.user === nick) {
                     const div = document.createElement('div'); div.className = 'order-card';
-                    div.innerHTML = `<div><b>${o.item}</b><br><small>${o.user}</small></div><span>${o.status}</span>`;
+                    div.innerHTML = `<div><b>${o.item}</b><br><small>${o.user}</small></div><span class="status-badge">${o.status}</span>`;
                     div.onclick = () => window.openChat(child.key);
                     list.appendChild(div);
                 }
@@ -258,11 +266,11 @@
     };
 
     window.promptImg = () => {
-        const url = prompt("Ссылка на скриншот:");
+        const url = prompt("Прямая ссылка на фото:");
         if(url && url.startsWith('http')) { document.getElementById('chat-in').value = url; window.sendMsg(); }
     };
 
-    window.updStat = (s) => { update(ref(db, `orders/${selectedOrderId}`), { status: s }); };
+    window.updStat = (s) => update(ref(db, `orders/${selectedOrderId}`), { status: s });
     window.clearAllOrders = async () => { if(confirm("Удалить всё?")) await remove(ref(db, 'orders')); };
 
 </script>
