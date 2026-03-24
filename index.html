@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snaryad Shop — Чат с Фото</title>
+    <title>Snaryad Shop — Домофон Сервис</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap');
         :root { --accent: #ffd11a; --bg: #f4f6f9; --border: #e6e8eb; --text: #1a1d21; }
@@ -17,36 +17,29 @@
         .btn-danger { background: #ff4d4d; color: #fff; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 10px; }
 
         .container { padding: 20px 6%; max-width: 1200px; margin: 0 auto; }
-        
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { background: #fff; border: 1px solid var(--border); padding: 12px 25px; border-radius: 15px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .tab-btn { background: #fff; border: 1px solid var(--border); padding: 12px 25px; border-radius: 15px; cursor: pointer; font-weight: 700; }
         .tab-btn.active { background: var(--accent); border-color: var(--accent); }
 
         .section { display: none; }
         .section.active { display: block; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .card { background: #fff; border-radius: 24px; padding: 12px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+        .card { background: #fff; border-radius: 24px; padding: 12px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; text-align: center; }
+        .card:hover { transform: translateY(-3px); }
         .card img { width: 100%; aspect-ratio: 1/1; border-radius: 18px; object-fit: cover; background: #f9f9f9; }
-
-        .order-card { background: #fff; padding: 15px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .status { font-size: 11px; padding: 5px 10px; border-radius: 8px; font-weight: 800; text-transform: uppercase; background: #fff3cd; color: #856404; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: #fff; padding: 25px; border-radius: 24px; width: 350px; max-height: 85vh; overflow-y: auto; }
         
-        /* ЧАТ */
         .chat-box { height: 280px; overflow-y: auto; background: #f8f9fa; border-radius: 15px; padding: 10px; border: 1px solid var(--border); margin: 10px 0; }
-        .msg { background: #fff; padding: 8px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; border: 1px solid #eee; word-wrap: break-word; }
-        .msg img { max-width: 100%; border-radius: 8px; margin-top: 5px; display: block; cursor: zoom-in; }
+        .msg { background: #fff; padding: 8px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; border: 1px solid #eee; }
+        .msg img { max-width: 100%; border-radius: 8px; margin-top: 5px; display: block; }
         
-        .chat-input-row { display: flex; gap: 5px; margin-bottom: 10px; }
-        .chat-input-row input { flex: 1; margin: 0; }
-        .img-btn { background: #e6e8eb; border: none; width: 42px; border-radius: 12px; cursor: pointer; font-size: 18px; }
-
-        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; }
-        .toast { background: #000; color: #fff; padding: 12px 25px; border-radius: 30px; font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .pay-option { background:#f8f9fa; padding:15px; border-radius:15px; margin-bottom:10px; cursor:pointer; font-weight:700; }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 12px; box-sizing: border-box; outline: none; }
+        
+        .order-card { background: #fff; padding: 15px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
@@ -66,43 +59,42 @@
 
     <div id="shop" class="section active">
         <div class="grid">
-            <div class="card" onclick="window.buyItem('Снаряд', '3 соуса')">
+            <div class="card" onclick="window.buyItem('Снаряд', '3 соуса', 'snaryad.png')">
                 <img src="snaryad.png" onerror="this.src='https://placehold.co/200?text=Снаряд'">
-                <h3>Снаряд</h3>
-                <div style="font-weight:800">3 соуса</div>
+                <h3>Снаряд</h3><div style="font-weight:800">3 соуса</div>
             </div>
-            <div class="card" onclick="window.buyItem('Мина', '1 соус')">
+            <div class="card" onclick="window.buyItem('Мина', '1 соус', 'mina.png')">
                 <img src="mina.png" onerror="this.src='https://placehold.co/200?text=Мина'">
-                <h3>Мина</h3>
-                <div style="font-weight:800">1 соус</div>
+                <h3>Мина</h3><div style="font-weight:800">1 соус</div>
             </div>
-            <div class="card" onclick="window.buyItem('Парашут', '1 соус')">
+            <div class="card" onclick="window.buyItem('Парашут', '1 соус', 'parashut.png')">
                 <img src="parashut.png" onerror="this.src='https://placehold.co/200?text=Парашут'">
-                <h3>Парашут</h3>
-                <div style="font-weight:800">1 соус</div>
+                <h3>Парашут</h3><div style="font-weight:800">1 соус</div>
             </div>
-            <div class="card" onclick="window.buyItem('Всякий кал', '4 соуса')">
+            <div class="card" onclick="window.buyItem('Всякий кал', '4 соуса', 'kal.png')">
                 <img src="kal.png" onerror="this.src='https://placehold.co/200?text=Кал'">
-                <h3>Всякий кал</h3>
-                <div style="font-weight:800">4 соуса</div>
+                <h3>Всякий кал</h3><div style="font-weight:800">4 соуса</div>
+            </div>
+            <div class="card" onclick="window.buyItem('Обмазать домофон', '3 соуса', 'obmaz.png', true)">
+                <img src="obmaz.png" onerror="this.src='https://placehold.co/200?text=Домофон'">
+                <h3>Обмазать домофон</h3><div style="font-weight:800">3 соуса</div>
             </div>
         </div>
     </div>
 
     <div id="orders" class="section">
-        <div id="admin-only" style="display:none;">
-            <button class="btn-danger" onclick="window.clearAllOrders()">🗑 Очистить заказы</button>
-        </div>
+        <div id="admin-only" style="display:none;"><button class="btn-danger" onclick="window.clearAllOrders()">🗑 Очистить заказы</button></div>
         <div id="orders-list"></div>
     </div>
 </div>
 
-<div id="auth-modal" class="modal">
+<div id="address-modal" class="modal">
     <div class="modal-content">
-        <h2>Вход</h2>
-        <input type="text" id="l-user" placeholder="Логин">
-        <input type="password" id="l-pass" placeholder="Пароль">
-        <button class="btn-main" style="width:100%" id="auth-go">Войти / Рег</button>
+        <h3>Детали заказа</h3>
+        <p>Укажите куда ехать:</p>
+        <input type="text" id="order-addr" placeholder="Улица и дом">
+        <input type="text" id="order-podezd" placeholder="Номер подъезда">
+        <button class="btn-main" style="width:100%" onclick="window.confirmAddress()">Далее к оплате</button>
     </div>
 </div>
 
@@ -117,19 +109,26 @@
         <div id="chat-ui" style="display:none;">
             <h3 id="chat-header">Чат по заказу</h3>
             <div class="chat-box" id="chat-box"></div>
-            
-            <div class="chat-input-row">
-                <button class="img-btn" onclick="window.promptImg()" title="Прикрепить скриншот">🖼</button>
-                <input type="text" id="chat-in" placeholder="Сообщение...">
+            <div style="display:flex; gap:5px;">
+                <button onclick="window.promptImg()" style="border-radius:12px; border:1px solid #ccc; width:40px; cursor:pointer;">🖼</button>
+                <input type="text" id="chat-in" placeholder="Сообщение..." style="margin:0;">
             </div>
-            <button class="btn-main" style="width:100%" onclick="window.sendMsg()">Отправить</button>
-
+            <button class="btn-main" style="width:100%; margin-top:10px;" onclick="window.sendMsg()">Отправить</button>
             <div id="admin-btns" style="display:none; margin-top:10px; gap:5px;">
-                <button onclick="window.updStat('Выдан')" style="flex:1; background:#d4edda; border:none; padding:10px; border-radius:10px; font-weight:700;">✅ Выдать</button>
-                <button onclick="window.updStat('Отклонен')" style="flex:1; background:#f8d7da; border:none; padding:10px; border-radius:10px; font-weight:700;">❌ Отмена</button>
+                <button onclick="window.updStat('Выдан')" style="flex:1; background:#d4edda; border:none; padding:10px; border-radius:10px;">✅ Готово</button>
+                <button onclick="window.updStat('Отклонен')" style="flex:1; background:#f8d7da; border:none; padding:10px; border-radius:10px;">❌ Отмена</button>
             </div>
         </div>
         <button onclick="window.closeModals()" style="width:100%; border:none; background:none; margin-top:15px; color:gray; cursor:pointer;">Закрыть</button>
+    </div>
+</div>
+
+<div id="auth-modal" class="modal">
+    <div class="modal-content">
+        <h2>Вход</h2>
+        <input type="text" id="l-user" placeholder="Логин">
+        <input type="password" id="l-pass" placeholder="Пароль">
+        <button class="btn-main" style="width:100%" id="auth-go">Войти / Рег</button>
     </div>
 </div>
 
@@ -151,45 +150,19 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    let user = null, isAdmin = false, selectedOrderId = null, tempItem = null;
+    let user = null, isAdmin = false, selectedOrderId = null, tempItem = null, addressData = null;
 
-    // Вспомогательная функция для отрисовки сообщения (проверяет, не ссылка ли это на фото)
-    const formatMsg = (text) => {
-        const isImg = text.match(/\.(jpeg|jpg|gif|png|webp)$/) != null || text.startsWith('https://images.');
-        if (isImg && text.startsWith('http')) {
-            return `<img src="${text}" onclick="window.open('${text}', '_blank')">`;
-        }
-        return text;
-    };
-
-    window.promptImg = () => {
-        const url = prompt("Вставьте прямую ссылку на скриншот (Imgur, Discord и т.д.):");
-        if(url && url.startsWith('http')) {
-            document.getElementById('chat-in').value = url;
-            window.sendMsg();
-        }
-    };
-
-    window.showToast = (m) => {
-        const t = document.createElement('div'); t.className='toast'; t.innerText=m;
-        document.getElementById('toast-container').appendChild(t);
-        setTimeout(()=>t.remove(), 2500);
-    };
-
+    window.openMod = (id) => { document.getElementById(id).style.display='flex'; };
+    window.closeModals = () => { document.querySelectorAll('.modal').forEach(m => m.style.display='none'); };
     window.switchTab = (id, btn) => {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        btn.classList.add('active');
+        document.getElementById(id).classList.add('active'); btn.classList.add('active');
     };
-
-    window.openMod = (id) => document.getElementById(id).style.display='flex';
-    window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display='none');
 
     onAuthStateChanged(auth, (u) => {
         if (u) {
-            user = u;
-            const nick = u.email.split('@')[0];
+            user = u; const nick = u.email.split('@')[0];
             isAdmin = (nick === 'snaryadadmin');
             document.getElementById('user-area').innerHTML = `<b>👤 ${nick}</b>`;
             document.getElementById('orders-tab-btn').style.display = 'block';
@@ -199,47 +172,58 @@
     });
 
     document.getElementById('auth-go').onclick = async () => {
-        const u = document.getElementById('l-user').value;
-        const p = document.getElementById('l-pass').value;
-        if(!u || !p) return;
-        try { await signInWithEmailAndPassword(auth, u + "@s.com", p); } 
-        catch { await createUserWithEmailAndPassword(auth, u + "@s.com", p); }
+        const u = document.getElementById('l-user').value, p = document.getElementById('l-pass').value;
+        try { await signInWithEmailAndPassword(auth, u + "@s.com", p); } catch { await createUserWithEmailAndPassword(auth, u + "@s.com", p); }
         window.closeModals();
     };
 
-    window.buyItem = (name, price) => {
+    window.buyItem = (name, price, img, needAddr = false) => {
         if(!user) { window.openMod('auth-modal'); return; }
         tempItem = { name, price };
+        addressData = null;
+        if(needAddr) { window.openMod('address-modal'); }
+        else { window.openMod('pay-modal'); document.getElementById('pay-options').style.display='block'; document.getElementById('chat-ui').style.display='none'; }
+    };
+
+    window.confirmAddress = () => {
+        const a = document.getElementById('order-addr').value, p = document.getElementById('order-podezd').value;
+        if(!a || !p) return alert("Заполни данные!");
+        addressData = `📍 Адрес: ${a}, Подъезд: ${p}`;
+        window.closeModals();
+        window.openMod('pay-modal');
         document.getElementById('pay-options').style.display='block';
         document.getElementById('chat-ui').style.display='none';
-        window.openMod('pay-modal');
     };
 
     window.createOrder = async (method) => {
         const nick = user.email.split('@')[0];
         const newRef = push(ref(db, 'orders'));
         const orderId = newRef.key;
+        let startMsg = `Заказ создан! Оплата: ${method}. Ожидайте.`;
+        if(addressData) startMsg += `\n${addressData}`;
+
         const data = {
             id: orderId, user: nick, item: tempItem.name, status: 'Ожидание',
-            method: method,
-            chat: [{ from: 'Система', text: `Заказ создан! Оплата: ${method}. Скиньте скриншот оплаты сюда.` }]
+            chat: [{ from: 'Система', text: startMsg }]
         };
         await set(newRef, data);
-        fetch(`https://api.telegram.org/bot8782923361:AAFmJdvhUGzKeIeaW9f4XSvAmZMDXLBRZgU/sendMessage?chat_id=8208159801&text=${encodeURIComponent("🆕 ЗАКАЗ\nЮзер: "+nick+"\nТовар: "+tempItem.name+"\nОплата: "+method)}`);
+        
+        // TG NOTIFY
+        let tgText = `🆕 ЗАКАЗ: ${tempItem.name}\nЮзер: ${nick}\nОплата: ${method}`;
+        if(addressData) tgText += `\n${addressData}`;
+        fetch(`https://api.telegram.org/bot8782923361:AAFmJdvhUGzKeIeaW9f4XSvAmZMDXLBRZgU/sendMessage?chat_id=8208159801&text=${encodeURIComponent(tgText)}`);
+        
         window.openChat(orderId);
     };
 
     window.loadOrders = () => {
         onValue(ref(db, 'orders'), (snap) => {
-            const list = document.getElementById('orders-list');
-            list.innerHTML = "";
+            const list = document.getElementById('orders-list'); list.innerHTML = "";
             snap.forEach(child => {
-                const o = child.val();
-                const nick = user.email.split('@')[0];
+                const o = child.val(); const nick = user.email.split('@')[0];
                 if (isAdmin || o.user === nick) {
-                    const div = document.createElement('div');
-                    div.className = 'order-card';
-                    div.innerHTML = `<div><b>${o.item}</b><br><small>${o.user}</small></div><span class="status">${o.status}</span>`;
+                    const div = document.createElement('div'); div.className = 'order-card';
+                    div.innerHTML = `<div><b>${o.item}</b><br><small>${o.user}</small></div><span>${o.status}</span>`;
                     div.onclick = () => window.openChat(child.key);
                     list.appendChild(div);
                 }
@@ -253,15 +237,11 @@
         document.getElementById('chat-ui').style.display='block';
         document.getElementById('admin-btns').style.display = isAdmin ? 'flex' : 'none';
         window.openMod('pay-modal');
-
         onValue(ref(db, `orders/${id}`), (snap) => {
             const o = snap.val(); if(!o) return;
             const box = document.getElementById('chat-box');
             box.innerHTML = o.chat.map(m => `
-                <div class="msg">
-                    <b>${m.from}:</b> 
-                    <div>${formatMsg(m.text)}</div>
-                </div>
+                <div class="msg"><b>${m.from}:</b> <div>${m.text.startsWith('http') ? `<img src="${m.text}">` : m.text}</div></div>
             `).join('');
             box.scrollTop = box.scrollHeight;
         });
@@ -271,24 +251,20 @@
         const txt = document.getElementById('chat-in').value; if(!txt) return;
         const nick = user.email.split('@')[0];
         onValue(ref(db, `orders/${selectedOrderId}`), (s) => {
-            const o = s.val();
-            const newChat = [...(o.chat || []), { from: nick, text: txt }];
+            const o = s.val(); const newChat = [...(o.chat || []), { from: nick, text: txt }];
             update(ref(db, `orders/${selectedOrderId}`), { chat: newChat });
             document.getElementById('chat-in').value = "";
         }, { onlyOnce: true });
     };
 
-    window.updStat = (s) => {
-        update(ref(db, `orders/${selectedOrderId}`), { status: s });
-        window.showToast("Готово!");
+    window.promptImg = () => {
+        const url = prompt("Ссылка на скриншот:");
+        if(url && url.startsWith('http')) { document.getElementById('chat-in').value = url; window.sendMsg(); }
     };
 
-    window.clearAllOrders = async () => {
-        if(confirm("Очистить все заказы?")) {
-            await remove(ref(db, 'orders'));
-            window.showToast("База пуста");
-        }
-    };
+    window.updStat = (s) => { update(ref(db, `orders/${selectedOrderId}`), { status: s }); };
+    window.clearAllOrders = async () => { if(confirm("Удалить всё?")) await remove(ref(db, 'orders')); };
+
 </script>
 </body>
 </html>
