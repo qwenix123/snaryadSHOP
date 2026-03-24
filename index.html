@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snaryad Shop — Соусы</title>
+    <title>Snaryad Shop — Чат с Фото</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap');
         :root { --accent: #ffd11a; --bg: #f4f6f9; --border: #e6e8eb; --text: #1a1d21; }
@@ -27,7 +27,6 @@
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
         .card { background: #fff; border-radius: 24px; padding: 12px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .card img { width: 100%; aspect-ratio: 1/1; border-radius: 18px; object-fit: cover; background: #f9f9f9; }
 
         .order-card { background: #fff; padding: 15px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
@@ -35,11 +34,15 @@
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: #fff; padding: 25px; border-radius: 24px; width: 350px; max-height: 85vh; overflow-y: auto; }
-        .chat-box { height: 250px; overflow-y: auto; background: #f8f9fa; border-radius: 15px; padding: 10px; border: 1px solid var(--border); margin: 10px 0; }
-        .msg { background: #fff; padding: 8px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; border: 1px solid #eee; }
         
-        .pay-option { background:#f8f9fa; padding:15px; border-radius:15px; margin-bottom:10px; cursor:pointer; font-weight:700; border: 1px solid transparent; }
-        .pay-option:hover { border-color: var(--accent); background: #fff; }
+        /* ЧАТ */
+        .chat-box { height: 280px; overflow-y: auto; background: #f8f9fa; border-radius: 15px; padding: 10px; border: 1px solid var(--border); margin: 10px 0; }
+        .msg { background: #fff; padding: 8px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; border: 1px solid #eee; word-wrap: break-word; }
+        .msg img { max-width: 100%; border-radius: 8px; margin-top: 5px; display: block; cursor: zoom-in; }
+        
+        .chat-input-row { display: flex; gap: 5px; margin-bottom: 10px; }
+        .chat-input-row input { flex: 1; margin: 0; }
+        .img-btn { background: #e6e8eb; border: none; width: 42px; border-radius: 12px; cursor: pointer; font-size: 18px; }
 
         #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; }
         .toast { background: #000; color: #fff; padding: 12px 25px; border-radius: 30px; font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
@@ -96,10 +99,10 @@
 
 <div id="auth-modal" class="modal">
     <div class="modal-content">
-        <h2 id="auth-title">Вход</h2>
+        <h2>Вход</h2>
         <input type="text" id="l-user" placeholder="Логин">
         <input type="password" id="l-pass" placeholder="Пароль">
-        <button class="btn-main" style="width:100%" id="auth-go">Продолжить</button>
+        <button class="btn-main" style="width:100%" id="auth-go">Войти / Рег</button>
     </div>
 </div>
 
@@ -112,10 +115,15 @@
             <div class="pay-option" onclick="window.createOrder('Обмен')">🔄 Оплата обменом</div>
         </div>
         <div id="chat-ui" style="display:none;">
-            <h3 id="chat-header">Чат</h3>
+            <h3 id="chat-header">Чат по заказу</h3>
             <div class="chat-box" id="chat-box"></div>
-            <input type="text" id="chat-in" placeholder="Сообщение...">
+            
+            <div class="chat-input-row">
+                <button class="img-btn" onclick="window.promptImg()" title="Прикрепить скриншот">🖼</button>
+                <input type="text" id="chat-in" placeholder="Сообщение...">
+            </div>
             <button class="btn-main" style="width:100%" onclick="window.sendMsg()">Отправить</button>
+
             <div id="admin-btns" style="display:none; margin-top:10px; gap:5px;">
                 <button onclick="window.updStat('Выдан')" style="flex:1; background:#d4edda; border:none; padding:10px; border-radius:10px; font-weight:700;">✅ Выдать</button>
                 <button onclick="window.updStat('Отклонен')" style="flex:1; background:#f8d7da; border:none; padding:10px; border-radius:10px; font-weight:700;">❌ Отмена</button>
@@ -144,6 +152,23 @@
     const db = getDatabase(app);
 
     let user = null, isAdmin = false, selectedOrderId = null, tempItem = null;
+
+    // Вспомогательная функция для отрисовки сообщения (проверяет, не ссылка ли это на фото)
+    const formatMsg = (text) => {
+        const isImg = text.match(/\.(jpeg|jpg|gif|png|webp)$/) != null || text.startsWith('https://images.');
+        if (isImg && text.startsWith('http')) {
+            return `<img src="${text}" onclick="window.open('${text}', '_blank')">`;
+        }
+        return text;
+    };
+
+    window.promptImg = () => {
+        const url = prompt("Вставьте прямую ссылку на скриншот (Imgur, Discord и т.д.):");
+        if(url && url.startsWith('http')) {
+            document.getElementById('chat-in').value = url;
+            window.sendMsg();
+        }
+    };
 
     window.showToast = (m) => {
         const t = document.createElement('div'); t.className='toast'; t.innerText=m;
@@ -197,13 +222,10 @@
         const data = {
             id: orderId, user: nick, item: tempItem.name, status: 'Ожидание',
             method: method,
-            chat: [{ from: 'Система', text: `Заказ создан! Оплата: ${method}. Ожидайте выдачи в чате.` }]
+            chat: [{ from: 'Система', text: `Заказ создан! Оплата: ${method}. Скиньте скриншот оплаты сюда.` }]
         };
         await set(newRef, data);
-        
-        // Уведомление в твой ТГ
         fetch(`https://api.telegram.org/bot8782923361:AAFmJdvhUGzKeIeaW9f4XSvAmZMDXLBRZgU/sendMessage?chat_id=8208159801&text=${encodeURIComponent("🆕 ЗАКАЗ\nЮзер: "+nick+"\nТовар: "+tempItem.name+"\nОплата: "+method)}`);
-        
         window.openChat(orderId);
     };
 
@@ -235,7 +257,12 @@
         onValue(ref(db, `orders/${id}`), (snap) => {
             const o = snap.val(); if(!o) return;
             const box = document.getElementById('chat-box');
-            box.innerHTML = o.chat.map(m => `<div class="msg"><b>${m.from}:</b> ${m.text}</div>`).join('');
+            box.innerHTML = o.chat.map(m => `
+                <div class="msg">
+                    <b>${m.from}:</b> 
+                    <div>${formatMsg(m.text)}</div>
+                </div>
+            `).join('');
             box.scrollTop = box.scrollHeight;
         });
     };
@@ -253,13 +280,13 @@
 
     window.updStat = (s) => {
         update(ref(db, `orders/${selectedOrderId}`), { status: s });
-        window.showToast("Статус обновлен");
+        window.showToast("Готово!");
     };
 
     window.clearAllOrders = async () => {
-        if(confirm("Удалить все заказы из базы?")) {
+        if(confirm("Очистить все заказы?")) {
             await remove(ref(db, 'orders'));
-            window.showToast("База очищена");
+            window.showToast("База пуста");
         }
     };
 </script>
