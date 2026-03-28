@@ -3,276 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snaryad Shop — Admin System</title>
+    <title>Snaryad Shop — Full Edition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap');
-        :root { --accent: #ffd11a; --bg: #f4f6f9; --border: #e6e8eb; --text: #1a1d21; }
-        body { font-family: 'Manrope', sans-serif; background: var(--bg); margin: 0; color: var(--text); padding-bottom: 50px; }
-        
+        :root { --accent: #ffd11a; --bg: #f4f6f9; --border: #e6e8eb; }
+        body { font-family: 'Manrope', sans-serif; background: var(--bg); margin: 0; padding-bottom: 40px; color: #1a1d21; }
         header { background: #fff; padding: 15px 6%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-        .logo { font-weight: 800; font-size: 20px; text-decoration: none; color: inherit; cursor: pointer; }
-        .logo span { background: #000; color: #fff; padding: 2px 6px; border-radius: 6px; margin-left: 5px; }
-        
-        .btn-main { background: var(--accent); border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; }
-        .btn-danger { background: #ff4d4d; color: #fff; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-
-        .container { padding: 20px 6%; max-width: 1200px; margin: 0 auto; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { background: #fff; border: 1px solid var(--border); padding: 12px 25px; border-radius: 15px; cursor: pointer; font-weight: 700; }
+        .logo { font-weight: 800; font-size: 22px; cursor: pointer; }
+        .logo span { background: #000; color: #fff; padding: 2px 8px; border-radius: 8px; margin-left: 5px; }
+        .btn-main { background: var(--accent); border: none; padding: 12px 24px; border-radius: 14px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.2s; }
+        .btn-main:active { transform: scale(0.96); }
+        .container { padding: 20px 6%; max-width: 1000px; margin: 0 auto; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; }
+        .tab-btn { background: #fff; border: 1px solid var(--border); padding: 12px 20px; border-radius: 14px; cursor: pointer; font-weight: 700; white-space: nowrap; }
         .tab-btn.active { background: var(--accent); border-color: var(--accent); }
-
-        .section { display: none; }
-        .section.active { display: block; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
-        .card { background: #fff; border-radius: 24px; padding: 12px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; text-align: center; }
-        .card:hover { transform: translateY(-3px); }
-        .card img { width: 100%; aspect-ratio: 1/1; border-radius: 18px; object-fit: cover; background: #f9f9f9; }
-
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #fff; padding: 25px; border-radius: 24px; width: 350px; max-height: 85vh; overflow-y: auto; }
-        
-        .chat-box { height: 280px; overflow-y: auto; background: #f8f9fa; border-radius: 15px; padding: 10px; border: 1px solid var(--border); margin: 10px 0; }
-        .msg { background: #fff; padding: 8px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; border: 1px solid #eee; }
-        .msg img { max-width: 100%; border-radius: 8px; margin-top: 5px; display: block; }
-        
-        .pay-option { background:#f8f9fa; padding:15px; border-radius:15px; margin-bottom:10px; cursor:pointer; font-weight:700; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 12px; box-sizing: border-box; outline: none; }
-        
-        .order-card { background: #fff; padding: 15px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .status-badge { font-size: 10px; text-transform: uppercase; font-weight: 800; padding: 4px 8px; border-radius: 6px; background: #eee; }
+        .section { display: none; } .section.active { display: block; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .card { background: #fff; border-radius: 24px; padding: 12px; border: 1px solid var(--border); text-align: center; cursor: pointer; transition: 0.2s; }
+        .card img { width: 100%; aspect-ratio: 1/1; border-radius: 18px; object-fit: cover; }
+        .price-tag { color: #888; font-size: 13px; font-weight: 800; margin-top: 5px; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #fff; padding: 25px; border-radius: 28px; width: 100%; max-width: 340px; }
+        .chat-box { height: 220px; overflow-y: auto; background: #f8f9fa; border-radius: 18px; padding: 12px; border: 1px solid #eee; margin: 10px 0; font-size: 13px; }
+        input, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 14px; box-sizing: border-box; font-family: inherit; outline: none; }
+        .adm-panel { display: none; border-top: 1px solid #eee; padding-top: 12px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div id="toast-container"></div>
-
 <header>
     <div class="logo" onclick="location.reload()">SNARYAD<span>SHOP</span></div>
-    <div id="user-area"><button class="btn-main" onclick="openMod('auth-modal')">Войти</button></div>
+    <div id="u-area"><button class="btn-main" style="width:auto; margin:0" onclick="openMod('auth-modal')">Войти</button></div>
 </header>
 
 <div class="container">
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('shop', this)">🛒 Витрина</button>
-        <button class="tab-btn" id="orders-tab-btn" onclick="switchTab('orders', this)" style="display:none;">📦 Заказы</button>
+        <button class="tab-btn active" onclick="switchTab('shop', this)">🛒 Магазин</button>
+        <button class="tab-btn" onclick="switchTab('v-tab', this)">🔍 Чек</button>
+        <button class="tab-btn" id="o-btn" style="display:none" onclick="switchTab('orders', this)">📦 Заказы</button>
     </div>
 
     <div id="shop" class="section active">
         <div class="grid">
-            <div class="card" onclick="window.buyItem('Лимитированый снаряд (1шт В МИРЕ)', '10 соуса', 'snaryad.png')">
-                <img src="snaryad.png" onerror="this.src='https://placehold.co/200?text=Лимитированый снаряд (1шт В МИРЕ)'">
-                <h3>Лимитированый снаряд (1шт В МИРЕ)</h3><div style="font-weight:800">10 соуса</div>
-            </div>
-            <div class="card" onclick="window.buyItem('Мина', '1 соус', 'mina.png')">
-                <img src="mina.png" onerror="this.src='https://placehold.co/200?text=Мина'">
-                <h3>Мина</h3><div style="font-weight:800">1 соус</div>
-            </div>
-            <div class="card" onclick="window.buyItem('Парашут', '1 соус', 'parashut.png')">
-                <img src="parashut.png" onerror="this.src='https://placehold.co/200?text=Парашут'">
-                <h3>Парашут</h3><div style="font-weight:800">1 соус</div>
-            </div>
-            <div class="card" onclick="window.buyItem('Всякий кал', '4 соуса', 'kal.png')">
-                <img src="kal.png" onerror="this.src='https://placehold.co/200?text=Кал'">
-                <h3>Всякий кал</h3><div style="font-weight:800">4 соуса</div>
-            </div>
-            <div class="card" onclick="window.buyItem('Обмазать домофон', '3 соуса', 'obmaz.png', true)">
-                <img src="obmaz.png" onerror="this.src='https://placehold.co/200?text=Домофон'">
-                <h3>Обмазать домофон</h3><div style="font-weight:800">3 соуса</div>
-            </div>
+            <div class="card" onclick="buy('Снаряд','3 соуса','snaryad.png')"><img src="snaryad.png"><h3>Снаряд</h3><div class="price-tag">3 соуса</div></div>
+            <div class="card" onclick="buy('Мина','1 соус','mina.png')"><img src="mina.png"><h3>Мина</h3><div class="price-tag">1 соус</div></div>
+            <div class="card" onclick="buy('Парашут','1 соус','parashut.png')"><img src="parashut.png"><h3>Парашут</h3><div class="price-tag">1 соус</div></div>
+            <div class="card" onclick="buy('Кал','4 соуса','kal.png')"><img src="kal.png"><h3>Кал</h3><div class="price-tag">4 соуса</div></div>
+            <div class="card" onclick="buy('Домофон','3 соуса','obmaz.png', 1)"><img src="obmaz.png"><h3>Домофон</h3><div class="price-tag">3 соуса</div></div>
+            <div class="card" onclick="openMod('v-req-modal')"><img src="check.png"><h3>Верификация</h3><div class="price-tag">Бесплатно</div></div>
         </div>
+    </div>
+
+    <div id="v-tab" class="section">
+        <input type="text" id="v-search" placeholder="Код для проверки">
+        <button class="btn-main" onclick="checkCode()">Проверить</button>
+        <div id="v-res" style="margin-top:20px; display:none; background:#fff; padding:20px; border-radius:20px; border:2px solid #ffd11a; text-align:center;"></div>
     </div>
 
     <div id="orders" class="section">
-        <div id="admin-only" style="display:none;"><button class="btn-danger" onclick="window.clearAllOrders()">🗑 Очистить заказы</button></div>
-        <div id="orders-list"></div>
+        <div id="adm-only" style="display:none;"><button onclick="clearDB()" style="color:red; border:none; background:none; cursor:pointer; font-weight:800">🗑 Очистить заказы</button></div>
+        <div id="o-list"></div>
     </div>
 </div>
 
-<div id="address-modal" class="modal">
-    <div class="modal-content">
-        <h3>Детали заказа</h3>
-        <input type="text" id="order-addr" placeholder="Улица и дом">
-        <input type="text" id="order-podezd" placeholder="Номер подъезда">
-        <button class="btn-main" style="width:100%" onclick="window.confirmAddress()">Далее к оплате</button>
-    </div>
-</div>
+<div id="v-req-modal" class="modal"><div class="modal-content">
+    <h3>Заявка на вериф</h3>
+    <input type="text" id="vr-code" placeholder="Код снаряда">
+    <select id="vr-item"><option>Снаряд</option><option>Мина</option><option>Парашут</option><option>Кал</option><option>Домофон</option></select>
+    <button class="btn-main" onclick="sendVReq()">Отправить заявку</button>
+    <button onclick="closeModals()" style="width:100%; border:none; background:none; margin-top:10px; color:gray">Отмена</button>
+</div></div>
 
-<div id="pay-modal" class="modal">
-    <div class="modal-content">
-        <div id="pay-options">
-            <h3>Оплата</h3>
-            <div class="pay-option" onclick="window.createOrder('Сырный соус')">🧀 Сырный соус</div>
-            <div class="pay-option" onclick="window.createOrder('Тар-тар')">⚪ Тар-тар</div>
-            <div class="pay-option" onclick="window.createOrder('Обмен')">🔄 Оплата обменом</div>
+<div id="pay-modal" class="modal"><div class="modal-content">
+    <div id="pay-opts">
+        <h3>Оплата</h3>
+        <button class="btn-main" onclick="createOrder('Сырный соус')">🧀 Сырный соус</button>
+        <button class="btn-main" onclick="createOrder('Тар-тар')">⚪ Тар-тар</button>
+        <button class="btn-main" onclick="createOrder('Обмен')">🔄 Обмен</button>
+    </div>
+    <div id="chat-ui" style="display:none">
+        <h3 id="chat-t">Чат</h3>
+        <div class="chat-box" id="chat-box"></div>
+        <div style="display:flex; gap:10px"><input id="msg-in" placeholder="Текст..."><button class="btn-main" style="width:50px; margin:0" onclick="send()">></button></div>
+        <div id="adm-btns" class="adm-panel">
+            <button class="btn-main" style="background:#2ecc71; color:#fff" onclick="updStat('Принят ✅')">ОК</button>
+            <button class="btn-main" style="background:#e74c3c; color:#fff" onclick="updStat('Отказ ❌')">НЕТ</button>
+            <button class="btn-main" style="background:#3498db; color:#fff" onclick="setV()">ВЕРЕФ</button>
         </div>
-        <div id="chat-ui" style="display:none;">
-            <h3 id="chat-header">Чат по заказу</h3>
-            <div class="chat-box" id="chat-box"></div>
-            <div style="display:flex; gap:5px;">
-                <button onclick="window.promptImg()" style="border-radius:12px; border:1px solid #ccc; width:40px; cursor:pointer;">🖼</button>
-                <input type="text" id="chat-in" placeholder="Сообщение..." style="margin:0;">
-            </div>
-            <button class="btn-main" style="width:100%; margin-top:10px;" onclick="window.sendMsg()">Отправить</button>
-            <div id="admin-btns" style="display:none; margin-top:10px; gap:5px;">
-                <button onclick="window.updStat('Выдан')" style="flex:1; background:#d4edda; border:none; padding:10px; border-radius:10px; font-weight:700;">✅ Выдать</button>
-                <button onclick="window.updStat('Отклонен')" style="flex:1; background:#f8d7da; border:none; padding:10px; border-radius:10px; font-weight:700;">❌ Отмена</button>
-            </div>
-        </div>
-        <button onclick="window.closeModals()" style="width:100%; border:none; background:none; margin-top:15px; color:gray; cursor:pointer;">Закрыть</button>
     </div>
-</div>
+    <button onclick="closeModals()" style="width:100%; border:none; background:none; margin-top:15px; color:gray">Закрыть</button>
+</div></div>
 
-<div id="auth-modal" class="modal">
-    <div class="modal-content">
-        <h2>Вход</h2>
-        <input type="text" id="l-user" placeholder="Логин">
-        <input type="password" id="l-pass" placeholder="Пароль">
-        <button class="btn-main" style="width:100%" id="auth-go">Войти / Рег</button>
-    </div>
-</div>
+<div id="auth-modal" class="modal"><div class="modal-content">
+    <h3>Вход</h3><input id="l-u" placeholder="Логин"><input id="l-p" type="password" placeholder="Пароль">
+    <button class="btn-main" onclick="authGo()">Войти</button>
+</div></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getDatabase, ref, set, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, set, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDLmvHA8eEptL5eURhRzJLL155RXWQ30eg",
-        authDomain: "snaryadshop.firebaseapp.com",
-        projectId: "snaryadshop",
-        storageBucket: "snaryadshop.firebasestorage.app",
-        databaseURL: "https://snaryadshop-default-rtdb.firebaseio.com",
-        appId: "1:116196873617:web:eef10cd8ce23b84165b630"
-    };
+    const cfg = { apiKey: "AIzaSyDLmvHA8eEptL5eURhRzJLL155RXWQ30eg", authDomain: "snaryadshop.firebaseapp.com", databaseURL: "https://snaryadshop-default-rtdb.firebaseio.com", projectId: "snaryadshop" };
+    const app = initializeApp(cfg); const auth = getAuth(app); const db = getDatabase(app);
+    
+    // ТВОИ ДАННЫЕ УЖЕ ТУТ
+    const TG_TOKEN = "8782923361:AAFmJdvhUGzKeIeaW9f4XSvAmZMDXLBRZgU"; 
+    const TG_CHAT_ID = "8208159801";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+    let user=null, isAdmin=false, curId=null, temp=null;
 
-    let user = null, isAdmin = false, selectedOrderId = null, tempItem = null, addressData = null;
+    async function sendTG(msg) {
+        if(!TG_TOKEN) return;
+        try { await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'HTML' }) }); } catch(e){}
+    }
 
-    window.openMod = (id) => document.getElementById(id).style.display='flex';
+    window.openMod = id => document.getElementById(id).style.display='flex';
     window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display='none');
-    window.switchTab = (id, btn) => {
+    window.switchTab = (id, b) => {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active'); btn.classList.add('active');
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); b.classList.add('active');
     };
 
-    // --- ПРОВЕРКА АДМИНА ЧЕРЕЗ DATABASE ---
-    onAuthStateChanged(auth, (u) => {
-        if (u) {
-            user = u;
-            const nick = u.email.split('@')[0];
-            document.getElementById('user-area').innerHTML = `<b>👤 ${nick}</b>`;
-            document.getElementById('orders-tab-btn').style.display = 'block';
-
-            // Ищем в папке admins/ логин пользователя
-            onValue(ref(db, 'admins/' + nick), (snap) => {
-                isAdmin = (snap.val() === true);
-                document.getElementById('admin-only').style.display = isAdmin ? 'block' : 'none';
-                loadOrders(); // Перезагружаем список с учетом прав
-            });
+    onAuthStateChanged(auth, u => {
+        if(u) { 
+            user=u; const n=u.email.split('@')[0];
+            document.getElementById('u-area').innerHTML=`<b>👤 ${n}</b>`;
+            document.getElementById('o-btn').style.display='block';
+            onValue(ref(db, 'admins/'+n), s => { isAdmin=s.val()===true; document.getElementById('adm-only').style.display=isAdmin?'block':'none'; load(); });
         }
     });
 
-    document.getElementById('auth-go').onclick = async () => {
-        const u = document.getElementById('l-user').value.trim();
-        const p = document.getElementById('l-pass').value;
+    window.authGo = async () => {
+        const u = document.getElementById('l-u').value.trim(); const p = document.getElementById('l-p').value;
         if(!u || !p) return;
-        const email = u + "@snaryad.shop";
-        try { await signInWithEmailAndPassword(auth, email, p); } 
-        catch { await createUserWithEmailAndPassword(auth, email, p); }
-        window.closeModals();
+        try { await signInWithEmailAndPassword(auth, u+"@snaryad.shop", p); } catch {
+            try { await createUserWithEmailAndPassword(auth, u+"@snaryad.shop", p); } catch (e) { alert(e.message); }
+        }
+        closeModals();
     };
 
-    window.buyItem = (name, price, img, needAddr = false) => {
-        if(!user) return window.openMod('auth-modal');
-        tempItem = { name, price };
-        if(needAddr) window.openMod('address-modal');
-        else { window.openMod('pay-modal'); document.getElementById('pay-options').style.display='block'; document.getElementById('chat-ui').style.display='none'; }
+    window.buy = (n, p, i, ad) => {
+        if(!user) return openMod('auth-modal');
+        temp = {n, p, i}; if(ad) temp.ad = prompt("Адрес:");
+        openMod('pay-modal'); document.getElementById('pay-opts').style.display='block'; document.getElementById('chat-ui').style.display='none';
     };
 
-    window.confirmAddress = () => {
-        const a = document.getElementById('order-addr').value, p = document.getElementById('order-podezd').value;
-        if(!a || !p) return;
-        addressData = `📍 Адрес: ${a}, Подъезд: ${p}`;
-        window.closeModals();
-        window.openMod('pay-modal');
-        document.getElementById('pay-options').style.display='block';
-        document.getElementById('chat-ui').style.display='none';
+    window.createOrder = async (m) => {
+        const id = Math.floor(1000+Math.random()*9000).toString();
+        const n = user.email.split('@')[0];
+        await set(ref(db, 'orders/'+id), { id, user: n, item: temp.n, pay: m, status: 'Ожидание', date: new Date().toLocaleString(), img: temp.i, v: false, chat: [{f:'Система', t:'Заказ #'+id}] });
+        sendTG(`💰 <b>Новый заказ #${id}</b>\nЮзер: ${n}\nТовар: ${temp.n}\nОплата: ${m}`);
+        opCh(id);
     };
 
-    window.createOrder = async (method) => {
-        const nick = user.email.split('@')[0];
-        const newRef = push(ref(db, 'orders'));
-        const orderId = newRef.key;
-        let startMsg = `Заказ создан! Оплата: ${method}.`;
-        if(addressData) startMsg += `\n${addressData}`;
-
-        await set(newRef, {
-            id: orderId, user: nick, item: tempItem.name, status: 'Ожидание',
-            chat: [{ from: 'Система', text: startMsg }]
-        });
-        
-        // TG NOTIFY
-        let tgText = `🆕 ЗАКАЗ: ${tempItem.name}\nЮзер: ${nick}\nОплата: ${method}`;
-        if(addressData) tgText += `\n${addressData}`;
-        fetch(`https://api.telegram.org/bot8782923361:AAFmJdvhUGzKeIeaW9f4XSvAmZMDXLBRZgU/sendMessage?chat_id=8208159801&text=${encodeURIComponent(tgText)}`);
-        
-        window.openChat(orderId);
+    window.sendVReq = async () => {
+        const c = document.getElementById('vr-code').value.trim();
+        const i = document.getElementById('vr-item').value;
+        if(!c) return alert("Введите код!");
+        const n = user.email.split('@')[0];
+        await set(ref(db, 'orders/'+c), { id:c, user: n, item: 'ВЕРИФ: '+i, status: 'Проверка', date: new Date().toLocaleString(), img: 'check.png', v: false, chat: [{f:'Система', t:'Заявка на вериф: '+c}] });
+        sendTG(`🔍 <b>Заявка на вериф!</b>\nЮзер: ${n}\nКод: ${c}`);
+        closeModals(); opCh(c);
     };
 
-    window.loadOrders = () => {
-        onValue(ref(db, 'orders'), (snap) => {
-            const list = document.getElementById('orders-list'); list.innerHTML = "";
-            snap.forEach(child => {
-                const o = child.val(); const nick = user.email.split('@')[0];
-                if (isAdmin || o.user === nick) {
-                    const div = document.createElement('div'); div.className = 'order-card';
-                    div.innerHTML = `<div><b>${o.item}</b><br><small>${o.user}</small></div><span class="status-badge">${o.status}</span>`;
-                    div.onclick = () => window.openChat(child.key);
-                    list.appendChild(div);
-                }
-            });
+    window.opCh = id => {
+        curId = id; document.getElementById('pay-opts').style.display='none'; document.getElementById('chat-ui').style.display='block';
+        document.getElementById('adm-btns').style.display = isAdmin?'block':'none'; openMod('pay-modal');
+        onValue(ref(db, `orders/${id}`), s => { const o=s.val(); if(o) {
+            document.getElementById('chat-box').innerHTML=(o.chat||[]).map(m=>`<div style="margin-bottom:8px; border-bottom:1px solid #f0f0f0; padding-bottom:4px"><b>${m.f}:</b> ${m.t}</div>`).join('');
+            const b = document.getElementById('chat-box'); b.scrollTop = b.scrollHeight;
+        }});
+    };
+
+    window.send = () => {
+        const t = document.getElementById('msg-in').value; if(!t) return;
+        get(ref(db, `orders/${curId}`)).then(s => {
+            const o = s.val(); const nc = [...(o.chat||[]), {f:user.email.split('@')[0], t}];
+            update(ref(db, `orders/${curId}`), {chat:nc}); document.getElementById('msg-in').value="";
         });
     };
 
-    window.openChat = (id) => {
-        selectedOrderId = id;
-        document.getElementById('pay-options').style.display='none';
-        document.getElementById('chat-ui').style.display='block';
-        document.getElementById('admin-btns').style.display = isAdmin ? 'flex' : 'none';
-        window.openMod('pay-modal');
-        onValue(ref(db, `orders/${id}`), (snap) => {
-            const o = snap.val(); if(!o) return;
-            const box = document.getElementById('chat-box');
-            box.innerHTML = o.chat.map(m => `
-                <div class="msg"><b>${m.from}:</b> <div>${m.text.startsWith('http') ? `<img src="${m.text}">` : m.text}</div></div>
-            `).join('');
-            box.scrollTop = box.scrollHeight;
+    window.updStat = s => update(ref(db, `orders/${curId}`), {status:s});
+    window.setV = () => { update(ref(db, `orders/${curId}`), {v:true}); alert("Верифицировано!"); };
+    window.checkCode = () => {
+        const c = document.getElementById('v-search').value.trim();
+        get(ref(db, 'orders/'+c)).then(s => {
+            const r = document.getElementById('v-res');
+            if(s.exists()){ const o=s.val(); r.style.display='block'; r.innerHTML=`<img src="${o.img}" width="60"><br><b>${o.item}</b><br><small>${o.user} | ${o.date}</small><h2>${o.v?'✅ ВЕРЕФ':'❌ НЕТ'}</h2>`; }
+            else alert("Нет кода");
         });
     };
 
-    window.sendMsg = () => {
-        const txt = document.getElementById('chat-in').value; if(!txt) return;
-        const nick = user.email.split('@')[0];
-        onValue(ref(db, `orders/${selectedOrderId}`), (s) => {
-            const o = s.val(); const newChat = [...(o.chat || []), { from: nick, text: txt }];
-            update(ref(db, `orders/${selectedOrderId}`), { chat: newChat });
-            document.getElementById('chat-in').value = "";
-        }, { onlyOnce: true });
+    window.load = () => {
+        onValue(ref(db, 'orders'), s => {
+            const l = document.getElementById('o-list'); l.innerHTML="";
+            s.forEach(c => { const o = c.val(); if(isAdmin || o.user === user.email.split('@')[0]) {
+                const d = document.createElement('div'); d.style = "background:#fff; padding:12px; border-radius:15px; margin-bottom:8px; cursor:pointer";
+                d.innerHTML = `<b>#${o.id}</b> ${o.item} <small>[${o.status}]</small>`; d.onclick = () => opCh(o.id); l.appendChild(d);
+            }});
+        });
     };
-
-    window.promptImg = () => {
-        const url = prompt("Прямая ссылка на фото:");
-        if(url && url.startsWith('http')) { document.getElementById('chat-in').value = url; window.sendMsg(); }
-    };
-
-    window.updStat = (s) => update(ref(db, `orders/${selectedOrderId}`), { status: s });
-    window.clearAllOrders = async () => { if(confirm("Удалить всё?")) await remove(ref(db, 'orders')); };
-
+    window.clearDB = () => { if(confirm("Удалить?")) remove(ref(db, 'orders')); };
 </script>
 </body>
 </html>
