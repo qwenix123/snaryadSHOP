@@ -3,42 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snaryad Shop — Full Edition</title>
+    <title>Snaryad Shop — Full System</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap');
         :root { --accent: #ffd11a; --bg: #f4f6f9; --border: #e6e8eb; }
         body { font-family: 'Manrope', sans-serif; background: var(--bg); margin: 0; padding-bottom: 40px; color: #1a1d21; }
-        
         header { background: #fff; padding: 15px 6%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
         .logo { font-weight: 800; font-size: 22px; cursor: pointer; }
         .logo span { background: #000; color: #fff; padding: 2px 8px; border-radius: 8px; margin-left: 5px; }
-        
         .btn-main { background: var(--accent); border: none; padding: 12px 24px; border-radius: 14px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.2s; }
         .btn-main:active { transform: scale(0.96); }
-
         .container { padding: 20px 6%; max-width: 1000px; margin: 0 auto; }
         .tabs { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; }
         .tab-btn { background: #fff; border: 1px solid var(--border); padding: 12px 20px; border-radius: 14px; cursor: pointer; font-weight: 700; white-space: nowrap; }
         .tab-btn.active { background: var(--accent); border-color: var(--accent); }
-
-        .section { display: none; } 
-        .section.active { display: block; }
-
+        .section { display: none; } .section.active { display: block; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
         .card { background: #fff; border-radius: 24px; padding: 12px; border: 1px solid var(--border); text-align: center; cursor: pointer; transition: 0.2s; }
-        .card:hover { border-color: var(--accent); transform: translateY(-2px); }
         .card img { width: 100%; aspect-ratio: 1/1; border-radius: 18px; object-fit: cover; }
-        .card h3 { margin: 8px 0 2px 0; font-size: 15px; }
         .price-tag { color: #888; font-size: 13px; font-weight: 800; margin-top: 5px; }
-
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
         .modal-content { background: #fff; padding: 25px; border-radius: 28px; width: 100%; max-width: 340px; position: relative; }
-        
         .chat-box { height: 220px; overflow-y: auto; background: #f8f9fa; border-radius: 18px; padding: 12px; border: 1px solid #eee; margin: 10px 0; font-size: 13px; }
         .msg { background: #fff; padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #eee; }
-        
         input, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 14px; box-sizing: border-box; font-family: inherit; outline: none; }
-        
         .adm-panel { display: none; border-top: 1px solid #eee; padding-top: 12px; margin-top: 10px; }
         .adm-row { display: flex; gap: 8px; }
         .adm-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; color: #fff; font-weight: 800; cursor: pointer; font-size: 12px; }
@@ -87,7 +75,7 @@
     <h3>Верификация</h3>
     <input type="text" id="vr-code" placeholder="Код снаряда">
     <select id="vr-item"><option>Снаряд</option><option>Мина</option><option>Парашут</option><option>Кал</option><option>Домофон</option></select>
-    <button class="btn-main" onclick="sendVReq()">Отправить админу</button>
+    <button class="btn-main" onclick="sendVReq()">Отправить заявку</button>
     <button onclick="closeModals()" style="width:100%; border:none; background:none; margin-top:10px; color:gray; cursor:pointer">Отмена</button>
 </div></div>
 
@@ -158,43 +146,52 @@
     window.authGo = async () => {
         const u = document.getElementById('l-u').value.trim(); 
         const p = document.getElementById('l-p').value;
-        if(!u || !p) return alert("Введите данные!");
+        if(!u || !p) return alert("Введите логин и пароль!");
         const email = u + "@snaryad.shop";
+        
         try {
+            // Пытаемся войти
             await signInWithEmailAndPassword(auth, email, p);
             closeModals();
         } catch (e) {
-            try {
-                await createUserWithEmailAndPassword(auth, email, p);
-                closeModals();
-            } catch (err) { alert("Ошибка входа: " + err.message); }
+            // Если юзера нет, регистрируем
+            if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+                try {
+                    await createUserWithEmailAndPassword(auth, email, p);
+                    closeModals();
+                } catch (regErr) {
+                    if (regErr.code === 'auth/email-already-in-use') {
+                        alert("Неверный пароль для этого логина!");
+                    } else {
+                        alert("Ошибка: " + regErr.message);
+                    }
+                }
+            } else {
+                alert("Ошибка входа: " + e.message);
+            }
         }
     };
 
     window.buy = (n, p, i, ad) => {
         if(!user) return openMod('auth-modal');
-        temp = {n, p, i}; if(ad) temp.ad = prompt("Укажите адрес доставки:");
-        openMod('pay-modal'); 
-        document.getElementById('pay-opts').style.display='block'; 
-        document.getElementById('chat-ui').style.display='none';
+        temp = {n, p, i}; if(ad) temp.ad = prompt("Адрес доставки:");
+        openMod('pay-modal'); document.getElementById('pay-opts').style.display='block'; document.getElementById('chat-ui').style.display='none';
     };
 
     window.createOrder = async (m) => {
         const id = Math.floor(1000+Math.random()*9000).toString();
         const n = user.email.split('@')[0];
-        const date = new Date().toLocaleString();
-        await set(ref(db, 'orders/'+id), { id, user: n, item: temp.n, pay: m, status: 'Ожидание', date: date, img: temp.i, v: false, chat: [{f:'Система', t:'Заказ #'+id + (temp.ad?' | Адрес: '+temp.ad:'')}] });
-        sendTG(`💰 <b>Новый заказ #${id}</b>\nЮзер: ${n}\nТовар: ${temp.n}\nОплата: ${m}`);
+        await set(ref(db, 'orders/'+id), { id, user: n, item: temp.n, pay: m, status: 'Ожидание', date: new Date().toLocaleString(), img: temp.i, v: false, chat: [{f:'Система', t:'Заказ #'+id + (temp.ad?' | Адрес: '+temp.ad:'')}] });
+        sendTG(`💰 Новый заказ #${id}\nЮзер: ${n}\nТовар: ${temp.n}\nОплата: ${m}`);
         opCh(id);
     };
 
     window.sendVReq = async () => {
         const c = document.getElementById('vr-code').value.trim();
-        const i = document.getElementById('vr-item').value;
         if(!c) return alert("Введите код!");
         const n = user.email.split('@')[0];
-        await set(ref(db, 'orders/'+c), { id:c, user: n, item: 'ВЕРИФ: '+i, status: 'Проверка', date: new Date().toLocaleString(), img: 'check.png', v: false, chat: [{f:'Система', t:'Заявка на вериф: '+c}] });
-        sendTG(`🔍 <b>Заявка на вериф!</b>\nЮзер: ${n}\nКод: ${c}`);
+        await set(ref(db, 'orders/'+c), { id:c, user: n, item: 'ВЕРИФ: '+document.getElementById('vr-item').value, status: 'Проверка', date: new Date().toLocaleString(), img: 'check.png', v: false, chat: [{f:'Система', t:'Заявка на вериф: '+c}] });
+        sendTG(`🔍 Заявка на вериф!\nЮзер: ${n}\nКод: ${c}`);
         closeModals(); opCh(c);
     };
 
@@ -205,8 +202,10 @@
         openMod('pay-modal');
         onValue(ref(db, `orders/${id}`), s => { 
             const o=s.val(); 
-            if(o) document.getElementById('chat-box').innerHTML=(o.chat||[]).map(m=>`<div class="msg"><b>${m.f}:</b> ${m.t}</div>`).join('');
-            const b = document.getElementById('chat-box'); b.scrollTop = b.scrollHeight;
+            if(o) {
+                document.getElementById('chat-box').innerHTML=(o.chat||[]).map(m=>`<div class="msg"><b>${m.f}:</b> ${m.t}</div>`).join('');
+                const b = document.getElementById('chat-box'); b.scrollTop = b.scrollHeight;
+            }
         });
     };
 
@@ -219,7 +218,7 @@
     };
 
     window.updStat = s => update(ref(db, `orders/${curId}`), {status:s});
-    window.setV = () => { update(ref(db, `orders/${curId}`), {v:true}); alert("Верифицировано ✅"); };
+    window.setV = () => { update(ref(db, `orders/${curId}`), {v:true}); alert("Готово!"); };
     window.clearDB = () => { if(confirm("Удалить всё?")) remove(ref(db, 'orders')); };
 
     window.checkCode = () => {
@@ -228,7 +227,7 @@
             const r = document.getElementById('v-res');
             if(s.exists()){ 
                 const o=s.val(); r.style.display='block'; 
-                r.innerHTML=`<img src="${o.img}" width="80"><br><b>${o.item}</b><br><small>${o.user} | ${o.date}</small><h2 style="color:${o.v?'#2ecc71':'#e74c3c'}">${o.v?'✅ ВЕРЕФ':'❌ НЕТ'}</h2>`; 
+                r.innerHTML=`<img src="${o.img}" width="80"><br><b>${o.item}</b><br><small>${o.user}</small><h2 style="color:${o.v?'#2ecc71':'#e74c3c'}">${o.v?'✅ ВЕРЕФ':'❌ НЕТ'}</h2>`; 
             } else alert("Код не найден");
         });
     };
