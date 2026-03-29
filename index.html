@@ -1,246 +1,696 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snaryad Shop — Full System</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap');
-        :root { --accent: #ffd11a; --bg: #f4f6f9; --border: #e6e8eb; }
-        body { font-family: 'Manrope', sans-serif; background: var(--bg); margin: 0; padding-bottom: 40px; color: #1a1d21; }
-        header { background: #fff; padding: 15px 6%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-        .logo { font-weight: 800; font-size: 22px; cursor: pointer; }
-        .logo span { background: #000; color: #fff; padding: 2px 8px; border-radius: 8px; margin-left: 5px; }
-        .btn-main { background: var(--accent); border: none; padding: 12px 24px; border-radius: 14px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.2s; }
-        .btn-main:active { transform: scale(0.96); }
-        .container { padding: 20px 6%; max-width: 1000px; margin: 0 auto; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; }
-        .tab-btn { background: #fff; border: 1px solid var(--border); padding: 12px 20px; border-radius: 14px; cursor: pointer; font-weight: 700; white-space: nowrap; }
-        .tab-btn.active { background: var(--accent); border-color: var(--accent); }
-        .section { display: none; } .section.active { display: block; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-        .card { background: #fff; border-radius: 24px; padding: 12px; border: 1px solid var(--border); text-align: center; cursor: pointer; transition: 0.2s; }
-        .card img { width: 100%; aspect-ratio: 1/1; border-radius: 18px; object-fit: cover; }
-        .price-tag { color: #888; font-size: 13px; font-weight: 800; margin-top: 5px; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-        .modal-content { background: #fff; padding: 25px; border-radius: 28px; width: 100%; max-width: 340px; position: relative; }
-        .chat-box { height: 220px; overflow-y: auto; background: #f8f9fa; border-radius: 18px; padding: 12px; border: 1px solid #eee; margin: 10px 0; font-size: 13px; }
-        .msg { background: #fff; padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #eee; }
-        input, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 14px; box-sizing: border-box; font-family: inherit; outline: none; }
-        .adm-panel { display: none; border-top: 1px solid #eee; padding-top: 12px; margin-top: 10px; }
-        .adm-row { display: flex; gap: 8px; }
-        .adm-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; color: #fff; font-weight: 800; cursor: pointer; font-size: 12px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snaryad Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--y:#ffd11a;--y2:#ffbe00;--bg:#0e0f14;--bg2:#13151c;--bg3:#1a1d28;--card:#181b26;--border:rgba(255,209,26,0.14);--border2:rgba(255,255,255,0.07);--text:#f0f2ff;--muted:#6b7090;--green:#00e676;--red:#ff4f6b;--blue:#4fa3ff;--glow:0 0 30px rgba(255,209,26,0.25);--glow2:0 0 60px rgba(255,209,26,0.1);--r:20px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:.6}
+
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);animation:orbFloat 8s ease-in-out infinite}
+.orb1{width:400px;height:400px;background:rgba(255,209,26,.045);top:-100px;right:-100px}
+.orb2{width:300px;height:300px;background:rgba(79,163,255,.03);bottom:100px;left:-100px;animation-delay:3s}
+.orb3{width:250px;height:250px;background:rgba(124,77,255,.03);top:50%;left:50%;animation-delay:5.5s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.97)}}
+
+header{position:sticky;top:0;z-index:200;background:rgba(14,15,20,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border2);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;animation:slideDown .6s cubic-bezier(.16,1,.3,1) both}
+@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:20px;cursor:pointer;display:flex;align-items:center;gap:8px;animation:logoPulse 3s ease-in-out infinite}
+@keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(255,209,26,.3))}50%{filter:drop-shadow(0 0 22px rgba(255,209,26,.65))}}
+.logo-badge{background:var(--y);color:#000;padding:3px 10px;border-radius:8px;font-size:18px}
+.u-area{display:flex;align-items:center;gap:10px}
+.u-name{background:var(--bg3);border:1px solid var(--border);padding:8px 16px;border-radius:50px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px}
+.u-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:dotPulse 2s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.btn-main{background:linear-gradient(135deg,var(--y),var(--y2));border:none;padding:13px 22px;border-radius:var(--r);font-weight:800;cursor:pointer;width:100%;margin-top:10px;font-family:'Manrope',sans-serif;font-size:14px;color:#000;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,209,26,.35)}
+.btn-main:active{transform:scale(.97)}
+.btn-main::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28),transparent);opacity:0;transition:opacity .3s}
+.btn-main:hover::after{opacity:1}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.38);animation:ripAnim .6s linear;pointer-events:none}
+@keyframes ripAnim{from{transform:scale(0);opacity:1}to{transform:scale(4);opacity:0}}
+
+.container{padding:25px 5%;max-width:1100px;margin:0 auto;position:relative;z-index:10}
+.tabs{display:flex;gap:8px;margin-bottom:30px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:var(--card);border:1px solid var(--border2);padding:12px 20px;border-radius:50px;cursor:pointer;font-weight:700;font-size:13px;white-space:nowrap;color:var(--muted);transition:all .3s cubic-bezier(.16,1,.3,1);font-family:'Manrope',sans-serif}
+.tab-btn:hover{color:var(--text);border-color:var(--border);transform:translateY(-1px)}
+.tab-btn.active{background:var(--y);color:#000;border-color:var(--y);box-shadow:0 0 20px rgba(255,209,26,.3)}
+.section{display:none;animation:fadeUp .5s cubic-bezier(.16,1,.3,1) both}
+.section.active{display:block}
+@keyframes fadeUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:14px;text-align:center;cursor:pointer;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;animation:cardIn .5s cubic-bezier(.16,1,.3,1) both}
+.card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.1s}.card:nth-child(3){animation-delay:.15s}
+.card:nth-child(4){animation-delay:.2s}.card:nth-child(5){animation-delay:.25s}.card:nth-child(6){animation-delay:.3s}
+@keyframes cardIn{from{transform:scale(.85) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,209,26,.09),transparent 70%);opacity:0;transition:opacity .3s}
+.card:hover{transform:translateY(-8px) scale(1.02);border-color:rgba(255,209,26,.3);box-shadow:0 20px 50px rgba(0,0,0,.5),var(--glow)}
+.card:hover::before{opacity:1}
+.card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:var(--bg3);margin-bottom:10px;position:relative}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.card:hover img{transform:scale(1.08)}
+.card-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,transparent 50%);border-radius:18px;pointer-events:none}
+.card h3{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;margin-bottom:4px}
+.price-tag{color:var(--y);font-size:11px;font-weight:800;background:rgba(255,209,26,.1);padding:3px 10px;border-radius:20px;display:inline-block}
+
+/* VERIFY TAB */
+.v-search-wrap{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:30px;max-width:520px;margin:0 auto}
+.v-search-wrap h2{font-family:'Unbounded',sans-serif;font-size:18px;margin-bottom:20px}
+#v-res{margin-top:20px;background:var(--bg3);border:2px solid var(--y);padding:22px;border-radius:22px;animation:cardIn .4s cubic-bezier(.16,1,.3,1) both}
+.vr-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:13px}
+.vr-label{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;min-width:96px;padding-top:1px}
+.vr-val{font-weight:700;word-break:break-word}
+.verify-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:50px;font-weight:800;font-size:15px}
+.verify-yes{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+.verify-no{background:rgba(255,79,107,.1);color:var(--red);border:1px solid rgba(255,79,107,.2)}
+
+/* ORDERS */
+.orders-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.orders-title{font-family:'Unbounded',sans-serif;font-size:16px}
+.clear-btn{color:var(--red);background:rgba(255,79,107,.1);border:1px solid rgba(255,79,107,.2);padding:8px 16px;border-radius:12px;cursor:pointer;font-weight:700;font-size:12px;transition:.2s;font-family:'Manrope',sans-serif}
+.clear-btn:hover{background:rgba(255,79,107,.2)}
+
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.status-wait{background:rgba(255,209,26,.12);color:var(--y)}
+.status-ok{background:rgba(0,230,118,.1);color:var(--green)}
+.status-no{background:rgba(255,79,107,.1);color:var(--red)}
+
+.order-card{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:14px;animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both}
+.order-card:hover{border-color:var(--border);transform:translateX(4px)}
+.order-card-img{width:48px;height:48px;border-radius:12px;object-fit:cover;background:var(--bg3);flex-shrink:0}
+.order-card-info{flex:1}
+.order-card-id{font-family:'Unbounded',sans-serif;font-size:10px;color:var(--muted);margin-bottom:3px}
+.order-card-name{font-weight:800;font-size:14px;margin-bottom:4px}
+
+.adm-order-card{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:20px;margin-bottom:16px;animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both;transition:border-color .3s}
+.adm-order-card:hover{border-color:rgba(255,209,26,.2)}
+.adm-order-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.adm-order-img{width:56px;height:56px;border-radius:14px;object-fit:cover;background:var(--bg3);flex-shrink:0}
+.adm-order-meta{flex:1;min-width:0}
+.adm-order-id{font-family:'Unbounded',sans-serif;font-size:10px;color:var(--muted);margin-bottom:4px}
+.adm-order-name{font-weight:800;font-size:15px;margin-bottom:6px}
+.adm-meta-row{font-size:12px;margin-bottom:3px;color:var(--muted)}
+.adm-meta-row span{color:var(--text);font-weight:700}
+.adm-addr-row{font-size:12px;margin-top:8px;padding:9px 13px;background:rgba(255,209,26,.06);border:1px solid rgba(255,209,26,.15);border-radius:11px;color:var(--y);line-height:1.5}
+.adm-addr-row b{color:var(--y)}
+
+.adm-btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.adm-btn-full{grid-column:1/-1}
+.adm-action-btn{padding:13px;border:none;border-radius:14px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Manrope',sans-serif;transition:all .25s;position:relative;overflow:hidden}
+.adm-action-btn:hover{transform:translateY(-2px)}.adm-action-btn:active{transform:scale(.97)}
+.btn-accept{background:linear-gradient(135deg,#00e676,#00c853);color:#000}.btn-accept:hover{box-shadow:0 8px 20px rgba(0,230,118,.35)}
+.btn-reject{background:linear-gradient(135deg,#ff4f6b,#c62828);color:#fff}.btn-reject:hover{box-shadow:0 8px 20px rgba(255,79,107,.35)}
+.btn-give{background:linear-gradient(135deg,var(--y),var(--y2));color:#000}.btn-give:hover{box-shadow:0 8px 20px rgba(255,209,26,.35)}
+.btn-verify{background:linear-gradient(135deg,#4fa3ff,#1565c0);color:#fff}.btn-verify:hover{box-shadow:0 8px 20px rgba(79,163,255,.35)}
+.btn-unveri{background:linear-gradient(135deg,#888,#444);color:#fff}
+.btn-chat{background:var(--bg3);border:1px solid var(--border2);color:var(--text)}.btn-chat:hover{border-color:var(--border)}
+.btn-complete{background:linear-gradient(135deg,#7c4dff,#651fff);color:#fff}.btn-complete:hover{box-shadow:0 8px 20px rgba(124,77,255,.35)}
+.adm-order-card.completed{opacity:.55}
+.completed-label{text-align:center;font-size:11px;color:var(--muted);font-weight:700;padding:4px 0 2px}
+
+input,select,textarea{width:100%;padding:14px 16px;margin:6px 0;border:1px solid var(--border2);border-radius:var(--r);box-sizing:border-box;font-family:'Manrope',sans-serif;outline:none;background:var(--bg3);color:var(--text);font-size:14px;transition:border-color .3s,box-shadow .3s}
+input:focus,select:focus,textarea:focus{border-color:rgba(255,209,26,.4);box-shadow:0 0 0 3px rgba(255,209,26,.08)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+select option{background:var(--bg2)}
+textarea{resize:vertical;min-height:88px;line-height:1.55}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;justify-content:center;align-items:center;z-index:1000;padding:20px;backdrop-filter:blur(6px)}
+.modal-content{background:var(--bg2);border:1px solid var(--border);padding:28px;border-radius:28px;width:100%;max-width:390px;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.6),var(--glow2);animation:modalIn .4s cubic-bezier(.16,1,.3,1) both}
+@keyframes modalIn{from{transform:scale(.85) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-content h3{font-family:'Unbounded',sans-serif;font-size:15px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.close-btn{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:.2s;line-height:1}
+.close-btn:hover{background:var(--border2);color:var(--text)}
+
+/* STEP DOTS */
+.step-dots{display:flex;gap:7px;justify-content:center;margin-bottom:20px}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);transition:.35s}
+.step-dot.active{background:var(--y);border-color:var(--y);box-shadow:0 0 10px rgba(255,209,26,.4)}
+.step-dot.done{background:var(--green);border-color:var(--green)}
+
+/* ADDR STEP */
+.addr-step-icon{font-size:34px;display:block;text-align:center;margin-bottom:8px;animation:bounceIn .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes bounceIn{from{transform:scale(.4) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.addr-note{font-size:11px;color:var(--muted);text-align:center;padding:7px 12px;background:rgba(255,209,26,.05);border-radius:10px;border:1px solid rgba(255,209,26,.1);margin-bottom:6px}
+
+.pay-option{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border2);padding:14px 18px;border-radius:16px;cursor:pointer;margin-top:10px;transition:all .25s;font-weight:700}
+.pay-option:hover{border-color:rgba(255,209,26,.35);transform:translateX(6px);box-shadow:0 0 20px rgba(255,209,26,.08)}
+.pay-option-icon{font-size:24px}.pay-option-label{font-size:14px}
+
+.chat-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border2)}
+.chat-header h3{font-family:'Unbounded',sans-serif;font-size:13px;flex:1;margin:0}
+.chat-box{height:220px;overflow-y:auto;background:var(--bg);border-radius:18px;padding:12px;border:1px solid var(--border2);margin:10px 0;font-size:13px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.chat-box::-webkit-scrollbar{width:4px}
+.chat-box::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.msg{padding:8px 12px;border-radius:12px;background:var(--bg3);border:1px solid var(--border2);animation:msgIn .3s cubic-bezier(.16,1,.3,1) both}
+@keyframes msgIn{from{transform:translateY(8px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.msg b{color:var(--y)}
+.msg.sys-msg{border-color:rgba(255,209,26,.2);background:rgba(255,209,26,.06)}.msg.sys-msg b{color:var(--y)}
+.msg.give-msg{border-color:rgba(0,230,118,.25);background:rgba(0,230,118,.06)}.msg.give-msg b{color:var(--green)}
+.msg.unveri-msg{border-color:rgba(255,79,107,.25);background:rgba(255,79,107,.06)}.msg.unveri-msg b{color:var(--red)}
+.chat-input-row{display:flex;gap:8px;align-items:center}
+.chat-input-row input{margin:0}
+.send-btn{background:var(--y);border:none;width:46px;height:46px;border-radius:14px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;transition:.2s;color:#000}
+.send-btn:hover{transform:scale(1.08);box-shadow:0 0 16px rgba(255,209,26,.4)}
+
+.adm-panel{display:none;border-top:1px solid var(--border2);padding-top:14px;margin-top:12px}
+.sec-label{font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.adm-panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.adm-panel-full{grid-column:1/-1}
+.adm-chat-btn{padding:11px;border:none;border-radius:12px;font-weight:800;cursor:pointer;font-size:12px;font-family:'Manrope',sans-serif;transition:all .2s}
+.adm-chat-btn:hover{transform:translateY(-1px)}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--border);padding:13px 22px;border-radius:50px;font-weight:700;font-size:13px;z-index:9999;box-shadow:0 20px 50px rgba(0,0,0,.5);transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s;opacity:0;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+.auth-logo{text-align:center;margin-bottom:20px}
+.auth-logo-text{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900}
+.auth-logo-text span{background:var(--y);color:#000;padding:2px 8px;border-radius:8px}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-state-icon{font-size:46px;margin-bottom:12px;opacity:.5}
+.empty-state-text{font-size:14px;font-weight:700}
+</style>
 </head>
 <body>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="toast" id="toast"></div>
 
 <header>
-    <div class="logo" onclick="location.reload()">SNARYAD<span>SHOP</span></div>
-    <div id="u-area"><button class="btn-main" style="width:auto; margin:0" onclick="openMod('auth-modal')">Войти</button></div>
+  <div class="logo" onclick="location.reload()">SNARYAD<span class="logo-badge">SHOP</span></div>
+  <div class="u-area" id="u-area">
+    <button class="btn-main" style="width:auto;margin:0;padding:10px 20px" onclick="openMod('auth-modal')">Войти</button>
+  </div>
 </header>
 
 <div class="container">
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('shop', this)">🛒 Магазин</button>
-        <button class="tab-btn" onclick="switchTab('v-tab', this)">🔍 Чек</button>
-        <button class="tab-btn" id="o-btn" style="display:none" onclick="switchTab('orders', this)">📦 Заказы</button>
-    </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('shop',this)">🛒 Магазин</button>
+    <button class="tab-btn" onclick="switchTab('v-tab',this)">🔍 Чек</button>
+    <button class="tab-btn" id="o-btn" style="display:none" onclick="switchTab('orders',this)">📦 Заказы</button>
+  </div>
 
-    <div id="shop" class="section active">
-        <div class="grid">
-            <div class="card" onclick="buy('Снаряд','3 соуса','snaryad.png')"><img src="snaryad.png"><h3>Снаряд</h3><div class="price-tag">3 соуса</div></div>
-            <div class="card" onclick="buy('Мина','1 соус','mina.png')"><img src="mina.png"><h3>Мина</h3><div class="price-tag">1 соус</div></div>
-            <div class="card" onclick="buy('Парашут','1 соус','parashut.png')"><img src="parashut.png"><h3>Парашут</h3><div class="price-tag">1 соус</div></div>
-            <div class="card" onclick="buy('Кал','4 соуса','kal.png')"><img src="kal.png"><h3>Кал</h3><div class="price-tag">4 соуса</div></div>
-            <div class="card" onclick="buy('Домофон','3 соуса','obmaz.png', 1)"><img src="obmaz.png"><h3>Домофон</h3><div class="price-tag">3 соуса</div></div>
-            <div class="card" onclick="openMod('v-req-modal')"><img src="check.png"><h3>Верификация</h3><div class="price-tag">Бесплатно</div></div>
-        </div>
+  <div id="shop" class="section active">
+    <div class="grid">
+      <div class="card" onclick="buy('Снаряд','3 соуса','snaryad.png',0)">
+        <div class="card-img-wrap"><img src="snaryad.png"><div class="card-shine"></div></div>
+        <h3>Снаряд</h3><div class="price-tag">3 соуса</div></div>
+      <div class="card" onclick="buy('Мина','1 соус','mina.png',0)">
+        <div class="card-img-wrap"><img src="mina.png"><div class="card-shine"></div></div>
+        <h3>Мина</h3><div class="price-tag">1 соус</div></div>
+      <div class="card" onclick="buy('Парашут','1 соус','parashut.png',0)">
+        <div class="card-img-wrap"><img src="parashut.png"><div class="card-shine"></div></div>
+        <h3>Парашут</h3><div class="price-tag">1 соус</div></div>
+      <div class="card" onclick="buy('Кал','4 соуса','kal.png',0)">
+        <div class="card-img-wrap"><img src="kal.png"><div class="card-shine"></div></div>
+        <h3>Кал</h3><div class="price-tag">4 соуса</div></div>
+      <div class="card" onclick="buy('Домофон','3 соуса','obmaz.png',1)">
+        <div class="card-img-wrap"><img src="obmaz.png"><div class="card-shine"></div></div>
+        <h3>Домофон</h3><div class="price-tag">3 соуса</div></div>
+      <div class="card" onclick="openMod('v-req-modal')">
+        <div class="card-img-wrap"><img src="check.png"><div class="card-shine"></div></div>
+        <h3>Верификация</h3><div class="price-tag">Бесплатно</div></div>
     </div>
+  </div>
 
-    <div id="v-tab" class="section">
-        <input type="text" id="v-search" placeholder="Код для проверки">
-        <button class="btn-main" onclick="checkCode()">Проверить статус</button>
-        <div id="v-res" style="margin-top:20px; display:none; background:#fff; padding:20px; border-radius:20px; border:2px solid #ffd11a; text-align:center;"></div>
+  <div id="v-tab" class="section">
+    <div class="v-search-wrap">
+      <h2>🔍 Проверить чек</h2>
+      <input type="text" id="v-search" placeholder="Введи код для проверки">
+      <button class="btn-main" onclick="checkCode()">Проверить статус</button>
+      <div id="v-res" style="display:none"></div>
     </div>
+  </div>
 
-    <div id="orders" class="section">
-        <div id="adm-only" style="display:none; margin-bottom:10px;">
-            <button onclick="clearDB()" style="color:red; background:none; border:none; cursor:pointer; font-weight:800; font-size:12px">🗑 Очистить базу</button>
-        </div>
-        <div id="o-list"></div>
+  <div id="orders" class="section">
+    <div class="orders-header">
+      <div class="orders-title">📦 Заказы</div>
+      <div id="adm-only" style="display:none">
+        <button class="clear-btn" onclick="clearDB()">🗑 Очистить базу</button>
+      </div>
     </div>
+    <div id="o-list"></div>
+  </div>
 </div>
 
+<!-- VERIFY REQUEST MODAL -->
 <div id="v-req-modal" class="modal"><div class="modal-content">
-    <h3>Верификация</h3>
-    <input type="text" id="vr-code" placeholder="Код снаряда">
-    <select id="vr-item"><option>Снаряд</option><option>Мина</option><option>Парашут</option><option>Кал</option><option>Домофон</option></select>
-    <button class="btn-main" onclick="sendVReq()">Отправить заявку</button>
-    <button onclick="closeModals()" style="width:100%; border:none; background:none; margin-top:10px; color:gray; cursor:pointer">Отмена</button>
+  <button class="close-btn" onclick="closeModals()">✕</button>
+  <h3>🔍 Верификация</h3>
+  <input type="text" id="vr-code" placeholder="Код снаряда">
+  <select id="vr-item"><option>Снаряд</option><option>Мина</option><option>Парашут</option><option>Кал</option><option>Домофон</option></select>
+  <button class="btn-main" onclick="sendVReq()">Отправить заявку</button>
 </div></div>
 
+<!-- PAY / ADDR / CHAT MODAL -->
 <div id="pay-modal" class="modal"><div class="modal-content">
-    <div id="pay-opts">
-        <h3>Оплата</h3>
-        <button class="btn-main" onclick="createOrder('Сырный соус')">🧀 Сырный соус</button>
-        <button class="btn-main" onclick="createOrder('Тар-тар')">⚪ Тар-тар</button>
-        <button class="btn-main" onclick="createOrder('Обмен')">🔄 Обмен</button>
+  <button class="close-btn" onclick="closeModals()">✕</button>
+
+  <div class="step-dots" id="step-dots" style="display:none">
+    <div class="step-dot active" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+  </div>
+
+  <!-- STEP 1: Address -->
+  <div id="addr-step" style="display:none">
+    <span class="addr-step-icon">📍</span>
+    <h3 style="justify-content:center;margin-bottom:6px">Адрес доставки</h3>
+    <p class="addr-note">🔒 Адрес виден только администратору — в чате не отображается</p>
+    <textarea id="addr-input" placeholder="Улица, дом, квартира&#10;Этаж, код домофона&#10;Любые уточнения..."></textarea>
+    <button class="btn-main" onclick="stepToPay()">Далее →</button>
+  </div>
+
+  <!-- STEP 2: Payment -->
+  <div id="pay-opts" style="display:none">
+    <h3>💳 Способ оплаты</h3>
+    <div class="pay-option" onclick="createOrder('Сырный соус')">
+      <span class="pay-option-icon">🧀</span><span class="pay-option-label">Сырный соус</span></div>
+    <div class="pay-option" onclick="createOrder('Тар-тар')">
+      <span class="pay-option-icon">⚪</span><span class="pay-option-label">Тар-тар</span></div>
+    <div class="pay-option" onclick="createOrder('Обмен')">
+      <span class="pay-option-icon">🔄</span><span class="pay-option-label">Обмен</span></div>
+  </div>
+
+  <!-- STEP 3: Chat -->
+  <div id="chat-ui" style="display:none">
+    <div class="chat-header">
+      <h3 id="chat-t">Чат</h3>
+      <div id="chat-status-badge" class="status-badge status-wait">Ожидание</div>
     </div>
-    <div id="chat-ui" style="display:none">
-        <h3 id="chat-t">Чат</h3>
-        <div class="chat-box" id="chat-box"></div>
-        <div style="display:flex; gap:10px"><input id="msg-in" placeholder="Сообщение..."><button class="btn-main" style="width:50px; margin:0" onclick="send()">></button></div>
-        <div id="adm-btns" class="adm-panel">
-            <div class="adm-row">
-                <button class="adm-btn" style="background:#2ecc71" onclick="updStat('Принят ✅')">ОК</button>
-                <button class="adm-btn" style="background:#e74c3c" onclick="updStat('Отказ ❌')">НЕТ</button>
-            </div>
-            <button class="adm-btn" style="background:#3498db; width:100%; margin-top:8px" onclick="setV()">ВЕРЕФИЦИРОВАТЬ</button>
-        </div>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="chat-input-row">
+      <input id="msg-in" placeholder="Сообщение..." onkeydown="if(event.key==='Enter')send()">
+      <button class="send-btn" onclick="send()">➤</button>
     </div>
-    <button onclick="closeModals()" style="width:100%; border:none; background:none; margin-top:15px; color:gray; cursor:pointer">Закрыть</button>
+    <div id="adm-btns" class="adm-panel">
+      <div class="sec-label">Панель администратора</div>
+      <div class="adm-panel-grid">
+        <button class="adm-chat-btn btn-accept" onclick="updStat('Принят ✅')">✅ Принять</button>
+        <button class="adm-chat-btn btn-reject" onclick="updStat('Отказ ❌')">❌ Отказать</button>
+        <button class="adm-chat-btn btn-give"   onclick="giveOrder()">📦 Выдать заказ</button>
+        <button class="adm-chat-btn btn-verify" onclick="setV()">✔ Верефицировать</button>
+        <button class="adm-chat-btn btn-unveri adm-panel-full" onclick="removeV()">🚫 Снять верификацию</button>
+        <button class="adm-chat-btn btn-complete adm-panel-full" id="complete-chat-btn" style="display:none" onclick="completeChat()">🏁 Завершить чат</button>
+      </div>
+    </div>
+  </div>
 </div></div>
 
+<!-- AUTH MODAL -->
 <div id="auth-modal" class="modal"><div class="modal-content">
-    <h3>Вход / Регистрация</h3>
-    <input id="l-u" placeholder="Логин">
-    <input id="l-p" type="password" placeholder="Пароль">
-    <button class="btn-main" onclick="authGo()">Войти</button>
+  <button class="close-btn" onclick="closeModals()">✕</button>
+  <div class="auth-logo"><div class="auth-logo-text">SNARYAD<span>SHOP</span></div></div>
+  <h3 style="justify-content:center">Вход / Регистрация</h3>
+  <input id="l-u" placeholder="Логин">
+  <input id="l-p" type="password" placeholder="Пароль" onkeydown="if(event.key==='Enter')authGo()">
+  <button class="btn-main" onclick="authGo()">Войти</button>
 </div></div>
+
+<script>
+(function(){
+  const c=document.getElementById('bg-canvas'),ctx=c.getContext('2d');
+  let W,H,pts;
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;init()}
+  function init(){pts=[];const n=Math.min(55,Math.floor(W*H/20000));for(let i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.4+.3,o:Math.random()*.28+.05})}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,209,26,${p.o})`;ctx.fill()});
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<115){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(255,209,26,${.055*(1-d/115)})`;ctx.lineWidth=.5;ctx.stroke()}}
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);resize();draw();
+})();
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.btn-main,.adm-action-btn,.adm-chat-btn,.pay-option');
+  if(!btn)return;
+  const r=document.createElement('span');r.className='ripple';
+  const rect=btn.getBoundingClientRect(),size=Math.max(rect.width,rect.height)*2;
+  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+  btn.appendChild(r);setTimeout(()=>r.remove(),620);
+});
+</script>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getDatabase, ref, set, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getDatabase,ref,set,onValue,update,remove,get}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    const cfg = { apiKey: "AIzaSyDLmvHA8eEptL5eURhRzJLL155RXWQ30eg", authDomain: "snaryadshop.firebaseapp.com", databaseURL: "https://snaryadshop-default-rtdb.firebaseio.com", projectId: "snaryadshop" };
-    const app = initializeApp(cfg); const auth = getAuth(app); const db = getDatabase(app);
-    
-    const TG_TOKEN = "7788914652:AAG-iF-MUnr-Kj3R6l3-e_E_71Y-tL7307k";
-    const TG_CHAT_ID = "6679549923";
+const app=initializeApp({apiKey:"AIzaSyDLmvHA8eEptL5eURhRzJLL155RXWQ30eg",authDomain:"snaryadshop.firebaseapp.com",databaseURL:"https://snaryadshop-default-rtdb.firebaseio.com",projectId:"snaryadshop"});
+const auth=getAuth(app),db=getDatabase(app);
 
-    let user=null, isAdmin=false, curId=null, temp=null;
+const TG_TOKEN="8782923361:AAFmJdvhUGzKeIeaW9f4XSvAmZMDXLBRZgU";
+const TG_CHAT_ID="8208159801";
 
-    async function sendTG(msg) {
-        if(!TG_TOKEN) return;
-        try { await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'HTML' }) }); } catch(e){}
-    }
+let user=null,isAdmin=false,curId=null,temp=null,chatOff=null;
 
-    window.openMod = id => document.getElementById(id).style.display='flex';
-    window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display='none');
-    window.switchTab = (id, b) => {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active'); b.classList.add('active');
-    };
+function toast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
 
-    onAuthStateChanged(auth, u => {
-        if(u) { 
-            user=u; const n=u.email.split('@')[0];
-            document.getElementById('u-area').innerHTML=`<b>👤 ${n}</b>`;
-            document.getElementById('o-btn').style.display='block';
-            onValue(ref(db, 'admins/'+n), s => { isAdmin=s.val()===true; document.getElementById('adm-only').style.display=isAdmin?'block':'none'; load(); });
-        }
+async function tg(msg){
+  try{await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg,parse_mode:'HTML'})})}catch(e){}
+}
+
+function stClass(s){
+  if(!s)return'status-wait';
+  if(s.includes('Ожидание')||s.includes('Проверка'))return'status-wait';
+  if(s.includes('Принят')||s.includes('Выдан')||s.includes('Завершён'))return'status-ok';
+  if(s.includes('Отказ'))return'status-no';
+  return'status-wait';
+}
+function mClass(m){if(m.give)return'msg give-msg';if(m.unveri)return'msg unveri-msg';if(m.sys)return'msg sys-msg';return'msg'}
+function setDot(a){[1,2,3].forEach(i=>{const d=document.getElementById('dot-'+i);d.className='step-dot'+(i<a?' done':i===a?' active':'')})}
+
+window.openMod=id=>document.getElementById(id).style.display='flex';
+window.closeModals=()=>document.querySelectorAll('.modal').forEach(m=>m.style.display='none');
+window.switchTab=(id,b)=>{
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');b.classList.add('active');
+};
+
+onAuthStateChanged(auth,u=>{
+  if(u){
+    user=u;const n=u.email.split('@')[0];
+    document.getElementById('u-area').innerHTML=`<div class="u-name"><div class="u-dot"></div>👤 ${n}</div>`;
+    document.getElementById('o-btn').style.display='block';
+    onValue(ref(db,'admins/'+n),s=>{isAdmin=s.val()===true;document.getElementById('adm-only').style.display=isAdmin?'block':'none';load()});
+  }
+});
+
+window.authGo=async()=>{
+  const u=document.getElementById('l-u').value.trim(),p=document.getElementById('l-p').value;
+  if(!u||!p)return toast("⚠️ Введи логин и пароль!");
+  const email=u+'@snaryad.shop';
+  try{await signInWithEmailAndPassword(auth,email,p);closeModals();toast("✅ Вошёл как "+u)}
+  catch(e){
+    if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'){
+      try{await createUserWithEmailAndPassword(auth,email,p);closeModals();toast("🎉 Аккаунт создан: "+u)}
+      catch(re){toast(re.code==='auth/email-already-in-use'?"❌ Неверный пароль!":"Ошибка: "+re.message)}
+    }else toast("Ошибка: "+e.message)
+  }
+};
+
+/* ─── BUY ─── */
+window.buy=(n,p,i,ad)=>{
+  if(!user)return openMod('auth-modal');
+  temp={n,p,i,needAddr:!!ad};
+  openMod('pay-modal');
+  document.getElementById('chat-ui').style.display='none';
+  if(ad){
+    document.getElementById('step-dots').style.display='flex';setDot(1);
+    document.getElementById('addr-step').style.display='block';
+    document.getElementById('pay-opts').style.display='none';
+    document.getElementById('addr-input').value='';
+  }else{
+    document.getElementById('step-dots').style.display='none';
+    document.getElementById('addr-step').style.display='none';
+    document.getElementById('pay-opts').style.display='block';
+  }
+};
+
+window.stepToPay=()=>{
+  const a=document.getElementById('addr-input').value.trim();
+  if(!a)return toast("⚠️ Введи адрес доставки!");
+  temp.ad=a;setDot(2);
+  document.getElementById('addr-step').style.display='none';
+  document.getElementById('pay-opts').style.display='block';
+};
+
+/* ─── CREATE ORDER ─── */
+window.createOrder=async(m)=>{
+  const id=Math.floor(1000+Math.random()*9000).toString();
+  const n=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  const chat=[
+    {f:'🤖 Система',t:`Заказ #${id} создан — ${temp.n}`,sys:true},
+    {f:'💳 Оплата',t:`Способ оплаты: ${m}`,sys:true}
+  ];
+  await set(ref(db,'orders/'+id),{
+    id,user:n,item:temp.n,price:temp.p,pay:m,
+    status:'Ожидание ⏳',date:now,img:temp.i,v:false,completed:false,
+    address:temp.ad||null,   // ← только в БД, в чате НЕТ
+    issuedBy:null,issuedAt:null,chat
+  });
+
+  const addrLine=temp.ad?`\n📍 <b>Адрес доставки:</b>\n<code>${temp.ad}</code>`:'';
+  await tg(
+`🛒 <b>НОВЫЙ ЗАКАЗ #${id}</b>
+━━━━━━━━━━━━━━━━━━━
+👤 <b>Покупатель:</b> @${n}
+📦 <b>Товар:</b> ${temp.n}
+💰 <b>Цена:</b> ${temp.p}
+💳 <b>Тип оплаты:</b> ${m}${addrLine}
+━━━━━━━━━━━━━━━━━━━
+📅 <b>Дата:</b> ${now}
+🔄 <b>Статус:</b> Ожидание
+━━━━━━━━━━━━━━━━━━━
+⚡ Откройте заказы для обработки`);
+
+  if(temp.needAddr)setDot(3);
+  toast("✅ Заказ #"+id+" создан");
+  opCh(id);
+};
+
+/* ─── VERIFY REQUEST ─── */
+window.sendVReq=async()=>{
+  const c=document.getElementById('vr-code').value.trim();
+  if(!c)return toast("⚠️ Введи код!");
+  const n=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  await set(ref(db,'orders/'+c),{
+    id:c,user:n,item:'ВЕРИФ: '+document.getElementById('vr-item').value,
+    price:'—',pay:'—',status:'Проверка 🔍',date:now,
+    img:'check.png',v:false,completed:false,address:null,issuedBy:null,issuedAt:null,
+    chat:[{f:'🤖 Система',t:'Заявка на верификацию: '+c,sys:true}]
+  });
+  await tg(`🔍 <b>Заявка на верификацию</b>\n👤 @${n}\n🔑 Код: <code>${c}</code>\n📅 ${now}`);
+  closeModals();toast("📤 Заявка отправлена");opCh(c);
+};
+
+/* ─── OPEN CHAT ─── */
+window.opCh=id=>{
+  curId=id;
+  if(chatOff){chatOff();chatOff=null}
+  document.getElementById('addr-step').style.display='none';
+  document.getElementById('pay-opts').style.display='none';
+  document.getElementById('step-dots').style.display='none';
+  document.getElementById('chat-ui').style.display='block';
+  document.getElementById('adm-btns').style.display=isAdmin?'block':'none';
+  document.getElementById('chat-t').innerText='Заказ #'+id;
+  openMod('pay-modal');
+  chatOff=onValue(ref(db,`orders/${id}`),s=>{
+    const o=s.val();if(!o)return;
+    const badge=document.getElementById('chat-status-badge');
+    if(badge){badge.className='status-badge '+stClass(o.status);badge.textContent=o.status||''}
+    const cbtn=document.getElementById('complete-chat-btn');
+    if(cbtn&&isAdmin)cbtn.style.display=(o.status&&(o.status.includes('Выдан')||o.status.includes('Принят')))&&!o.completed?'block':'none';
+    const box=document.getElementById('chat-box');
+    box.innerHTML=(o.chat||[]).map(m=>`<div class="${mClass(m)}"><b>${m.f}:</b> ${m.t}</div>`).join('');
+    box.scrollTop=box.scrollHeight;
+  });
+};
+
+window.send=()=>{
+  const t=document.getElementById('msg-in').value.trim();if(!t)return;
+  const n=user.email.split('@')[0];
+  get(ref(db,`orders/${curId}`)).then(s=>{
+    const o=s.val();
+    update(ref(db,`orders/${curId}`),{chat:[...(o.chat||[]),{f:n,t}]});
+    document.getElementById('msg-in').value='';
+  });
+};
+
+window.updStat=s=>{
+  update(ref(db,`orders/${curId}`),{status:s});toast("Статус: "+s);
+  const c=document.getElementById('complete-chat-btn');
+  if(c&&s.includes('Принят'))c.style.display='block';
+};
+
+window.giveOrder=()=>{
+  const a=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  get(ref(db,`orders/${curId}`)).then(async s=>{
+    const o=s.val();
+    const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} выдал заказ 📦`,give:true}];
+    await update(ref(db,`orders/${curId}`),{chat:nc,status:'Выдан ✅',issuedBy:a,issuedAt:now});
+    await tg(`📦 <b>Заказ выдан</b>\n📋 Заказ: #${curId}\n👤 Покупатель: @${o.user}\n📦 Товар: ${o.item}\n💳 Оплата: ${o.pay}\n👨‍💼 Выдал: @${a}\n📅 ${now}`);
+    toast("📦 Заказ выдан!");
+    const c=document.getElementById('complete-chat-btn');if(c)c.style.display='block';
+  });
+};
+
+window.setV=()=>{
+  const a=user.email.split('@')[0];
+  get(ref(db,`orders/${curId}`)).then(async s=>{
+    const o=s.val();
+    const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} верефицировал аккаунт`,give:true}];
+    await update(ref(db,`orders/${curId}`),{v:true,chat:nc});
+    await tg(`✅ <b>Верификация выдана</b>\n👤 @${o.user}\n👨‍💼 Выдал: @${a}`);
+    toast("✅ Верефикация выдана!");
+  });
+};
+
+window.removeV=()=>{
+  const a=user.email.split('@')[0];
+  get(ref(db,`orders/${curId}`)).then(async s=>{
+    const o=s.val();
+    const nc=[...(o.chat||[]),{f:'🔴 Администратор',t:`${a} снял верификацию`,unveri:true}];
+    await update(ref(db,`orders/${curId}`),{v:false,chat:nc});
+    await tg(`🚫 <b>Верификация снята</b>\n👤 @${o.user}\n👨‍💼 Снял: @${a}`);
+    toast("🚫 Верификация снята");
+  });
+};
+
+window.completeChat=()=>{
+  const a=user.email.split('@')[0];
+  get(ref(db,`orders/${curId}`)).then(async s=>{
+    const o=s.val();
+    const nc=[...(o.chat||[]),{f:'🏁 Система',t:`Чат завершён администратором ${a}`,sys:true}];
+    await update(ref(db,`orders/${curId}`),{completed:true,status:'Завершён 🏁',chat:nc});
+    await tg(`🏁 <b>Чат завершён</b>\n📋 #${curId}\n👨‍💼 @${a}`);
+    toast("🏁 Чат завершён");closeModals();
+  });
+};
+
+window.clearDB=()=>{if(confirm("🗑 Удалить все заказы?")){remove(ref(db,'orders'));toast("🗑 База очищена")}};
+
+/* ─── CHECK CODE — полная инфа ─── */
+window.checkCode=()=>{
+  const c=document.getElementById('v-search').value.trim();
+  if(!c)return toast("⚠️ Введи код");
+  get(ref(db,'orders/'+c)).then(s=>{
+    const r=document.getElementById('v-res');
+    if(!s.exists())return toast("❌ Код не найден");
+    const o=s.val();
+    r.style.display='block';
+
+    const rows=[
+      ['📦 Товар',     o.item||'—'],
+      ['👤 Кому',      '@'+(o.user||'—')],
+      ['💳 Оплата',    o.pay||'—'],
+      ['💰 Цена',      o.price||'—'],
+      ['📅 Создан',    o.date||'—'],
+      ['🔄 Статус',    o.status||'—'],
+    ];
+    if(o.issuedBy) rows.push(['👨‍💼 Выдал', '@'+o.issuedBy]);
+    if(o.issuedAt) rows.push(['📅 Дата выдачи', o.issuedAt]);
+
+    r.innerHTML=`
+      <div style="text-align:center;margin-bottom:18px">
+        <img src="${o.img||'check.png'}" width="68" style="border-radius:14px;display:block;margin:0 auto 10px">
+        <div class="verify-badge ${o.v?'verify-yes':'verify-no'}">${o.v?'✅ ВЕРЕФИЦИРОВАН':'❌ НЕ ВЕРЕФИЦИРОВАН'}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        ${rows.map(([l,v])=>`<div class="vr-row"><span class="vr-label">${l}</span><span class="vr-val">${v}</span></div>`).join('')}
+      </div>`;
+  });
+};
+
+/* ─── LOAD ORDERS ─── */
+window.load=()=>{
+  onValue(ref(db,'orders'),s=>{
+    const l=document.getElementById('o-list');l.innerHTML='';
+    let count=0;
+    s.forEach(c=>{
+      const o=c.val(),my=user.email.split('@')[0];
+      if(!isAdmin&&o.user!==my)return;
+      count++;
+
+      if(isAdmin){
+        const addrBlock=o.address?`<div class="adm-addr-row">📍 <b>Адрес доставки:</b><br>${o.address}</div>`:'';
+        const issuedBlock=o.issuedBy?`<div class="adm-meta-row">👨‍💼 Выдал: <span>@${o.issuedBy}</span> · <span>${o.issuedAt||''}</span></div>`:'';
+        const div=document.createElement('div');
+        div.className='adm-order-card'+(o.completed?' completed':'');
+        div.innerHTML=`
+<div class="adm-order-top">
+  <img class="adm-order-img" src="${o.img||'check.png'}" onerror="this.style.display='none'">
+  <div class="adm-order-meta">
+    <div class="adm-order-id">ЗАКАЗ #${o.id} · ${o.date||''}</div>
+    <div class="adm-order-name">${o.item}</div>
+    <div class="adm-meta-row">👤 Покупатель: <span>${o.user}</span></div>
+    <div class="adm-meta-row">💳 Оплата: <span>${o.pay||'—'}</span> &nbsp;💰 Цена: <span>${o.price||'—'}</span></div>
+    ${issuedBlock}
+    ${addrBlock}
+  </div>
+  <div class="status-badge ${stClass(o.status)}">${o.status||'?'}</div>
+</div>
+${o.completed?'<div class="completed-label">🏁 Завершён</div>':''}
+<div class="adm-btn-grid"${o.completed?' style="opacity:.5;pointer-events:none"':''}>
+  <button class="adm-action-btn btn-accept" onclick="admAct('accept','${o.id}')">✅ Принять</button>
+  <button class="adm-action-btn btn-reject" onclick="admAct('reject','${o.id}')">❌ Отказать</button>
+  <button class="adm-action-btn btn-give"   onclick="admAct('give','${o.id}')">📦 Выдать заказ</button>
+  <button class="adm-action-btn btn-chat"   onclick="opCh('${o.id}')">💬 Открыть чат</button>
+  <button class="adm-action-btn btn-verify" onclick="admAct('verify','${o.id}')">✔ Верефицировать</button>
+  <button class="adm-action-btn btn-unveri" onclick="admAct('unveri','${o.id}')">🚫 Снять верифку</button>
+  ${!o.completed&&(o.status||'').includes('Выдан')?`<button class="adm-action-btn btn-complete adm-btn-full" onclick="admAct('complete','${o.id}')">🏁 Завершить чат</button>`:''}
+</div>`;
+        l.appendChild(div);
+      }else{
+        const div=document.createElement('div');
+        div.className='order-card';
+        div.innerHTML=`
+  <img class="order-card-img" src="${o.img||'check.png'}" onerror="this.style.display='none'">
+  <div class="order-card-info">
+    <div class="order-card-id">ЗАКАЗ #${o.id}</div>
+    <div class="order-card-name">${o.item}</div>
+    <div class="status-badge ${stClass(o.status)}">${o.status||'?'}</div>
+  </div>
+  <span style="color:var(--muted);font-size:20px">›</span>`;
+        div.onclick=()=>opCh(o.id);
+        l.appendChild(div);
+      }
     });
+    if(!count)l.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">Заказов пока нет</div></div>`;
+  });
+};
 
-    window.authGo = async () => {
-        const u = document.getElementById('l-u').value.trim(); 
-        const p = document.getElementById('l-p').value;
-        if(!u || !p) return alert("Введите логин и пароль!");
-        const email = u + "@snaryad.shop";
-        
-        try {
-            // Пытаемся войти
-            await signInWithEmailAndPassword(auth, email, p);
-            closeModals();
-        } catch (e) {
-            // Если юзера нет, регистрируем
-            if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
-                try {
-                    await createUserWithEmailAndPassword(auth, email, p);
-                    closeModals();
-                } catch (regErr) {
-                    if (regErr.code === 'auth/email-already-in-use') {
-                        alert("Неверный пароль для этого логина!");
-                    } else {
-                        alert("Ошибка: " + regErr.message);
-                    }
-                }
-            } else {
-                alert("Ошибка входа: " + e.message);
-            }
-        }
-    };
-
-    window.buy = (n, p, i, ad) => {
-        if(!user) return openMod('auth-modal');
-        temp = {n, p, i}; if(ad) temp.ad = prompt("Адрес доставки:");
-        openMod('pay-modal'); document.getElementById('pay-opts').style.display='block'; document.getElementById('chat-ui').style.display='none';
-    };
-
-    window.createOrder = async (m) => {
-        const id = Math.floor(1000+Math.random()*9000).toString();
-        const n = user.email.split('@')[0];
-        await set(ref(db, 'orders/'+id), { id, user: n, item: temp.n, pay: m, status: 'Ожидание', date: new Date().toLocaleString(), img: temp.i, v: false, chat: [{f:'Система', t:'Заказ #'+id + (temp.ad?' | Адрес: '+temp.ad:'')}] });
-        sendTG(`💰 Новый заказ #${id}\nЮзер: ${n}\nТовар: ${temp.n}\nОплата: ${m}`);
-        opCh(id);
-    };
-
-    window.sendVReq = async () => {
-        const c = document.getElementById('vr-code').value.trim();
-        if(!c) return alert("Введите код!");
-        const n = user.email.split('@')[0];
-        await set(ref(db, 'orders/'+c), { id:c, user: n, item: 'ВЕРИФ: '+document.getElementById('vr-item').value, status: 'Проверка', date: new Date().toLocaleString(), img: 'check.png', v: false, chat: [{f:'Система', t:'Заявка на вериф: '+c}] });
-        sendTG(`🔍 Заявка на вериф!\nЮзер: ${n}\nКод: ${c}`);
-        closeModals(); opCh(c);
-    };
-
-    window.opCh = id => {
-        curId = id; document.getElementById('pay-opts').style.display='none'; document.getElementById('chat-ui').style.display='block';
-        document.getElementById('adm-btns').style.display = isAdmin?'block':'none';
-        document.getElementById('chat-t').innerText = 'Заказ #'+id;
-        openMod('pay-modal');
-        onValue(ref(db, `orders/${id}`), s => { 
-            const o=s.val(); 
-            if(o) {
-                document.getElementById('chat-box').innerHTML=(o.chat||[]).map(m=>`<div class="msg"><b>${m.f}:</b> ${m.t}</div>`).join('');
-                const b = document.getElementById('chat-box'); b.scrollTop = b.scrollHeight;
-            }
-        });
-    };
-
-    window.send = () => {
-        const t = document.getElementById('msg-in').value; if(!t) return;
-        get(ref(db, `orders/${curId}`)).then(s => {
-            const o = s.val(); const nc = [...(o.chat||[]), {f:user.email.split('@')[0], t}];
-            update(ref(db, `orders/${curId}`), {chat:nc}); document.getElementById('msg-in').value="";
-        });
-    };
-
-    window.updStat = s => update(ref(db, `orders/${curId}`), {status:s});
-    window.setV = () => { update(ref(db, `orders/${curId}`), {v:true}); alert("Готово!"); };
-    window.clearDB = () => { if(confirm("Удалить всё?")) remove(ref(db, 'orders')); };
-
-    window.checkCode = () => {
-        const c = document.getElementById('v-search').value.trim();
-        get(ref(db, 'orders/'+c)).then(s => {
-            const r = document.getElementById('v-res');
-            if(s.exists()){ 
-                const o=s.val(); r.style.display='block'; 
-                r.innerHTML=`<img src="${o.img}" width="80"><br><b>${o.item}</b><br><small>${o.user}</small><h2 style="color:${o.v?'#2ecc71':'#e74c3c'}">${o.v?'✅ ВЕРЕФ':'❌ НЕТ'}</h2>`; 
-            } else alert("Код не найден");
-        });
-    };
-
-    window.load = () => {
-        onValue(ref(db, 'orders'), s => {
-            const l = document.getElementById('o-list'); l.innerHTML="";
-            s.forEach(c => { const o = c.val(); if(isAdmin || o.user === user.email.split('@')[0]) {
-                const div = document.createElement('div'); div.style = "background:#fff; padding:15px; border-radius:18px; margin-bottom:10px; border:1px solid #eee; cursor:pointer";
-                div.innerHTML = `<b>#${o.id}</b> ${o.item} <small>[${o.status}]</small>`; div.onclick = () => opCh(o.id); l.appendChild(div);
-            }});
-        });
-    };
+/* ─── ADMIN ACTIONS FROM CARD ─── */
+window.admAct=(action,id)=>{
+  curId=id;
+  const a=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  if(action==='accept'){update(ref(db,`orders/${id}`),{status:'Принят ✅'});toast("✅ Принят #"+id)}
+  else if(action==='reject'){update(ref(db,`orders/${id}`),{status:'Отказ ❌'});toast("❌ Отказ #"+id)}
+  else if(action==='give'){
+    get(ref(db,`orders/${id}`)).then(async s=>{
+      const o=s.val();
+      const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} выдал заказ 📦`,give:true}];
+      await update(ref(db,`orders/${id}`),{chat:nc,status:'Выдан ✅',issuedBy:a,issuedAt:now});
+      await tg(`📦 <b>Заказ выдан</b>\n📋 #${id}\n👤 @${o.user}\n📦 ${o.item}\n💳 ${o.pay}\n👨‍💼 @${a}\n📅 ${now}`);
+      toast("📦 Выдан #"+id);
+    });
+  }
+  else if(action==='verify'){
+    get(ref(db,`orders/${id}`)).then(async s=>{
+      const o=s.val();
+      const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} верефицировал аккаунт`,give:true}];
+      await update(ref(db,`orders/${id}`),{v:true,chat:nc});
+      await tg(`✅ <b>Верификация выдана</b>\n👤 @${o.user}\n👨‍💼 @${a}`);
+      toast("✅ Верифицирован #"+id);
+    });
+  }
+  else if(action==='unveri'){
+    get(ref(db,`orders/${id}`)).then(async s=>{
+      const o=s.val();
+      const nc=[...(o.chat||[]),{f:'🔴 Администратор',t:`${a} снял верификацию`,unveri:true}];
+      await update(ref(db,`orders/${id}`),{v:false,chat:nc});
+      await tg(`🚫 <b>Верификация снята</b>\n👤 @${o.user}\n👨‍💼 @${a}`);
+      toast("🚫 Верифика снята #"+id);
+    });
+  }
+  else if(action==='complete'){
+    get(ref(db,`orders/${id}`)).then(async s=>{
+      const o=s.val();
+      const nc=[...(o.chat||[]),{f:'🏁 Система',t:`Чат завершён администратором ${a}`,sys:true}];
+      await update(ref(db,`orders/${id}`),{completed:true,status:'Завершён 🏁',chat:nc});
+      await tg(`🏁 <b>Чат завершён</b>\n📋 #${id}\n👨‍💼 @${a}`);
+      toast("🏁 Чат завершён #"+id);
+    });
+  }
+};
 </script>
 </body>
 </html>
