@@ -4,107 +4,113 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Snaryad Shop</title>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-:root{--y:#ffd11a;--y2:#ffbe00;--bg:#0e0f14;--bg2:#13151c;--bg3:#1a1d28;--card:#181b26;--border:rgba(255,209,26,0.14);--border2:rgba(255,255,255,0.07);--text:#f0f2ff;--muted:#6b7090;--green:#00e676;--red:#ff4f6b;--blue:#4fa3ff;--glow:0 0 30px rgba(255,209,26,0.25);--glow2:0 0 60px rgba(255,209,26,0.1);--r:20px}
+/* ══════════════════════════════════════════ BASE */
+:root{
+  --y:#ffd11a;--y2:#ffbe00;--bg:#0e0f14;--bg2:#13151c;--bg3:#1a1d28;
+  --card:#181b26;--border:rgba(255,209,26,.14);--border2:rgba(255,255,255,.07);
+  --text:#f0f2ff;--muted:#6b7090;--green:#00e676;--red:#ff4f6b;
+  --blue:#4fa3ff;--purple:#a855f7;--r:20px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:.6}
-
 .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);animation:orbFloat 8s ease-in-out infinite}
-.orb1{width:400px;height:400px;background:rgba(255,209,26,.045);top:-100px;right:-100px}
+.orb1{width:400px;height:400px;background:rgba(255,209,26,.04);top:-100px;right:-100px}
 .orb2{width:300px;height:300px;background:rgba(79,163,255,.03);bottom:100px;left:-100px;animation-delay:3s}
-.orb3{width:250px;height:250px;background:rgba(124,77,255,.03);top:50%;left:50%;animation-delay:5.5s}
+.orb3{width:250px;height:250px;background:rgba(168,85,247,.03);top:50%;left:50%;animation-delay:5.5s}
 @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.97)}}
 
-header{position:sticky;top:0;z-index:200;background:rgba(14,15,20,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border2);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;animation:slideDown .6s cubic-bezier(.16,1,.3,1) both}
+/* ══════════════════════════════════════════ HEADER */
+header{position:sticky;top:0;z-index:200;background:rgba(14,15,20,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border2);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;animation:slideDown .6s cubic-bezier(.16,1,.3,1) both}
 @keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
 .logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:20px;cursor:pointer;display:flex;align-items:center;gap:8px;animation:logoPulse 3s ease-in-out infinite}
 @keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(255,209,26,.3))}50%{filter:drop-shadow(0 0 22px rgba(255,209,26,.65))}}
-.logo-badge{background:var(--y);color:#000;padding:3px 10px;border-radius:8px;font-size:18px}
-.u-area{display:flex;align-items:center;gap:10px}
-.u-name{background:var(--bg3);border:1px solid var(--border);padding:8px 16px;border-radius:50px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px}
+.logo-badge{background:var(--y);color:#000;padding:3px 10px;border-radius:8px}
+.u-area{display:flex;align-items:center;gap:8px}
+.u-name{background:var(--bg3);border:1px solid var(--border);padding:8px 14px;border-radius:50px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px}
 .u-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:dotPulse 2s ease-in-out infinite}
 @keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.4}}
 
+/* ══════════════════════════════════════════ BUTTONS */
 .btn-main{background:linear-gradient(135deg,var(--y),var(--y2));border:none;padding:13px 22px;border-radius:var(--r);font-weight:800;cursor:pointer;width:100%;margin-top:10px;font-family:'Manrope',sans-serif;font-size:14px;color:#000;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
 .btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,209,26,.35)}
 .btn-main:active{transform:scale(.97)}
 .btn-main::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28),transparent);opacity:0;transition:opacity .3s}
 .btn-main:hover::after{opacity:1}
-.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.38);animation:ripAnim .6s linear;pointer-events:none}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);animation:ripAnim .6s linear;pointer-events:none}
 @keyframes ripAnim{from{transform:scale(0);opacity:1}to{transform:scale(4);opacity:0}}
 
-.container{padding:25px 5%;max-width:1100px;margin:0 auto;position:relative;z-index:10}
-.tabs{display:flex;gap:8px;margin-bottom:30px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+/* ══════════════════════════════════════════ LAYOUT */
+.container{padding:25px 5%;max-width:1200px;margin:0 auto;position:relative;z-index:10}
+.tabs{display:flex;gap:8px;margin-bottom:28px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab-btn{background:var(--card);border:1px solid var(--border2);padding:12px 20px;border-radius:50px;cursor:pointer;font-weight:700;font-size:13px;white-space:nowrap;color:var(--muted);transition:all .3s cubic-bezier(.16,1,.3,1);font-family:'Manrope',sans-serif}
+.tab-btn{background:var(--card);border:1px solid var(--border2);padding:11px 18px;border-radius:50px;cursor:pointer;font-weight:700;font-size:13px;white-space:nowrap;color:var(--muted);transition:all .3s cubic-bezier(.16,1,.3,1);font-family:'Manrope',sans-serif}
 .tab-btn:hover{color:var(--text);border-color:var(--border);transform:translateY(-1px)}
 .tab-btn.active{background:var(--y);color:#000;border-color:var(--y);box-shadow:0 0 20px rgba(255,209,26,.3)}
+.tab-btn.tab-admin{background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(168,85,247,.05));border-color:rgba(168,85,247,.3);color:var(--purple)}
+.tab-btn.tab-admin.active{background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff;border-color:var(--purple);box-shadow:0 0 20px rgba(168,85,247,.4)}
 .section{display:none;animation:fadeUp .5s cubic-bezier(.16,1,.3,1) both}
 .section.active{display:block}
 @keyframes fadeUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
+/* ══════════════════════════════════════════ SHOP GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:16px}
 .card{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:14px;text-align:center;cursor:pointer;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;animation:cardIn .5s cubic-bezier(.16,1,.3,1) both}
 .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.1s}.card:nth-child(3){animation-delay:.15s}
 .card:nth-child(4){animation-delay:.2s}.card:nth-child(5){animation-delay:.25s}.card:nth-child(6){animation-delay:.3s}
 @keyframes cardIn{from{transform:scale(.85) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 .card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,209,26,.09),transparent 70%);opacity:0;transition:opacity .3s}
-.card:hover{transform:translateY(-8px) scale(1.02);border-color:rgba(255,209,26,.3);box-shadow:0 20px 50px rgba(0,0,0,.5),var(--glow)}
+.card:hover{transform:translateY(-8px) scale(1.02);border-color:rgba(255,209,26,.3);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 30px rgba(255,209,26,.25)}
 .card:hover::before{opacity:1}
 .card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:var(--bg3);margin-bottom:10px;position:relative}
 .card img{width:100%;height:100%;object-fit:cover;transition:transform .4s cubic-bezier(.16,1,.3,1)}
 .card:hover img{transform:scale(1.08)}
 .card-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,transparent 50%);border-radius:18px;pointer-events:none}
-.card h3{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;margin-bottom:4px}
+.card h3{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;margin-bottom:5px}
 .price-tag{color:var(--y);font-size:11px;font-weight:800;background:rgba(255,209,26,.1);padding:3px 10px;border-radius:20px;display:inline-block}
 
-/* VERIFY TAB */
+/* ══════════════════════════════════════════ CHECK TAB */
 .v-search-wrap{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:30px;max-width:520px;margin:0 auto}
 .v-search-wrap h2{font-family:'Unbounded',sans-serif;font-size:18px;margin-bottom:20px}
 #v-res{margin-top:20px;background:var(--bg3);border:2px solid var(--y);padding:22px;border-radius:22px;animation:cardIn .4s cubic-bezier(.16,1,.3,1) both}
-.vr-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:13px}
+.vr-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;font-size:13px}
 .vr-label{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;min-width:96px;padding-top:1px}
 .vr-val{font-weight:700;word-break:break-word}
 .verify-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:50px;font-weight:800;font-size:15px}
 .verify-yes{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.2)}
 .verify-no{background:rgba(255,79,107,.1);color:var(--red);border:1px solid rgba(255,79,107,.2)}
 
-/* ORDERS */
+/* ══════════════════════════════════════════ ORDERS */
 .orders-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .orders-title{font-family:'Unbounded',sans-serif;font-size:16px}
 .clear-btn{color:var(--red);background:rgba(255,79,107,.1);border:1px solid rgba(255,79,107,.2);padding:8px 16px;border-radius:12px;cursor:pointer;font-weight:700;font-size:12px;transition:.2s;font-family:'Manrope',sans-serif}
 .clear-btn:hover{background:rgba(255,79,107,.2)}
-
 .status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
 .status-wait{background:rgba(255,209,26,.12);color:var(--y)}
 .status-ok{background:rgba(0,230,118,.1);color:var(--green)}
 .status-no{background:rgba(255,79,107,.1);color:var(--red)}
-
 .order-card{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:14px;animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both}
 .order-card:hover{border-color:var(--border);transform:translateX(4px)}
 .order-card-img{width:48px;height:48px;border-radius:12px;object-fit:cover;background:var(--bg3);flex-shrink:0}
 .order-card-info{flex:1}
 .order-card-id{font-family:'Unbounded',sans-serif;font-size:10px;color:var(--muted);margin-bottom:3px}
 .order-card-name{font-weight:800;font-size:14px;margin-bottom:4px}
-
 .adm-order-card{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:20px;margin-bottom:16px;animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both;transition:border-color .3s}
 .adm-order-card:hover{border-color:rgba(255,209,26,.2)}
 .adm-order-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
 .adm-order-img{width:56px;height:56px;border-radius:14px;object-fit:cover;background:var(--bg3);flex-shrink:0}
 .adm-order-meta{flex:1;min-width:0}
 .adm-order-id{font-family:'Unbounded',sans-serif;font-size:10px;color:var(--muted);margin-bottom:4px}
-.adm-order-name{font-weight:800;font-size:15px;margin-bottom:6px}
+.adm-order-name{font-weight:800;font-size:15px;margin-bottom:5px}
 .adm-meta-row{font-size:12px;margin-bottom:3px;color:var(--muted)}
 .adm-meta-row span{color:var(--text);font-weight:700}
 .adm-addr-row{font-size:12px;margin-top:8px;padding:9px 13px;background:rgba(255,209,26,.06);border:1px solid rgba(255,209,26,.15);border-radius:11px;color:var(--y);line-height:1.5}
-.adm-addr-row b{color:var(--y)}
-
 .adm-btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .adm-btn-full{grid-column:1/-1}
-.adm-action-btn{padding:13px;border:none;border-radius:14px;font-weight:800;cursor:pointer;font-size:13px;font-family:'Manrope',sans-serif;transition:all .25s;position:relative;overflow:hidden}
+.adm-action-btn{padding:13px;border:none;border-radius:14px;font-weight:800;cursor:pointer;font-size:12px;font-family:'Manrope',sans-serif;transition:all .25s;position:relative;overflow:hidden}
 .adm-action-btn:hover{transform:translateY(-2px)}.adm-action-btn:active{transform:scale(.97)}
 .btn-accept{background:linear-gradient(135deg,#00e676,#00c853);color:#000}.btn-accept:hover{box-shadow:0 8px 20px rgba(0,230,118,.35)}
 .btn-reject{background:linear-gradient(135deg,#ff4f6b,#c62828);color:#fff}.btn-reject:hover{box-shadow:0 8px 20px rgba(255,79,107,.35)}
@@ -113,17 +119,19 @@ header{position:sticky;top:0;z-index:200;background:rgba(14,15,20,.88);backdrop-
 .btn-unveri{background:linear-gradient(135deg,#888,#444);color:#fff}
 .btn-chat{background:var(--bg3);border:1px solid var(--border2);color:var(--text)}.btn-chat:hover{border-color:var(--border)}
 .btn-complete{background:linear-gradient(135deg,#7c4dff,#651fff);color:#fff}.btn-complete:hover{box-shadow:0 8px 20px rgba(124,77,255,.35)}
-.adm-order-card.completed{opacity:.55}
-.completed-label{text-align:center;font-size:11px;color:var(--muted);font-weight:700;padding:4px 0 2px}
+.adm-order-card.completed{opacity:.5}
+.completed-label{text-align:center;font-size:11px;color:var(--muted);font-weight:700;padding:3px 0}
 
-input,select,textarea{width:100%;padding:14px 16px;margin:6px 0;border:1px solid var(--border2);border-radius:var(--r);box-sizing:border-box;font-family:'Manrope',sans-serif;outline:none;background:var(--bg3);color:var(--text);font-size:14px;transition:border-color .3s,box-shadow .3s}
+/* ══════════════════════════════════════════ INPUTS */
+input,select,textarea{width:100%;padding:13px 15px;margin:6px 0;border:1px solid var(--border2);border-radius:var(--r);box-sizing:border-box;font-family:'Manrope',sans-serif;outline:none;background:var(--bg3);color:var(--text);font-size:14px;transition:border-color .3s,box-shadow .3s}
 input:focus,select:focus,textarea:focus{border-color:rgba(255,209,26,.4);box-shadow:0 0 0 3px rgba(255,209,26,.08)}
 input::placeholder,textarea::placeholder{color:var(--muted)}
 select option{background:var(--bg2)}
-textarea{resize:vertical;min-height:88px;line-height:1.55}
+textarea{resize:vertical;min-height:80px;line-height:1.55}
 
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;justify-content:center;align-items:center;z-index:1000;padding:20px;backdrop-filter:blur(6px)}
-.modal-content{background:var(--bg2);border:1px solid var(--border);padding:28px;border-radius:28px;width:100%;max-width:390px;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.6),var(--glow2);animation:modalIn .4s cubic-bezier(.16,1,.3,1) both}
+/* ══════════════════════════════════════════ MODALS */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;justify-content:center;align-items:center;z-index:1000;padding:20px;backdrop-filter:blur(6px)}
+.modal-content{background:var(--bg2);border:1px solid var(--border);padding:28px;border-radius:28px;width:100%;max-width:390px;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 60px rgba(255,209,26,.1);animation:modalIn .4s cubic-bezier(.16,1,.3,1) both}
 @keyframes modalIn{from{transform:scale(.85) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 .modal-content h3{font-family:'Unbounded',sans-serif;font-size:15px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .close-btn{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:.2s;line-height:1}
@@ -134,19 +142,19 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
 .step-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);transition:.35s}
 .step-dot.active{background:var(--y);border-color:var(--y);box-shadow:0 0 10px rgba(255,209,26,.4)}
 .step-dot.done{background:var(--green);border-color:var(--green)}
-
-/* ADDR STEP */
 .addr-step-icon{font-size:34px;display:block;text-align:center;margin-bottom:8px;animation:bounceIn .5s cubic-bezier(.16,1,.3,1) both}
 @keyframes bounceIn{from{transform:scale(.4) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
 .addr-note{font-size:11px;color:var(--muted);text-align:center;padding:7px 12px;background:rgba(255,209,26,.05);border-radius:10px;border:1px solid rgba(255,209,26,.1);margin-bottom:6px}
 
+/* PAY OPTIONS */
 .pay-option{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border2);padding:14px 18px;border-radius:16px;cursor:pointer;margin-top:10px;transition:all .25s;font-weight:700}
 .pay-option:hover{border-color:rgba(255,209,26,.35);transform:translateX(6px);box-shadow:0 0 20px rgba(255,209,26,.08)}
 .pay-option-icon{font-size:24px}.pay-option-label{font-size:14px}
 
+/* CHAT */
 .chat-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border2)}
 .chat-header h3{font-family:'Unbounded',sans-serif;font-size:13px;flex:1;margin:0}
-.chat-box{height:220px;overflow-y:auto;background:var(--bg);border-radius:18px;padding:12px;border:1px solid var(--border2);margin:10px 0;font-size:13px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.chat-box{height:210px;overflow-y:auto;background:var(--bg);border-radius:18px;padding:12px;border:1px solid var(--border2);margin:10px 0;font-size:13px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
 .chat-box::-webkit-scrollbar{width:4px}
 .chat-box::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
 .msg{padding:8px 12px;border-radius:12px;background:var(--bg3);border:1px solid var(--border2);animation:msgIn .3s cubic-bezier(.16,1,.3,1) both}
@@ -159,30 +167,216 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
 .chat-input-row input{margin:0}
 .send-btn{background:var(--y);border:none;width:46px;height:46px;border-radius:14px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;transition:.2s;color:#000}
 .send-btn:hover{transform:scale(1.08);box-shadow:0 0 16px rgba(255,209,26,.4)}
-
 .adm-panel{display:none;border-top:1px solid var(--border2);padding-top:14px;margin-top:12px}
 .sec-label{font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
 .adm-panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .adm-panel-full{grid-column:1/-1}
-.adm-chat-btn{padding:11px;border:none;border-radius:12px;font-weight:800;cursor:pointer;font-size:12px;font-family:'Manrope',sans-serif;transition:all .2s}
+.adm-chat-btn{padding:11px;border:none;border-radius:12px;font-weight:800;cursor:pointer;font-size:12px;font-family:'Manrope',sans-serif;transition:all .2s;position:relative;overflow:hidden}
 .adm-chat-btn:hover{transform:translateY(-1px)}
 
+/* ══════════════════════════════════════════ TOAST */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--border);padding:13px 22px;border-radius:50px;font-weight:700;font-size:13px;z-index:9999;box-shadow:0 20px 50px rgba(0,0,0,.5);transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s;opacity:0;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
+/* ══════════════════════════════════════════ AUTH */
 .auth-logo{text-align:center;margin-bottom:20px}
 .auth-logo-text{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900}
 .auth-logo-text span{background:var(--y);color:#000;padding:2px 8px;border-radius:8px}
 .empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty-state-icon{font-size:46px;margin-bottom:12px;opacity:.5}
 .empty-state-text{font-size:14px;font-weight:700}
+
+/* ══════════════════════════════════════════ SUPER ADMIN PANEL */
+.sa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.sa-card{background:var(--card);border:1px solid var(--border2);border-radius:22px;padding:22px;transition:border-color .3s;animation:fadeUp .5s cubic-bezier(.16,1,.3,1) both}
+.sa-card:hover{border-color:rgba(168,85,247,.25)}
+.sa-card-title{font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.sa-card-title span{font-size:16px}
+
+/* USER LIST */
+.user-row{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--bg3);border-radius:14px;margin-bottom:8px;border:1px solid var(--border2);transition:.25s}
+.user-row:hover{border-color:rgba(168,85,247,.25)}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),#4fa3ff);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-weight:800;font-size:13px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-meta{font-size:11px;color:var(--muted)}
+.user-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.ubadge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.ubadge-admin{background:rgba(255,209,26,.12);color:var(--y)}
+.ubadge-ban{background:rgba(255,79,107,.1);color:var(--red)}
+.ubadge-super{background:rgba(168,85,247,.15);color:var(--purple)}
+.user-actions{display:flex;gap:6px}
+.ua-btn{padding:6px 12px;border:none;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif;transition:.2s}
+.ua-btn:hover{transform:scale(1.05)}
+.ua-ban{background:rgba(255,79,107,.15);color:var(--red);border:1px solid rgba(255,79,107,.2)}
+.ua-ban:hover{background:rgba(255,79,107,.25)}
+.ua-unban{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+.ua-unban:hover{background:rgba(0,230,118,.2)}
+.ua-mkadm{background:rgba(255,209,26,.1);color:var(--y);border:1px solid rgba(255,209,26,.2)}
+.ua-mkadm:hover{background:rgba(255,209,26,.2)}
+
+/* PRODUCT EDITOR */
+.prod-editor-row{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.prod-thumb{width:50px;height:50px;border-radius:12px;object-fit:cover;background:var(--bg);flex-shrink:0;cursor:pointer;transition:.2s;border:2px solid transparent}
+.prod-thumb:hover{border-color:var(--purple);transform:scale(1.05)}
+.prod-edit-info{flex:1}
+.prod-edit-name{font-weight:800;font-size:13px;margin-bottom:6px}
+.prod-edit-inputs{display:flex;gap:8px}
+.prod-edit-inputs input{margin:0;padding:8px 12px;font-size:12px;border-radius:10px}
+.prod-save-btn{padding:8px 14px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff;font-weight:800;font-size:12px;cursor:pointer;transition:.2s;font-family:'Manrope',sans-serif}
+.prod-save-btn:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(168,85,247,.4)}
+
+/* DANGER ZONE */
+.danger-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.danger-btn{padding:14px;border:none;border-radius:16px;font-weight:800;font-size:13px;cursor:pointer;font-family:'Manrope',sans-serif;transition:all .25s;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:6px}
+.danger-btn:hover{transform:translateY(-3px)}
+.danger-btn .db-icon{font-size:22px}
+.danger-btn .db-label{font-size:11px;letter-spacing:.5px}
+.db-close{background:linear-gradient(135deg,#ff4f6b,#c62828);color:#fff;box-shadow:0 0 20px rgba(255,79,107,.2)}
+.db-close:hover{box-shadow:0 8px 25px rgba(255,79,107,.45)}
+.db-spam{background:linear-gradient(135deg,#ff9800,#e65100);color:#fff;box-shadow:0 0 20px rgba(255,152,0,.15)}
+.db-spam:hover{box-shadow:0 8px 25px rgba(255,152,0,.4)}
+.db-purge{background:linear-gradient(135deg,#888,#333);color:#fff}
+.db-purge:hover{box-shadow:0 8px 25px rgba(0,0,0,.5)}
+.db-announce{background:linear-gradient(135deg,#4fa3ff,#1565c0);color:#fff;box-shadow:0 0 20px rgba(79,163,255,.15)}
+.db-announce:hover{box-shadow:0 8px 25px rgba(79,163,255,.4)}
+.db-stat{background:linear-gradient(135deg,var(--green),#00897b);color:#000}
+.db-stat:hover{box-shadow:0 8px 25px rgba(0,230,118,.4)}
+.db-super{background:linear-gradient(135deg,var(--purple),#4a148c);color:#fff;box-shadow:0 0 20px rgba(168,85,247,.2)}
+.db-super:hover{box-shadow:0 8px 25px rgba(168,85,247,.5)}
+
+/* SPAM PROGRESS */
+.spam-bar-wrap{margin-top:12px;display:none}
+.spam-bar-track{background:var(--bg);border-radius:20px;height:8px;overflow:hidden;margin-bottom:6px;border:1px solid var(--border2)}
+.spam-bar-fill{height:100%;background:linear-gradient(90deg,#ff9800,#ff5722);border-radius:20px;width:0%;transition:width .3s;box-shadow:0 0 10px rgba(255,152,0,.5)}
+.spam-bar-label{font-size:11px;color:var(--muted);font-weight:700;text-align:center}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-item{background:var(--bg3);border-radius:14px;padding:14px;border:1px solid var(--border2);text-align:center}
+.stat-num{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:900;color:var(--y);margin-bottom:4px}
+.stat-label{font-size:11px;color:var(--muted);font-weight:700}
+
+/* ══════════════════════════════════════════ HACKER OVERLAY */
+#hack-overlay{
+  position:fixed;inset:0;z-index:99999;
+  background:#000;display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#hack-canvas{position:absolute;inset:0;width:100%;height:100%}
+.hack-center{position:relative;z-index:2;text-align:center;animation:hackIn .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes hackIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.hack-skull{font-size:80px;animation:skullPulse 1s ease-in-out infinite}
+@keyframes skullPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 20px #00f)}50%{transform:scale(1.1);filter:drop-shadow(0 0 40px #00f)}}
+.hack-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(20px,4vw,40px);
+  color:#00f;
+  text-shadow:0 0 20px #00f,0 0 40px #00f,0 0 80px #00f;
+  margin:16px 0 8px;
+  animation:glitch 2s infinite;
+  letter-spacing:2px;
+}
+@keyframes glitch{
+  0%,90%,100%{transform:translate(0)}
+  91%{transform:translate(-3px,1px);filter:hue-rotate(90deg)}
+  92%{transform:translate(3px,-1px);filter:hue-rotate(180deg)}
+  93%{transform:translate(-2px,2px)}
+  94%{transform:translate(2px,-2px);filter:hue-rotate(270deg)}
+  95%{transform:translate(0)}
+}
+.hack-sub{
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(12px,2.5vw,20px);
+  color:#0af;
+  text-shadow:0 0 10px #0af;
+  letter-spacing:1px;
+  margin-bottom:4px;
+  animation:typeBlink 1.5s step-end infinite;
+}
+.hack-handle{
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(16px,3vw,28px);
+  color:#0f0;
+  text-shadow:0 0 15px #0f0,0 0 30px #0f0;
+  letter-spacing:3px;
+  margin:12px 0 24px;
+  animation:glitch 3s infinite;
+}
+.hack-close{
+  background:transparent;border:2px solid #f00;
+  color:#f00;padding:12px 32px;border-radius:8px;
+  font-family:'Share Tech Mono',monospace;font-size:16px;
+  cursor:pointer;letter-spacing:2px;
+  text-shadow:0 0 10px #f00;
+  box-shadow:0 0 20px rgba(255,0,0,.3);
+  transition:all .2s;
+}
+.hack-close:hover{background:rgba(255,0,0,.15);box-shadow:0 0 40px rgba(255,0,0,.5);transform:scale(1.05)}
+.hack-progress{
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;color:#0f0;
+  text-shadow:0 0 8px #0f0;
+  margin-bottom:20px;
+  animation:typeBlink 0.5s step-end infinite;
+}
+@keyframes typeBlink{50%{opacity:0}}
+.hack-bars{display:flex;flex-direction:column;gap:4px;margin-bottom:20px;width:300px}
+.hack-bar{height:4px;background:linear-gradient(90deg,#00f,#0af);border-radius:2px;box-shadow:0 0 8px #00f;animation:barLoad .5s ease both}
+@keyframes barLoad{from{width:0}to{width:100%}}
+
+/* BAN SCREEN */
+#ban-overlay{position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.97);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}
+.ban-icon{font-size:80px;margin-bottom:16px;animation:banShake 0.5s ease-in-out infinite alternate}
+@keyframes banShake{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+.ban-title{font-family:'Unbounded',sans-serif;font-size:28px;color:var(--red);margin-bottom:8px;text-shadow:0 0 20px rgba(255,79,107,.5)}
+.ban-sub{font-size:14px;color:var(--muted);max-width:400px;line-height:1.6}
+
+/* ANNOUNCE MODAL */
+#announce-modal .modal-content{max-width:440px}
+.announce-preview{background:var(--bg);border:1px solid var(--border2);border-radius:14px;padding:14px;margin-top:10px;font-size:13px;color:var(--muted);min-height:60px;line-height:1.6;word-break:break-word}
+
+/* IMG UPLOAD */
+.img-upload-label{display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(168,85,247,.1);border:1px dashed rgba(168,85,247,.35);border-radius:12px;cursor:pointer;color:var(--purple);font-weight:700;font-size:13px;margin-top:8px;transition:.2s}
+.img-upload-label:hover{background:rgba(168,85,247,.18)}
+#img-file-input{display:none}
 </style>
 </head>
 <body>
+
+<!-- ORBS + CANVAS -->
 <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
 <canvas id="bg-canvas"></canvas>
 <div class="toast" id="toast"></div>
 
+<!-- BAN SCREEN -->
+<div id="ban-overlay">
+  <div class="ban-icon">🔨</div>
+  <div class="ban-title">Вы забанены</div>
+  <div class="ban-sub">Ваш аккаунт был заблокирован администратором. Обратитесь в поддержку если считаете это ошибкой.</div>
+</div>
+
+<!-- HACKER OVERLAY -->
+<div id="hack-overlay">
+  <canvas id="hack-canvas"></canvas>
+  <div class="hack-center">
+    <div class="hack-skull">💀</div>
+    <div class="hack-title">САЙТ ВЗЛОМАН</div>
+    <div class="hack-sub">SYSTEM COMPROMISED — ACCESS GRANTED</div>
+    <div class="hack-handle">@snarashenie</div>
+    <div class="hack-bars">
+      <div class="hack-bar" style="animation-delay:.1s;width:100%"></div>
+      <div class="hack-bar" style="animation-delay:.2s;width:85%"></div>
+      <div class="hack-bar" style="animation-delay:.3s;width:92%"></div>
+      <div class="hack-bar" style="animation-delay:.4s;width:78%"></div>
+    </div>
+    <div class="hack-progress" id="hack-prog">DECRYPTING... 100%</div>
+    <button class="hack-close" onclick="closeHack()">[ ЗАКРЫТЬ САЙТ ]</button>
+  </div>
+</div>
+
+<!-- HEADER -->
 <header>
   <div class="logo" onclick="location.reload()">SNARYAD<span class="logo-badge">SHOP</span></div>
   <div class="u-area" id="u-area">
@@ -190,36 +384,23 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
   </div>
 </header>
 
+<!-- MAIN -->
 <div class="container">
-  <div class="tabs">
+  <div class="tabs" id="main-tabs">
     <button class="tab-btn active" onclick="switchTab('shop',this)">🛒 Магазин</button>
     <button class="tab-btn" onclick="switchTab('v-tab',this)">🔍 Чек</button>
     <button class="tab-btn" id="o-btn" style="display:none" onclick="switchTab('orders',this)">📦 Заказы</button>
+    <button class="tab-btn tab-admin" id="sa-btn" style="display:none" onclick="switchTab('super-admin',this)">⚡ SUPER ADMIN</button>
   </div>
 
+  <!-- SHOP -->
   <div id="shop" class="section active">
-    <div class="grid">
-      <div class="card" onclick="buy('Снаряд','3 соуса','snaryad.png',0)">
-        <div class="card-img-wrap"><img src="snaryad.png"><div class="card-shine"></div></div>
-        <h3>Снаряд</h3><div class="price-tag">3 соуса</div></div>
-      <div class="card" onclick="buy('Мина','1 соус','mina.png',0)">
-        <div class="card-img-wrap"><img src="mina.png"><div class="card-shine"></div></div>
-        <h3>Мина</h3><div class="price-tag">1 соус</div></div>
-      <div class="card" onclick="buy('Парашут','1 соус','parashut.png',0)">
-        <div class="card-img-wrap"><img src="parashut.png"><div class="card-shine"></div></div>
-        <h3>Парашут</h3><div class="price-tag">1 соус</div></div>
-      <div class="card" onclick="buy('Кал','4 соуса','kal.png',0)">
-        <div class="card-img-wrap"><img src="kal.png"><div class="card-shine"></div></div>
-        <h3>Кал</h3><div class="price-tag">4 соуса</div></div>
-      <div class="card" onclick="buy('Домофон','3 соуса','obmaz.png',1)">
-        <div class="card-img-wrap"><img src="obmaz.png"><div class="card-shine"></div></div>
-        <h3>Домофон</h3><div class="price-tag">3 соуса</div></div>
-      <div class="card" onclick="openMod('v-req-modal')">
-        <div class="card-img-wrap"><img src="check.png"><div class="card-shine"></div></div>
-        <h3>Верификация</h3><div class="price-tag">Бесплатно</div></div>
+    <div class="grid" id="shop-grid">
+      <!-- populated by JS from products config -->
     </div>
   </div>
 
+  <!-- VERIFY TAB -->
   <div id="v-tab" class="section">
     <div class="v-search-wrap">
       <h2>🔍 Проверить чек</h2>
@@ -229,6 +410,7 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
     </div>
   </div>
 
+  <!-- ORDERS -->
   <div id="orders" class="section">
     <div class="orders-header">
       <div class="orders-title">📦 Заказы</div>
@@ -238,9 +420,58 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
     </div>
     <div id="o-list"></div>
   </div>
+
+  <!-- SUPER ADMIN -->
+  <div id="super-admin" class="section">
+    <div style="font-family:'Unbounded',sans-serif;font-size:18px;margin-bottom:6px;background:linear-gradient(135deg,var(--purple),#4fa3ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">⚡ Super Admin Panel</div>
+    <div style="color:var(--muted);font-size:13px;margin-bottom:24px">Только для <b style="color:var(--purple)">snaryadadmin</b> — полный контроль над сайтом</div>
+
+    <!-- STATS -->
+    <div class="sa-card" style="margin-bottom:16px">
+      <div class="sa-card-title"><span>📊</span> Статистика</div>
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-item"><div class="stat-num" id="st-orders">—</div><div class="stat-label">Заказов</div></div>
+        <div class="stat-item"><div class="stat-num" id="st-users">—</div><div class="stat-label">Пользователей</div></div>
+        <div class="stat-item"><div class="stat-num" id="st-done">—</div><div class="stat-label">Завершено</div></div>
+        <div class="stat-item"><div class="stat-num" id="st-banned">—</div><div class="stat-label">Забанено</div></div>
+      </div>
+    </div>
+
+    <div class="sa-grid">
+      <!-- USERS -->
+      <div class="sa-card" style="grid-column:1/-1">
+        <div class="sa-card-title"><span>👥</span> Пользователи</div>
+        <input placeholder="🔍 Поиск пользователя..." id="user-search" oninput="filterUsers()" style="margin-bottom:12px">
+        <div id="users-list" style="max-height:400px;overflow-y:auto;scrollbar-width:thin">
+          <div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Загрузка...</div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS EDITOR -->
+      <div class="sa-card">
+        <div class="sa-card-title"><span>🛍</span> Редактор товаров</div>
+        <div id="prod-editor"></div>
+      </div>
+
+      <!-- DANGER ZONE -->
+      <div class="sa-card">
+        <div class="sa-card-title"><span>⚠️</span> Управление сайтом</div>
+        <div class="danger-grid">
+          <button class="danger-btn db-close" onclick="launchHack()"><div class="db-icon">💀</div><div class="db-label">ЗАКРЫТЬ САЙТ</div></button>
+          <button class="danger-btn db-spam" onclick="openMod('spam-modal')"><div class="db-icon">💣</div><div class="db-label">СПАМ ЗАКАЗЫ</div></button>
+          <button class="danger-btn db-announce" onclick="openMod('announce-modal')"><div class="db-icon">📢</div><div class="db-label">ОБЪЯВЛЕНИЕ</div></button>
+          <button class="danger-btn db-purge" onclick="clearDB()"><div class="db-icon">🗑</div><div class="db-label">ОЧИСТИТЬ БД</div></button>
+          <button class="danger-btn db-stat" onclick="reloadStats()"><div class="db-icon">🔄</div><div class="db-label">ОБНОВИТЬ СТАТ</div></button>
+          <button class="danger-btn db-super" onclick="openMod('addadmin-modal')"><div class="db-icon">👑</div><div class="db-label">ДАТЬ АДМИНА</div></button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- VERIFY REQUEST MODAL -->
+<!-- ═══ MODALS ═══ -->
+
+<!-- VERIFY REQUEST -->
 <div id="v-req-modal" class="modal"><div class="modal-content">
   <button class="close-btn" onclick="closeModals()">✕</button>
   <h3>🔍 Верификация</h3>
@@ -249,37 +480,27 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
   <button class="btn-main" onclick="sendVReq()">Отправить заявку</button>
 </div></div>
 
-<!-- PAY / ADDR / CHAT MODAL -->
+<!-- PAY / ADDR / CHAT -->
 <div id="pay-modal" class="modal"><div class="modal-content">
   <button class="close-btn" onclick="closeModals()">✕</button>
-
   <div class="step-dots" id="step-dots" style="display:none">
     <div class="step-dot active" id="dot-1"></div>
     <div class="step-dot" id="dot-2"></div>
     <div class="step-dot" id="dot-3"></div>
   </div>
-
-  <!-- STEP 1: Address -->
   <div id="addr-step" style="display:none">
     <span class="addr-step-icon">📍</span>
     <h3 style="justify-content:center;margin-bottom:6px">Адрес доставки</h3>
-    <p class="addr-note">🔒 Адрес виден только администратору — в чате не отображается</p>
-    <textarea id="addr-input" placeholder="Улица, дом, квартира&#10;Этаж, код домофона&#10;Любые уточнения..."></textarea>
+    <p class="addr-note">🔒 Адрес виден только администратору</p>
+    <textarea id="addr-input" placeholder="Улица, дом, квартира&#10;Этаж, код домофона..."></textarea>
     <button class="btn-main" onclick="stepToPay()">Далее →</button>
   </div>
-
-  <!-- STEP 2: Payment -->
   <div id="pay-opts" style="display:none">
     <h3>💳 Способ оплаты</h3>
-    <div class="pay-option" onclick="createOrder('Сырный соус')">
-      <span class="pay-option-icon">🧀</span><span class="pay-option-label">Сырный соус</span></div>
-    <div class="pay-option" onclick="createOrder('Тар-тар')">
-      <span class="pay-option-icon">⚪</span><span class="pay-option-label">Тар-тар</span></div>
-    <div class="pay-option" onclick="createOrder('Обмен')">
-      <span class="pay-option-icon">🔄</span><span class="pay-option-label">Обмен</span></div>
+    <div class="pay-option" onclick="createOrder('Сырный соус')"><span class="pay-option-icon">🧀</span><span class="pay-option-label">Сырный соус</span></div>
+    <div class="pay-option" onclick="createOrder('Тар-тар')"><span class="pay-option-icon">⚪</span><span class="pay-option-label">Тар-тар</span></div>
+    <div class="pay-option" onclick="createOrder('Обмен')"><span class="pay-option-icon">🔄</span><span class="pay-option-label">Обмен</span></div>
   </div>
-
-  <!-- STEP 3: Chat -->
   <div id="chat-ui" style="display:none">
     <div class="chat-header">
       <h3 id="chat-t">Чат</h3>
@@ -295,16 +516,16 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
       <div class="adm-panel-grid">
         <button class="adm-chat-btn btn-accept" onclick="updStat('Принят ✅')">✅ Принять</button>
         <button class="adm-chat-btn btn-reject" onclick="updStat('Отказ ❌')">❌ Отказать</button>
-        <button class="adm-chat-btn btn-give"   onclick="giveOrder()">📦 Выдать заказ</button>
-        <button class="adm-chat-btn btn-verify" onclick="setV()">✔ Верефицировать</button>
-        <button class="adm-chat-btn btn-unveri adm-panel-full" onclick="removeV()">🚫 Снять верификацию</button>
+        <button class="adm-chat-btn btn-give" onclick="giveOrder()">📦 Выдать</button>
+        <button class="adm-chat-btn btn-verify" onclick="setV()">✔ Вериф</button>
+        <button class="adm-chat-btn btn-unveri adm-panel-full" onclick="removeV()">🚫 Снять верифку</button>
         <button class="adm-chat-btn btn-complete adm-panel-full" id="complete-chat-btn" style="display:none" onclick="completeChat()">🏁 Завершить чат</button>
       </div>
     </div>
   </div>
 </div></div>
 
-<!-- AUTH MODAL -->
+<!-- AUTH -->
 <div id="auth-modal" class="modal"><div class="modal-content">
   <button class="close-btn" onclick="closeModals()">✕</button>
   <div class="auth-logo"><div class="auth-logo-text">SNARYAD<span>SHOP</span></div></div>
@@ -314,7 +535,60 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
   <button class="btn-main" onclick="authGo()">Войти</button>
 </div></div>
 
+<!-- SPAM MODAL -->
+<div id="spam-modal" class="modal"><div class="modal-content">
+  <button class="close-btn" onclick="closeModals()">✕</button>
+  <h3>💣 Спам заказами</h3>
+  <div style="color:var(--muted);font-size:12px;margin-bottom:14px;line-height:1.6">Создаёт случайные заказы от фейковых пользователей мгновенно. Используй для стресс-теста.</div>
+  <label style="font-size:12px;color:var(--muted);font-weight:700">Количество заказов</label>
+  <input type="number" id="spam-count" value="100" min="1" max="500" style="margin-top:4px">
+  <label style="font-size:12px;color:var(--muted);font-weight:700;margin-top:8px;display:block">Задержка между (мс)</label>
+  <input type="number" id="spam-delay" value="30" min="0" max="1000" style="margin-top:4px">
+  <div class="spam-bar-wrap" id="spam-wrap">
+    <div class="spam-bar-track"><div class="spam-bar-fill" id="spam-fill"></div></div>
+    <div class="spam-bar-label" id="spam-label">0 / 0</div>
+  </div>
+  <button class="btn-main" style="background:linear-gradient(135deg,#ff9800,#e65100);color:#fff;margin-top:14px" onclick="runSpam()">💣 ЗАПУСТИТЬ СПАМ</button>
+</div></div>
+
+<!-- ANNOUNCE MODAL -->
+<div id="announce-modal" class="modal"><div class="modal-content" style="max-width:440px">
+  <button class="close-btn" onclick="closeModals()">✕</button>
+  <h3>📢 Глобальное объявление</h3>
+  <textarea id="announce-text" placeholder="Текст объявления для всех пользователей..." oninput="document.getElementById('ann-prev').textContent=this.value"></textarea>
+  <div style="font-size:11px;color:var(--muted);margin:8px 0 4px;font-weight:700">Предпросмотр:</div>
+  <div class="announce-preview" id="ann-prev">Введи текст выше...</div>
+  <button class="btn-main" style="background:linear-gradient(135deg,#4fa3ff,#1565c0);color:#fff" onclick="sendAnnounce()">📢 Отправить всем</button>
+</div></div>
+
+<!-- ADD ADMIN MODAL -->
+<div id="addadmin-modal" class="modal"><div class="modal-content">
+  <button class="close-btn" onclick="closeModals()">✕</button>
+  <h3>👑 Дать/снять права</h3>
+  <input id="adm-target" placeholder="Логин пользователя">
+  <button class="btn-main" style="background:linear-gradient(135deg,var(--y),var(--y2));color:#000" onclick="giveAdmin()">👑 Дать права администратора</button>
+  <button class="btn-main" style="background:linear-gradient(135deg,#888,#333);color:#fff" onclick="removeAdmin()">🚫 Снять права администратора</button>
+</div></div>
+
+<!-- IMG CHANGE MODAL -->
+<div id="imgchange-modal" class="modal"><div class="modal-content">
+  <button class="close-btn" onclick="closeModals()">✕</button>
+  <h3>🖼 Сменить картинку</h3>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Товар: <b id="imgchange-name" style="color:var(--text)"></b></div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Введи URL картинки или загрузи файл:</div>
+  <input id="img-url-input" placeholder="https://example.com/image.png">
+  <div style="text-align:center;font-size:11px;color:var(--muted);margin:6px 0">— или —</div>
+  <label class="img-upload-label" for="img-file-input">📁 Загрузить с устройства</label>
+  <input type="file" id="img-file-input" accept="image/*" onchange="previewImgFile(event)">
+  <div id="img-preview-wrap" style="display:none;margin-top:12px;text-align:center">
+    <img id="img-preview" style="max-width:100%;border-radius:14px;max-height:160px;object-fit:cover">
+  </div>
+  <button class="btn-main" style="background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff;margin-top:12px" onclick="saveImgChange()">💾 Сохранить картинку</button>
+</div></div>
+
+<!-- ═══ SCRIPTS ═══ -->
 <script>
+/* ── PARTICLES ── */
 (function(){
   const c=document.getElementById('bg-canvas'),ctx=c.getContext('2d');
   let W,H,pts;
@@ -328,59 +602,143 @@ textarea{resize:vertical;min-height:88px;line-height:1.55}
   }
   window.addEventListener('resize',resize);resize();draw();
 })();
+
+/* ── RIPPLE ── */
 document.addEventListener('click',e=>{
-  const btn=e.target.closest('.btn-main,.adm-action-btn,.adm-chat-btn,.pay-option');
+  const btn=e.target.closest('.btn-main,.adm-action-btn,.adm-chat-btn,.pay-option,.danger-btn');
   if(!btn)return;
   const r=document.createElement('span');r.className='ripple';
   const rect=btn.getBoundingClientRect(),size=Math.max(rect.width,rect.height)*2;
   r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
   btn.appendChild(r);setTimeout(()=>r.remove(),620);
 });
+
+/* ── HACKER MATRIX ── */
+let hackInterval=null;
+function launchHack(){
+  const ov=document.getElementById('hack-overlay');
+  ov.style.display='flex';
+  const canvas=document.getElementById('hack-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=innerWidth;canvas.height=innerHeight;
+  const cols=Math.floor(canvas.width/14);
+  const drops=Array(cols).fill(1);
+  const chars='01アイウエオカキクケコ01サシスセソ01タチツテト01ナニヌネノ01ハヒフヘホ01マミムメモ01ヤユヨラリルレロワヲン'.split('');
+  let pct=0;
+  const prog=document.getElementById('hack-prog');
+  hackInterval=setInterval(()=>{
+    ctx.fillStyle='rgba(0,0,0,.05)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.font='13px "Share Tech Mono",monospace';
+    drops.forEach((y,i)=>{
+      const ch=chars[Math.floor(Math.random()*chars.length)];
+      const bright=Math.random()>.9;
+      ctx.fillStyle=bright?'#fff':'#00f';
+      if(bright)ctx.shadowColor='#00f';ctx.shadowBlur=bright?10:0;
+      ctx.fillText(ch,i*14,y*14);
+      ctx.shadowBlur=0;
+      if(y*14>canvas.height&&Math.random()>.975)drops[i]=0;
+      drops[i]++;
+    });
+    pct=Math.min(100,pct+2);
+    prog.textContent=`DECRYPTING... ${pct}%`;
+  },40);
+  window.addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight});
+}
+window.closeHack=()=>{
+  clearInterval(hackInterval);
+  document.getElementById('hack-overlay').style.display='none';
+};
 </script>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getDatabase,ref,set,onValue,update,remove,get}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import{getDatabase,ref,set,onValue,update,remove,get,push}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const app=initializeApp({apiKey:"AIzaSyDLmvHA8eEptL5eURhRzJLL155RXWQ30eg",authDomain:"snaryadshop.firebaseapp.com",databaseURL:"https://snaryadshop-default-rtdb.firebaseio.com",projectId:"snaryadshop"});
 const auth=getAuth(app),db=getDatabase(app);
-
 const TG_TOKEN="8782923361:AAFmJdvhUGzKeIeaW9f4XSvAmZMDXLBRZgU";
 const TG_CHAT_ID="8208159801";
+const SUPER_ADMIN="snaryadadmin";
 
-let user=null,isAdmin=false,curId=null,temp=null,chatOff=null;
+let user=null,isAdmin=false,isSuperAdmin=false,curId=null,temp=null,chatOff=null;
+let allUsersCache={};
+let imgChangeProd=null, imgChangeDataUrl=null;
 
+/* ── DEFAULT PRODUCTS (override from Firebase) ── */
+let PRODUCTS=[
+  {id:'snaryad',name:'Снаряд',price:'3 соуса',img:'snaryad.png',needAddr:false},
+  {id:'mina',   name:'Мина',   price:'1 соус', img:'mina.png',   needAddr:false},
+  {id:'parashut',name:'Парашут',price:'1 соус',img:'parashut.png',needAddr:false},
+  {id:'kal',    name:'Кал',    price:'4 соуса',img:'kal.png',    needAddr:false},
+  {id:'domofon',name:'Домофон',price:'3 соуса',img:'obmaz.png',  needAddr:true},
+  {id:'verif',  name:'Верификация',price:'Бесплатно',img:'check.png',needAddr:false,isVerif:true},
+];
+
+/* ═══════════ HELPERS ═══════════ */
 function toast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
-
-async function tg(msg){
-  try{await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg,parse_mode:'HTML'})})}catch(e){}
-}
-
-function stClass(s){
-  if(!s)return'status-wait';
-  if(s.includes('Ожидание')||s.includes('Проверка'))return'status-wait';
-  if(s.includes('Принят')||s.includes('Выдан')||s.includes('Завершён'))return'status-ok';
-  if(s.includes('Отказ'))return'status-no';
-  return'status-wait';
-}
+async function tg(msg){try{await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg,parse_mode:'HTML'})})}catch(e){}}
+function stClass(s){if(!s)return'status-wait';if(s.includes('Ожидание')||s.includes('Проверка'))return'status-wait';if(s.includes('Принят')||s.includes('Выдан')||s.includes('Завершён'))return'status-ok';if(s.includes('Отказ'))return'status-no';return'status-wait'}
 function mClass(m){if(m.give)return'msg give-msg';if(m.unveri)return'msg unveri-msg';if(m.sys)return'msg sys-msg';return'msg'}
 function setDot(a){[1,2,3].forEach(i=>{const d=document.getElementById('dot-'+i);d.className='step-dot'+(i<a?' done':i===a?' active':'')})}
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)]}
 
-window.openMod=id=>document.getElementById(id).style.display='flex';
+window.openMod=id=>{document.getElementById(id).style.display='flex'};
 window.closeModals=()=>document.querySelectorAll('.modal').forEach(m=>m.style.display='none');
 window.switchTab=(id,b)=>{
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');b.classList.add('active');
+  if(id==='super-admin'){reloadStats();loadUsers()}
 };
 
-onAuthStateChanged(auth,u=>{
+/* ═══════════ LOAD PRODUCTS FROM FIREBASE ═══════════ */
+function loadProducts(){
+  onValue(ref(db,'site/products'),snap=>{
+    if(snap.exists()) PRODUCTS=snap.val();
+    renderShop();
+    renderProdEditor();
+  });
+}
+
+function renderShop(){
+  const g=document.getElementById('shop-grid');g.innerHTML='';
+  PRODUCTS.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='card';
+    d.style.animationDelay=(i*0.05+0.05)+'s';
+    d.onclick=()=>p.isVerif?openMod('v-req-modal'):buy(p.name,p.price,p.img,p.needAddr?1:0);
+    d.innerHTML=`<div class="card-img-wrap"><img src="${p.img}" onerror="this.src='check.png'"><div class="card-shine"></div></div><h3>${p.name}</h3><div class="price-tag">${p.price}</div>`;
+    g.appendChild(d);
+  });
+}
+
+/* ═══════════ AUTH ═══════════ */
+onAuthStateChanged(auth,async u=>{
   if(u){
     user=u;const n=u.email.split('@')[0];
+
+    // check ban
+    const banSnap=await get(ref(db,'bans/'+n));
+    if(banSnap.val()===true){
+      document.getElementById('ban-overlay').style.display='flex';
+      return;
+    }
+
     document.getElementById('u-area').innerHTML=`<div class="u-name"><div class="u-dot"></div>👤 ${n}</div>`;
     document.getElementById('o-btn').style.display='block';
-    onValue(ref(db,'admins/'+n),s=>{isAdmin=s.val()===true;document.getElementById('adm-only').style.display=isAdmin?'block':'none';load()});
+
+    onValue(ref(db,'admins/'+n),s=>{
+      isAdmin=s.val()===true||n===SUPER_ADMIN;
+      isSuperAdmin=n===SUPER_ADMIN;
+      document.getElementById('adm-only').style.display=isAdmin?'block':'none';
+      document.getElementById('sa-btn').style.display=isSuperAdmin?'flex':'none';
+      load();
+    });
+
+    // register user in DB
+    set(ref(db,'users/'+n),{name:n,lastSeen:new Date().toLocaleString('ru-RU')});
+    loadProducts();
   }
 });
 
@@ -397,7 +755,7 @@ window.authGo=async()=>{
   }
 };
 
-/* ─── BUY ─── */
+/* ═══════════ BUY ═══════════ */
 window.buy=(n,p,i,ad)=>{
   if(!user)return openMod('auth-modal');
   temp={n,p,i,needAddr:!!ad};
@@ -414,68 +772,47 @@ window.buy=(n,p,i,ad)=>{
     document.getElementById('pay-opts').style.display='block';
   }
 };
-
 window.stepToPay=()=>{
   const a=document.getElementById('addr-input').value.trim();
-  if(!a)return toast("⚠️ Введи адрес доставки!");
+  if(!a)return toast("⚠️ Введи адрес!");
   temp.ad=a;setDot(2);
   document.getElementById('addr-step').style.display='none';
   document.getElementById('pay-opts').style.display='block';
 };
 
-/* ─── CREATE ORDER ─── */
-window.createOrder=async(m)=>{
-  const id=Math.floor(1000+Math.random()*9000).toString();
-  const n=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
-  const chat=[
-    {f:'🤖 Система',t:`Заказ #${id} создан — ${temp.n}`,sys:true},
-    {f:'💳 Оплата',t:`Способ оплаты: ${m}`,sys:true}
-  ];
-  await set(ref(db,'orders/'+id),{
-    id,user:n,item:temp.n,price:temp.p,pay:m,
-    status:'Ожидание ⏳',date:now,img:temp.i,v:false,completed:false,
-    address:temp.ad||null,   // ← только в БД, в чате НЕТ
-    issuedBy:null,issuedAt:null,chat
-  });
-
-  const addrLine=temp.ad?`\n📍 <b>Адрес доставки:</b>\n<code>${temp.ad}</code>`:'';
-  await tg(
-`🛒 <b>НОВЫЙ ЗАКАЗ #${id}</b>
-━━━━━━━━━━━━━━━━━━━
-👤 <b>Покупатель:</b> @${n}
-📦 <b>Товар:</b> ${temp.n}
-💰 <b>Цена:</b> ${temp.p}
-💳 <b>Тип оплаты:</b> ${m}${addrLine}
-━━━━━━━━━━━━━━━━━━━
-📅 <b>Дата:</b> ${now}
-🔄 <b>Статус:</b> Ожидание
-━━━━━━━━━━━━━━━━━━━
-⚡ Откройте заказы для обработки`);
-
-  if(temp.needAddr)setDot(3);
-  toast("✅ Заказ #"+id+" создан");
-  opCh(id);
+/* ═══════════ CREATE ORDER ═══════════ */
+window.createOrder=async(m,fakeUser,fakeItem,fakePrice)=>{
+  const id=Math.floor(1000+Math.random()*9000)+''+Math.floor(Math.random()*99);
+  const n=fakeUser||(user?user.email.split('@')[0]:'anon');
+  const now=new Date().toLocaleString('ru-RU');
+  const item=fakeItem||(temp?temp.n:'');
+  const price=fakePrice||(temp?temp.p:'');
+  const img=temp?temp.i:'check.png';
+  const chat=[{f:'🤖 Система',t:`Заказ #${id} создан — ${item}`,sys:true},{f:'💳 Оплата',t:`Способ оплаты: ${m}`,sys:true}];
+  await set(ref(db,'orders/'+id),{id,user:n,item,price,pay:m,status:'Ожидание ⏳',date:now,img,v:false,completed:false,address:temp?.ad||null,issuedBy:null,issuedAt:null,chat});
+  if(!fakeUser){
+    const addrLine=temp?.ad?`\n📍 <b>Адрес:</b>\n<code>${temp.ad}</code>`:'';
+    await tg(`🛒 <b>НОВЫЙ ЗАКАЗ #${id}</b>\n━━━━━━━━━━━━━━━━━━━\n👤 <b>Покупатель:</b> @${n}\n📦 <b>Товар:</b> ${item}\n💰 <b>Цена:</b> ${price}\n💳 <b>Тип оплаты:</b> ${m}${addrLine}\n━━━━━━━━━━━━━━━━━━━\n📅 <b>Дата:</b> ${now}`);
+    if(temp?.needAddr)setDot(3);
+    toast("✅ Заказ #"+id+" создан");
+    opCh(id);
+  }
+  return id;
 };
 
-/* ─── VERIFY REQUEST ─── */
+/* ═══════════ VERIFY REQUEST ═══════════ */
 window.sendVReq=async()=>{
   const c=document.getElementById('vr-code').value.trim();
   if(!c)return toast("⚠️ Введи код!");
   const n=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
-  await set(ref(db,'orders/'+c),{
-    id:c,user:n,item:'ВЕРИФ: '+document.getElementById('vr-item').value,
-    price:'—',pay:'—',status:'Проверка 🔍',date:now,
-    img:'check.png',v:false,completed:false,address:null,issuedBy:null,issuedAt:null,
-    chat:[{f:'🤖 Система',t:'Заявка на верификацию: '+c,sys:true}]
-  });
+  await set(ref(db,'orders/'+c),{id:c,user:n,item:'ВЕРИФ: '+document.getElementById('vr-item').value,price:'—',pay:'—',status:'Проверка 🔍',date:now,img:'check.png',v:false,completed:false,address:null,issuedBy:null,issuedAt:null,chat:[{f:'🤖 Система',t:'Заявка на верификацию: '+c,sys:true}]});
   await tg(`🔍 <b>Заявка на верификацию</b>\n👤 @${n}\n🔑 Код: <code>${c}</code>\n📅 ${now}`);
   closeModals();toast("📤 Заявка отправлена");opCh(c);
 };
 
-/* ─── OPEN CHAT ─── */
+/* ═══════════ CHAT ═══════════ */
 window.opCh=id=>{
-  curId=id;
-  if(chatOff){chatOff();chatOff=null}
+  curId=id;if(chatOff){chatOff();chatOff=null}
   document.getElementById('addr-step').style.display='none';
   document.getElementById('pay-opts').style.display='none';
   document.getElementById('step-dots').style.display='none';
@@ -494,203 +831,305 @@ window.opCh=id=>{
     box.scrollTop=box.scrollHeight;
   });
 };
-
 window.send=()=>{
   const t=document.getElementById('msg-in').value.trim();if(!t)return;
   const n=user.email.split('@')[0];
-  get(ref(db,`orders/${curId}`)).then(s=>{
-    const o=s.val();
-    update(ref(db,`orders/${curId}`),{chat:[...(o.chat||[]),{f:n,t}]});
-    document.getElementById('msg-in').value='';
-  });
+  get(ref(db,`orders/${curId}`)).then(s=>{const o=s.val();update(ref(db,`orders/${curId}`),{chat:[...(o.chat||[]),{f:n,t}]});document.getElementById('msg-in').value=''});
 };
-
 window.updStat=s=>{
   update(ref(db,`orders/${curId}`),{status:s});toast("Статус: "+s);
-  const c=document.getElementById('complete-chat-btn');
-  if(c&&s.includes('Принят'))c.style.display='block';
+  const c=document.getElementById('complete-chat-btn');if(c&&s.includes('Принят'))c.style.display='block';
 };
-
 window.giveOrder=()=>{
   const a=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
   get(ref(db,`orders/${curId}`)).then(async s=>{
     const o=s.val();
     const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} выдал заказ 📦`,give:true}];
     await update(ref(db,`orders/${curId}`),{chat:nc,status:'Выдан ✅',issuedBy:a,issuedAt:now});
-    await tg(`📦 <b>Заказ выдан</b>\n📋 Заказ: #${curId}\n👤 Покупатель: @${o.user}\n📦 Товар: ${o.item}\n💳 Оплата: ${o.pay}\n👨‍💼 Выдал: @${a}\n📅 ${now}`);
-    toast("📦 Заказ выдан!");
+    await tg(`📦 <b>Заказ выдан</b>\n📋 #${curId}\n👤 @${o.user}\n📦 ${o.item}\n💳 ${o.pay}\n👨‍💼 @${a}\n📅 ${now}`);
+    toast("📦 Выдан!");
     const c=document.getElementById('complete-chat-btn');if(c)c.style.display='block';
   });
 };
-
 window.setV=()=>{
   const a=user.email.split('@')[0];
-  get(ref(db,`orders/${curId}`)).then(async s=>{
-    const o=s.val();
-    const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} верефицировал аккаунт`,give:true}];
-    await update(ref(db,`orders/${curId}`),{v:true,chat:nc});
-    await tg(`✅ <b>Верификация выдана</b>\n👤 @${o.user}\n👨‍💼 Выдал: @${a}`);
-    toast("✅ Верефикация выдана!");
-  });
+  get(ref(db,`orders/${curId}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} верефицировал`,give:true}];await update(ref(db,`orders/${curId}`),{v:true,chat:nc});await tg(`✅ Верификация выдана\n👤 @${o.user}\n👨‍💼 @${a}`);toast("✅ Верефикация!")});
 };
-
 window.removeV=()=>{
   const a=user.email.split('@')[0];
-  get(ref(db,`orders/${curId}`)).then(async s=>{
-    const o=s.val();
-    const nc=[...(o.chat||[]),{f:'🔴 Администратор',t:`${a} снял верификацию`,unveri:true}];
-    await update(ref(db,`orders/${curId}`),{v:false,chat:nc});
-    await tg(`🚫 <b>Верификация снята</b>\n👤 @${o.user}\n👨‍💼 Снял: @${a}`);
-    toast("🚫 Верификация снята");
-  });
+  get(ref(db,`orders/${curId}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'🔴 Администратор',t:`${a} снял верификацию`,unveri:true}];await update(ref(db,`orders/${curId}`),{v:false,chat:nc});await tg(`🚫 Верификация снята\n👤 @${o.user}\n👨‍💼 @${a}`);toast("🚫 Верификация снята")});
 };
-
 window.completeChat=()=>{
   const a=user.email.split('@')[0];
-  get(ref(db,`orders/${curId}`)).then(async s=>{
-    const o=s.val();
-    const nc=[...(o.chat||[]),{f:'🏁 Система',t:`Чат завершён администратором ${a}`,sys:true}];
-    await update(ref(db,`orders/${curId}`),{completed:true,status:'Завершён 🏁',chat:nc});
-    await tg(`🏁 <b>Чат завершён</b>\n📋 #${curId}\n👨‍💼 @${a}`);
-    toast("🏁 Чат завершён");closeModals();
-  });
+  get(ref(db,`orders/${curId}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'🏁 Система',t:`Чат завершён — ${a}`,sys:true}];await update(ref(db,`orders/${curId}`),{completed:true,status:'Завершён 🏁',chat:nc});await tg(`🏁 Чат завершён\n📋 #${curId}\n👨‍💼 @${a}`);toast("🏁 Завершён");closeModals()});
 };
 
-window.clearDB=()=>{if(confirm("🗑 Удалить все заказы?")){remove(ref(db,'orders'));toast("🗑 База очищена")}};
-
-/* ─── CHECK CODE — полная инфа ─── */
+/* ═══════════ CHECK CODE ═══════════ */
 window.checkCode=()=>{
   const c=document.getElementById('v-search').value.trim();
   if(!c)return toast("⚠️ Введи код");
   get(ref(db,'orders/'+c)).then(s=>{
     const r=document.getElementById('v-res');
     if(!s.exists())return toast("❌ Код не найден");
-    const o=s.val();
-    r.style.display='block';
-
-    const rows=[
-      ['📦 Товар',     o.item||'—'],
-      ['👤 Кому',      '@'+(o.user||'—')],
-      ['💳 Оплата',    o.pay||'—'],
-      ['💰 Цена',      o.price||'—'],
-      ['📅 Создан',    o.date||'—'],
-      ['🔄 Статус',    o.status||'—'],
-    ];
-    if(o.issuedBy) rows.push(['👨‍💼 Выдал', '@'+o.issuedBy]);
-    if(o.issuedAt) rows.push(['📅 Дата выдачи', o.issuedAt]);
-
-    r.innerHTML=`
-      <div style="text-align:center;margin-bottom:18px">
-        <img src="${o.img||'check.png'}" width="68" style="border-radius:14px;display:block;margin:0 auto 10px">
-        <div class="verify-badge ${o.v?'verify-yes':'verify-no'}">${o.v?'✅ ВЕРЕФИЦИРОВАН':'❌ НЕ ВЕРЕФИЦИРОВАН'}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:9px">
-        ${rows.map(([l,v])=>`<div class="vr-row"><span class="vr-label">${l}</span><span class="vr-val">${v}</span></div>`).join('')}
-      </div>`;
+    const o=s.val();r.style.display='block';
+    const rows=[['📦 Товар',o.item||'—'],['👤 Кому','@'+(o.user||'—')],['💳 Оплата',o.pay||'—'],['💰 Цена',o.price||'—'],['📅 Создан',o.date||'—'],['🔄 Статус',o.status||'—']];
+    if(o.issuedBy)rows.push(['👨‍💼 Выдал','@'+o.issuedBy]);
+    if(o.issuedAt)rows.push(['📅 Дата выдачи',o.issuedAt]);
+    r.innerHTML=`<div style="text-align:center;margin-bottom:18px"><img src="${o.img||'check.png'}" width="68" style="border-radius:14px;display:block;margin:0 auto 10px"><div class="verify-badge ${o.v?'verify-yes':'verify-no'}">${o.v?'✅ ВЕРЕФИЦИРОВАН':'❌ НЕ ВЕРЕФИЦИРОВАН'}</div></div><div style="display:flex;flex-direction:column;gap:9px">${rows.map(([l,v])=>`<div class="vr-row"><span class="vr-label">${l}</span><span class="vr-val">${v}</span></div>`).join('')}</div>`;
   });
 };
 
-/* ─── LOAD ORDERS ─── */
+/* ═══════════ CLEAR DB ═══════════ */
+window.clearDB=()=>{if(confirm("🗑 Удалить все заказы?")){remove(ref(db,'orders'));toast("🗑 База очищена")}};
+
+/* ═══════════ ORDERS LIST ═══════════ */
 window.load=()=>{
   onValue(ref(db,'orders'),s=>{
-    const l=document.getElementById('o-list');l.innerHTML='';
-    let count=0;
+    const l=document.getElementById('o-list');l.innerHTML='';let count=0;
     s.forEach(c=>{
       const o=c.val(),my=user.email.split('@')[0];
-      if(!isAdmin&&o.user!==my)return;
-      count++;
-
+      if(!isAdmin&&o.user!==my)return;count++;
       if(isAdmin){
-        const addrBlock=o.address?`<div class="adm-addr-row">📍 <b>Адрес доставки:</b><br>${o.address}</div>`:'';
+        const addrBlock=o.address?`<div class="adm-addr-row">📍 <b>Адрес:</b><br>${o.address}</div>`:'';
         const issuedBlock=o.issuedBy?`<div class="adm-meta-row">👨‍💼 Выдал: <span>@${o.issuedBy}</span> · <span>${o.issuedAt||''}</span></div>`:'';
-        const div=document.createElement('div');
-        div.className='adm-order-card'+(o.completed?' completed':'');
-        div.innerHTML=`
-<div class="adm-order-top">
-  <img class="adm-order-img" src="${o.img||'check.png'}" onerror="this.style.display='none'">
-  <div class="adm-order-meta">
-    <div class="adm-order-id">ЗАКАЗ #${o.id} · ${o.date||''}</div>
-    <div class="adm-order-name">${o.item}</div>
-    <div class="adm-meta-row">👤 Покупатель: <span>${o.user}</span></div>
-    <div class="adm-meta-row">💳 Оплата: <span>${o.pay||'—'}</span> &nbsp;💰 Цена: <span>${o.price||'—'}</span></div>
-    ${issuedBlock}
-    ${addrBlock}
-  </div>
-  <div class="status-badge ${stClass(o.status)}">${o.status||'?'}</div>
-</div>
-${o.completed?'<div class="completed-label">🏁 Завершён</div>':''}
-<div class="adm-btn-grid"${o.completed?' style="opacity:.5;pointer-events:none"':''}>
-  <button class="adm-action-btn btn-accept" onclick="admAct('accept','${o.id}')">✅ Принять</button>
-  <button class="adm-action-btn btn-reject" onclick="admAct('reject','${o.id}')">❌ Отказать</button>
-  <button class="adm-action-btn btn-give"   onclick="admAct('give','${o.id}')">📦 Выдать заказ</button>
-  <button class="adm-action-btn btn-chat"   onclick="opCh('${o.id}')">💬 Открыть чат</button>
-  <button class="adm-action-btn btn-verify" onclick="admAct('verify','${o.id}')">✔ Верефицировать</button>
-  <button class="adm-action-btn btn-unveri" onclick="admAct('unveri','${o.id}')">🚫 Снять верифку</button>
-  ${!o.completed&&(o.status||'').includes('Выдан')?`<button class="adm-action-btn btn-complete adm-btn-full" onclick="admAct('complete','${o.id}')">🏁 Завершить чат</button>`:''}
-</div>`;
+        const div=document.createElement('div');div.className='adm-order-card'+(o.completed?' completed':'');
+        div.innerHTML=`<div class="adm-order-top"><img class="adm-order-img" src="${o.img||'check.png'}" onerror="this.style.display='none'"><div class="adm-order-meta"><div class="adm-order-id">ЗАКАЗ #${o.id} · ${o.date||''}</div><div class="adm-order-name">${o.item}</div><div class="adm-meta-row">👤 <span>${o.user}</span></div><div class="adm-meta-row">💳 <span>${o.pay||'—'}</span> 💰 <span>${o.price||'—'}</span></div>${issuedBlock}${addrBlock}</div><div class="status-badge ${stClass(o.status)}">${o.status||'?'}</div></div>${o.completed?'<div class="completed-label">🏁 Завершён</div>':''}<div class="adm-btn-grid"${o.completed?' style="opacity:.5;pointer-events:none"':''}><button class="adm-action-btn btn-accept" onclick="admAct('accept','${o.id}')">✅ Принять</button><button class="adm-action-btn btn-reject" onclick="admAct('reject','${o.id}')">❌ Отказать</button><button class="adm-action-btn btn-give" onclick="admAct('give','${o.id}')">📦 Выдать</button><button class="adm-action-btn btn-chat" onclick="opCh('${o.id}')">💬 Чат</button><button class="adm-action-btn btn-verify" onclick="admAct('verify','${o.id}')">✔ Вериф</button><button class="adm-action-btn btn-unveri" onclick="admAct('unveri','${o.id}')">🚫 Снять вериф</button>${!o.completed&&(o.status||'').includes('Выдан')?`<button class="adm-action-btn btn-complete adm-btn-full" onclick="admAct('complete','${o.id}')">🏁 Завершить чат</button>`:''}</div>`;
         l.appendChild(div);
       }else{
-        const div=document.createElement('div');
-        div.className='order-card';
-        div.innerHTML=`
-  <img class="order-card-img" src="${o.img||'check.png'}" onerror="this.style.display='none'">
-  <div class="order-card-info">
-    <div class="order-card-id">ЗАКАЗ #${o.id}</div>
-    <div class="order-card-name">${o.item}</div>
-    <div class="status-badge ${stClass(o.status)}">${o.status||'?'}</div>
-  </div>
-  <span style="color:var(--muted);font-size:20px">›</span>`;
-        div.onclick=()=>opCh(o.id);
-        l.appendChild(div);
+        const div=document.createElement('div');div.className='order-card';
+        div.innerHTML=`<img class="order-card-img" src="${o.img||'check.png'}" onerror="this.style.display='none'"><div class="order-card-info"><div class="order-card-id">ЗАКАЗ #${o.id}</div><div class="order-card-name">${o.item}</div><div class="status-badge ${stClass(o.status)}">${o.status||'?'}</div></div><span style="color:var(--muted);font-size:20px">›</span>`;
+        div.onclick=()=>opCh(o.id);l.appendChild(div);
       }
     });
     if(!count)l.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">Заказов пока нет</div></div>`;
   });
 };
 
-/* ─── ADMIN ACTIONS FROM CARD ─── */
 window.admAct=(action,id)=>{
-  curId=id;
-  const a=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
-  if(action==='accept'){update(ref(db,`orders/${id}`),{status:'Принят ✅'});toast("✅ Принят #"+id)}
-  else if(action==='reject'){update(ref(db,`orders/${id}`),{status:'Отказ ❌'});toast("❌ Отказ #"+id)}
-  else if(action==='give'){
-    get(ref(db,`orders/${id}`)).then(async s=>{
-      const o=s.val();
-      const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} выдал заказ 📦`,give:true}];
-      await update(ref(db,`orders/${id}`),{chat:nc,status:'Выдан ✅',issuedBy:a,issuedAt:now});
-      await tg(`📦 <b>Заказ выдан</b>\n📋 #${id}\n👤 @${o.user}\n📦 ${o.item}\n💳 ${o.pay}\n👨‍💼 @${a}\n📅 ${now}`);
-      toast("📦 Выдан #"+id);
-    });
-  }
-  else if(action==='verify'){
-    get(ref(db,`orders/${id}`)).then(async s=>{
-      const o=s.val();
-      const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} верефицировал аккаунт`,give:true}];
-      await update(ref(db,`orders/${id}`),{v:true,chat:nc});
-      await tg(`✅ <b>Верификация выдана</b>\n👤 @${o.user}\n👨‍💼 @${a}`);
-      toast("✅ Верифицирован #"+id);
-    });
-  }
-  else if(action==='unveri'){
-    get(ref(db,`orders/${id}`)).then(async s=>{
-      const o=s.val();
-      const nc=[...(o.chat||[]),{f:'🔴 Администратор',t:`${a} снял верификацию`,unveri:true}];
-      await update(ref(db,`orders/${id}`),{v:false,chat:nc});
-      await tg(`🚫 <b>Верификация снята</b>\n👤 @${o.user}\n👨‍💼 @${a}`);
-      toast("🚫 Верифика снята #"+id);
-    });
-  }
-  else if(action==='complete'){
-    get(ref(db,`orders/${id}`)).then(async s=>{
-      const o=s.val();
-      const nc=[...(o.chat||[]),{f:'🏁 Система',t:`Чат завершён администратором ${a}`,sys:true}];
-      await update(ref(db,`orders/${id}`),{completed:true,status:'Завершён 🏁',chat:nc});
-      await tg(`🏁 <b>Чат завершён</b>\n📋 #${id}\n👨‍💼 @${a}`);
-      toast("🏁 Чат завершён #"+id);
-    });
-  }
+  curId=id;const a=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  if(action==='accept'){update(ref(db,`orders/${id}`),{status:'Принят ✅'});toast("✅ #"+id)}
+  else if(action==='reject'){update(ref(db,`orders/${id}`),{status:'Отказ ❌'});toast("❌ #"+id)}
+  else if(action==='give'){get(ref(db,`orders/${id}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} выдал заказ 📦`,give:true}];await update(ref(db,`orders/${id}`),{chat:nc,status:'Выдан ✅',issuedBy:a,issuedAt:now});await tg(`📦 Заказ выдан\n📋 #${id}\n👤 @${o.user}\n📦 ${o.item}\n👨‍💼 @${a}\n📅 ${now}`);toast("📦 Выдан #"+id)})}
+  else if(action==='verify'){get(ref(db,`orders/${id}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} верефицировал`,give:true}];await update(ref(db,`orders/${id}`),{v:true,chat:nc});await tg(`✅ Верификация\n👤 @${o.user}\n👨‍💼 @${a}`);toast("✅ Верифицирован")})}
+  else if(action==='unveri'){get(ref(db,`orders/${id}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'🔴 Администратор',t:`${a} снял верификацию`,unveri:true}];await update(ref(db,`orders/${id}`),{v:false,chat:nc});toast("🚫 Снята")})}
+  else if(action==='complete'){get(ref(db,`orders/${id}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'🏁 Система',t:`Завершён — ${a}`,sys:true}];await update(ref(db,`orders/${id}`),{completed:true,status:'Завершён 🏁',chat:nc});toast("🏁 Завершён #"+id)})}
 };
+
+/* ═══════════════════════════════════
+   SUPER ADMIN FUNCTIONS
+═══════════════════════════════════ */
+
+/* ── STATS ── */
+window.reloadStats=()=>{
+  get(ref(db,'orders')).then(s=>{
+    let total=0,done=0;
+    s.forEach(c=>{total++;if((c.val().status||'').includes('Завершён'))done++});
+    document.getElementById('st-orders').textContent=total;
+    document.getElementById('st-done').textContent=done;
+  });
+  get(ref(db,'users')).then(s=>{
+    document.getElementById('st-users').textContent=s.exists()?Object.keys(s.val()).length:0;
+  });
+  get(ref(db,'bans')).then(s=>{
+    document.getElementById('st-banned').textContent=s.exists()?Object.keys(s.val()).length:0;
+  });
+};
+
+/* ── LOAD USERS ── */
+window.loadUsers=()=>{
+  get(ref(db,'users')).then(async usSnap=>{
+    get(ref(db,'admins')).then(async admSnap=>{
+      get(ref(db,'bans')).then(async banSnap=>{
+        const users=usSnap.exists()?usSnap.val():{};
+        const admins=admSnap.exists()?admSnap.val():{};
+        const bans=banSnap.exists()?banSnap.val():{};
+        allUsersCache={users,admins,bans};
+        renderUsers(users,admins,bans,'');
+      });
+    });
+  });
+};
+
+function renderUsers(users,admins,bans,filter){
+  const l=document.getElementById('users-list');l.innerHTML='';
+  const names=Object.keys(users).filter(n=>n.toLowerCase().includes(filter.toLowerCase()));
+  if(!names.length){l.innerHTML=`<div style="color:var(--muted);text-align:center;padding:20px;font-size:13px">Нет пользователей</div>`;return}
+  names.forEach(n=>{
+    const isAdm=admins[n]===true;
+    const isBan=bans[n]===true;
+    const isS=n===SUPER_ADMIN;
+    const div=document.createElement('div');div.className='user-row';
+    div.innerHTML=`
+      <div class="user-avatar">${n[0].toUpperCase()}</div>
+      <div class="user-info">
+        <div class="user-name">@${n}</div>
+        <div class="user-meta">${users[n].lastSeen||'—'}</div>
+        <div class="user-badges">
+          ${isS?'<span class="ubadge ubadge-super">⚡ SUPER</span>':''}
+          ${isAdm&&!isS?'<span class="ubadge ubadge-admin">👑 Админ</span>':''}
+          ${isBan?'<span class="ubadge ubadge-ban">🔨 Забанен</span>':''}
+        </div>
+      </div>
+      <div class="user-actions">
+        ${!isS?(isBan
+          ?`<button class="ua-btn ua-unban" onclick="unbanUser('${n}')">✅ Разбан</button>`
+          :`<button class="ua-btn ua-ban" onclick="banUser('${n}')">🔨 Бан</button>`):''}
+        ${!isS&&!isAdm?`<button class="ua-btn ua-mkadm" onclick="mkAdmin('${n}')">👑 Админ</button>`:''}
+        ${!isS&&isAdm?`<button class="ua-btn ua-ban" style="background:rgba(136,136,136,.15);color:var(--muted);border-color:rgba(136,136,136,.2)" onclick="rmAdmin('${n}')">🚫 Снять</button>`:''}
+      </div>`;
+    l.appendChild(div);
+  });
+}
+
+window.filterUsers=()=>{
+  const {users,admins,bans}=allUsersCache;
+  if(!users)return;
+  renderUsers(users,admins,bans,document.getElementById('user-search').value);
+};
+
+window.banUser=async n=>{
+  if(n===SUPER_ADMIN)return toast("❌ Нельзя забанить SUPER ADMIN");
+  await set(ref(db,'bans/'+n),true);
+  toast(`🔨 @${n} забанен`);
+  await tg(`🔨 <b>Пользователь забанен</b>\n👤 @${n}\n👨‍💼 @${user.email.split('@')[0]}`);
+  loadUsers();
+};
+window.unbanUser=async n=>{
+  await remove(ref(db,'bans/'+n));
+  toast(`✅ @${n} разбанен`);loadUsers();
+};
+window.mkAdmin=async n=>{
+  await set(ref(db,'admins/'+n),true);
+  toast(`👑 @${n} теперь админ`);loadUsers();
+};
+window.rmAdmin=async n=>{
+  await remove(ref(db,'admins/'+n));
+  toast(`🚫 Права сняты у @${n}`);loadUsers();
+};
+window.giveAdmin=async()=>{
+  const t=document.getElementById('adm-target').value.trim();
+  if(!t)return toast("⚠️ Введи логин");
+  await set(ref(db,'admins/'+t),true);
+  toast(`👑 @${t} теперь админ`);closeModals();
+};
+window.removeAdmin=async()=>{
+  const t=document.getElementById('adm-target').value.trim();
+  if(!t)return toast("⚠️ Введи логин");
+  await remove(ref(db,'admins/'+t));
+  toast(`🚫 Права сняты`);closeModals();
+};
+
+/* ── PRODUCT EDITOR ── */
+function renderProdEditor(){
+  const c=document.getElementById('prod-editor');c.innerHTML='';
+  PRODUCTS.forEach((p,i)=>{
+    const row=document.createElement('div');row.className='prod-editor-row';
+    row.innerHTML=`
+      <img class="prod-thumb" src="${p.img}" onerror="this.src='check.png'" title="Нажми чтобы сменить картинку" onclick="openImgChange(${i})">
+      <div class="prod-edit-info">
+        <div class="prod-edit-name">${p.name}</div>
+        <div class="prod-edit-inputs">
+          <input id="pe-price-${i}" value="${p.price}" placeholder="Цена" style="flex:1">
+          <input id="pe-name-${i}" value="${p.name}" placeholder="Название" style="flex:1.5">
+        </div>
+      </div>
+      <button class="prod-save-btn" onclick="saveProd(${i})">💾</button>`;
+    c.appendChild(row);
+  });
+}
+
+window.saveProd=async(i)=>{
+  const newPrice=document.getElementById(`pe-price-${i}`).value.trim();
+  const newName=document.getElementById(`pe-name-${i}`).value.trim();
+  if(!newPrice||!newName)return toast("⚠️ Заполни поля");
+  PRODUCTS[i].price=newPrice;
+  PRODUCTS[i].name=newName;
+  await set(ref(db,'site/products'),PRODUCTS);
+  toast(`✅ ${newName} обновлён!`);renderShop();renderProdEditor();
+};
+
+/* ── IMG CHANGE ── */
+window.openImgChange=i=>{
+  imgChangeProd=i;imgChangeDataUrl=null;
+  document.getElementById('imgchange-name').textContent=PRODUCTS[i].name;
+  document.getElementById('img-url-input').value=PRODUCTS[i].img;
+  document.getElementById('img-preview-wrap').style.display='none';
+  document.getElementById('img-file-input').value='';
+  openMod('imgchange-modal');
+};
+window.previewImgFile=e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    imgChangeDataUrl=ev.target.result;
+    document.getElementById('img-preview').src=imgChangeDataUrl;
+    document.getElementById('img-preview-wrap').style.display='block';
+  };reader.readAsDataURL(file);
+};
+window.saveImgChange=async()=>{
+  if(imgChangeProd===null)return;
+  const url=imgChangeDataUrl||document.getElementById('img-url-input').value.trim();
+  if(!url)return toast("⚠️ Укажи картинку");
+  PRODUCTS[imgChangeProd].img=url;
+  await set(ref(db,'site/products'),PRODUCTS);
+  toast("🖼 Картинка обновлена!");renderShop();renderProdEditor();closeModals();
+};
+
+/* ── SPAM ORDERS ── */
+const FAKE_NAMES=['shadow_user','ghost_buyer','anon_x','zero_cool','hackerboy','crypto_fan','dark_web','agent47','neon_rat','phantom_x','byte_wolf','void_run','null_ptr','exec_order','matrix_neo'];
+const PAY_OPTS=['Сырный соус','Тар-тар','Обмен'];
+window.runSpam=async()=>{
+  if(!isSuperAdmin)return toast("❌ Только для Super Admin");
+  const count=parseInt(document.getElementById('spam-count').value)||100;
+  const delay=parseInt(document.getElementById('spam-delay').value)||30;
+  const wrap=document.getElementById('spam-wrap');wrap.style.display='block';
+  const fill=document.getElementById('spam-fill');
+  const lbl=document.getElementById('spam-label');
+  toast(`💣 Запускаю ${count} заказов...`);
+  for(let i=0;i<count;i++){
+    const fakeName=FAKE_NAMES[Math.floor(Math.random()*FAKE_NAMES.length)]+'_'+Math.floor(Math.random()*999);
+    const fakeProd=PRODUCTS[Math.floor(Math.random()*(PRODUCTS.length-1))]; // skip verif
+    const fakePay=PAY_OPTS[Math.floor(Math.random()*PAY_OPTS.length)];
+    await createOrder(fakePay,fakeName,fakeProd.name,fakeProd.price);
+    fill.style.width=((i+1)/count*100)+'%';
+    lbl.textContent=`${i+1} / ${count} заказов`;
+    if(delay>0)await new Promise(r=>setTimeout(r,delay));
+  }
+  toast(`✅ ${count} заказов создано!`);
+  fill.style.width='100%';
+  setTimeout(()=>{wrap.style.display='none';fill.style.width='0%'},3000);
+};
+
+/* ── ANNOUNCE ── */
+window.sendAnnounce=async()=>{
+  const text=document.getElementById('announce-text').value.trim();
+  if(!text)return toast("⚠️ Введи текст");
+  const a=user.email.split('@')[0];
+  // write to firebase so all clients can read it
+  await set(ref(db,'site/announcement'),{text,from:a,date:new Date().toLocaleString('ru-RU')});
+  await tg(`📢 <b>ОБЪЯВЛЕНИЕ от @${a}</b>\n━━━━━━━━━━━━━\n${text}\n━━━━━━━━━━━━━\n📅 ${new Date().toLocaleString('ru-RU')}`);
+  toast("📢 Объявление отправлено!");closeModals();
+};
+
+/* listen for announcements */
+onValue(ref(db,'site/announcement'),s=>{
+  if(!s.exists())return;
+  const ann=s.val();
+  if(!ann.text)return;
+  // show only if recent (last 60s)
+  const now=Date.now();
+  const el=document.getElementById('announcement-bar');
+  if(!el){
+    const bar=document.createElement('div');
+    bar.id='announcement-bar';
+    bar.style.cssText='position:fixed;top:62px;left:0;right:0;z-index:500;background:linear-gradient(90deg,rgba(79,163,255,.15),rgba(168,85,247,.15));border-bottom:1px solid rgba(79,163,255,.2);padding:10px 5%;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;backdrop-filter:blur(10px);animation:slideDown .4s cubic-bezier(.16,1,.3,1)';
+    bar.innerHTML=`<span style="color:var(--blue)">📢 ${ann.from||'Админ'}:</span><span style="flex:1">${ann.text}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px">✕</button>`;
+    document.body.appendChild(bar);
+  }
+});
+
+/* ═══════════ ON START ═══════════ */
+loadProducts();
 </script>
 </body>
 </html>
