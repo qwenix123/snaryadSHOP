@@ -1,110 +1,1180 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Сайт перегружен</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #0f0f0f;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #ffffff;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Snaryad Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════ ROOT */
+:root{
+  --bg:#0d0d12;--bg2:#12121a;--bg3:#1a1a26;--card:#17172200;
+  --p1:#a855f7;--p2:#ec4899;--p3:#6366f1;
+  --grad:linear-gradient(135deg,#a855f7,#ec4899);
+  --grad2:linear-gradient(135deg,#6366f1,#a855f7);
+  --green:#22c55e;--red:#ef4444;--yellow:#fbbf24;--blue:#38bdf8;
+  --text:#f1f0ff;--muted:#6b6b8a;--border:rgba(168,85,247,.18);--border2:rgba(255,255,255,.06);
+  --r:18px;--safe:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;position:relative}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
 
-        .container {
-            text-align: center;
-            padding: 20px;
-        }
+/* ═══════════════════════════════ BACKGROUND */
+#bg-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5}
+.bg-grad{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(168,85,247,.12) 0%,transparent 70%),
+             radial-gradient(ellipse 50% 40% at 90% 100%,rgba(236,72,153,.08) 0%,transparent 60%),
+             radial-gradient(ellipse 40% 40% at 10% 80%,rgba(99,102,241,.07) 0%,transparent 60%)}
 
-        h1 {
-            font-size: 8rem;
-            margin: 0;
-            background: linear-gradient(45deg, #ff416c, #ff4b2b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            letter-spacing: -5px;
-        }
+/* ═══════════════════════════════ HEADER */
+.app-header{position:relative;z-index:100;padding:14px 18px 10px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.header-logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-icon{width:36px;height:36px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(168,85,247,.4)}
+.logo-text{font-family:'Unbounded',sans-serif;font-weight:900;font-size:16px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header-right{display:flex;align-items:center;gap:8px}
+.hdr-coin-badge{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);padding:6px 12px;border-radius:50px;font-size:12px;font-weight:800;color:var(--yellow);display:flex;align-items:center;gap:5px}
+.hdr-avatar{width:36px;height:36px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;cursor:pointer;border:2px solid rgba(168,85,247,.3);flex-shrink:0}
+.hdr-login-btn{background:var(--grad);border:none;padding:8px 16px;border-radius:50px;font-weight:800;font-size:12px;color:#fff;cursor:pointer;transition:.2s;font-family:'Manrope',sans-serif}
+.hdr-login-btn:hover{opacity:.85;transform:scale(1.03)}
 
-        h2 {
-            font-size: 1.5rem;
-            margin: 10px 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.8;
-        }
+/* ═══════════════════════════════ MAIN SCROLL AREA */
+.main-scroll{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;z-index:10;scroll-behavior:smooth}
+.page-content{padding:8px 16px 24px;min-height:100%}
 
-        p {
-            color: #888;
-            margin-bottom: 30px;
-        }
+/* ═══════════════════════════════ BOTTOM NAV */
+.bottom-nav{position:relative;z-index:100;background:rgba(13,13,18,.9);backdrop-filter:blur(20px);border-top:1px solid var(--border2);display:flex;align-items:center;flex-shrink:0;padding-bottom:calc(8px + var(--safe))}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 8px;cursor:pointer;transition:.2s;border:none;background:none;color:var(--muted);font-family:'Manrope',sans-serif;-webkit-appearance:none}
+.nav-item.active{color:var(--p1)}
+.nav-icon{font-size:22px;transition:.2s}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 8px var(--p1))}
+.nav-label{font-size:10px;font-weight:700;letter-spacing:.3px}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--p1);opacity:0;transition:.2s;margin-top:1px}
+.nav-item.active .nav-dot{opacity:1}
 
-        /* Бесконечная загрузка */
-        .loader {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto;
-        }
+/* ═══════════════════════════════ PAGES */
+.page{display:none}.page.active{display:block;animation:pageIn .3s cubic-bezier(.16,1,.3,1)}
+@keyframes pageIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-        .loader-circle {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 4px solid transparent;
-            border-top: 4px solid #ff416c;
-            border-radius: 50%;
-            animation: spin 1.5s linear infinite;
-        }
+/* ═══════════════════════════════ SECTION TITLE */
+.sec-title{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:20px 0 12px}
 
-        .loader-circle-inner {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
-            border: 4px solid transparent;
-            border-top: 4px solid #ff4b2b;
-            border-radius: 50%;
-            animation: spin 2s linear infinite reverse;
-        }
+/* ═══════════════════════════════ SHOP GRID */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.shop-card{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);position:relative}
+.shop-card:hover,.shop-card:active{transform:scale(.97);border-color:var(--border)}
+.shop-card-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:var(--bg3)}
+.shop-card-body{padding:10px 12px 12px}
+.shop-card-name{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.shop-card-price{display:inline-flex;align-items:center;gap:4px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;color:var(--yellow)}
+.shop-card-badge{position:absolute;top:8px;right:8px;background:var(--grad);color:#fff;font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;font-family:'Manrope',sans-serif}
+.shop-card.sold-out{opacity:.5;pointer-events:none}
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+/* ═══════════════════════════════ CLICKER */
+.clicker-header{text-align:center;padding:10px 0 20px}
+.clicker-coins{font-family:'Unbounded',sans-serif;font-size:36px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.clicker-sub{font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
+.clicker-tap-wrap{display:flex;justify-content:center;margin:16px 0}
+.clicker-btn{
+  width:180px;height:180px;border-radius:50%;
+  background:var(--grad);
+  border:none;cursor:pointer;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  font-size:72px;
+  box-shadow:0 0 40px rgba(168,85,247,.4),0 0 80px rgba(168,85,247,.15),inset 0 2px 4px rgba(255,255,255,.2);
+  transition:transform .1s,box-shadow .1s;
+  -webkit-appearance:none;
+  user-select:none;-webkit-user-select:none;
+}
+.clicker-btn:active{transform:scale(.93);box-shadow:0 0 20px rgba(168,85,247,.3)}
+.clicker-btn-ring{position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(168,85,247,.3);animation:ringPulse 2s ease-in-out infinite}
+.clicker-btn-ring2{position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(168,85,247,.15);animation:ringPulse 2s ease-in-out infinite .5s}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.04);opacity:.6}}
+.click-float{position:absolute;font-family:'Unbounded',sans-serif;font-weight:900;font-size:22px;color:#fff;text-shadow:0 0 12px rgba(168,85,247,.8);pointer-events:none;animation:floatUp .9s ease-out forwards;z-index:999}
+@keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(.6);opacity:0}}
+.combo-badge{text-align:center;height:24px;margin-bottom:4px}
+.combo-text{display:inline-block;font-family:'Unbounded',sans-serif;font-size:11px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:comboPop .3s cubic-bezier(.16,1,.3,1)}
+@keyframes comboPop{from{transform:scale(1.3)}to{transform:scale(1)}}
 
-        /* Эффект свечения сзади */
-        .glow {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 65, 108, 0.15) 0%, rgba(0,0,0,0) 70%);
-            z-index: -1;
-        }
-    </style>
+/* UPGRADES */
+.upgrades-title{font-family:'Unbounded',sans-serif;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:16px 0 10px}
+.upgrades-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.upgrade-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.upgrade-card:hover{border-color:var(--border);transform:translateY(-2px)}
+.upgrade-card.maxed{opacity:.5;pointer-events:none}
+.upgrade-card.cant-afford{opacity:.6}
+.upgrade-card::before{content:'';position:absolute;inset:0;background:var(--grad);opacity:0;transition:.3s}
+.upgrade-card:hover::before{opacity:.05}
+.upg-icon{font-size:20px}
+.upg-name{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;line-height:1.3}
+.upg-desc{font-size:10px;color:var(--muted);line-height:1.4}
+.upg-cost{display:inline-flex;align-items:center;gap:3px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;color:var(--yellow);width:fit-content}
+.upg-lvl{position:absolute;top:8px;right:8px;background:var(--grad);padding:2px 7px;border-radius:20px;font-size:9px;font-weight:800;color:#fff}
+
+/* LEADERBOARD */
+.lb-item{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:.2s}
+.lb-rank{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:900;min-width:30px;text-align:center}
+.lb-rank.gold{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.5)}
+.lb-rank.silver{color:#c0c0c0;text-shadow:0 0 8px rgba(192,192,192,.4)}
+.lb-rank.bronze{color:#cd7f32;text-shadow:0 0 8px rgba(205,127,50,.4)}
+.lb-avatar{width:38px;height:38px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.lb-info{flex:1}
+.lb-name{font-weight:800;font-size:14px;margin-bottom:2px}
+.lb-score{font-size:12px;color:var(--muted);font-weight:600}
+.lb-item.me{border-color:var(--border);background:rgba(168,85,247,.08)}
+.lb-item.me .lb-name{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* PROGRESS BAR */
+.prog-bar-wrap{background:var(--bg3);border-radius:20px;height:6px;overflow:hidden;margin:10px 0}
+.prog-bar-fill{height:100%;background:var(--grad);border-radius:20px;transition:width .5s cubic-bezier(.16,1,.3,1);box-shadow:0 0 10px rgba(168,85,247,.5)}
+
+/* ═══════════════════════════════ PROFILE */
+.profile-hero{background:var(--bg2);border:1px solid var(--border2);border-radius:24px;padding:24px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.profile-hero::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:var(--grad);border-radius:50%;filter:blur(60px);opacity:.15;pointer-events:none}
+.prof-avatar{width:80px;height:80px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:30px;margin:0 auto 12px;border:3px solid rgba(168,85,247,.4);position:relative;z-index:1}
+.prof-name{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:900;margin-bottom:4px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.prof-level{display:inline-flex;align-items:center;gap:6px;background:var(--grad);padding:4px 14px;border-radius:50px;font-size:11px;font-weight:800;color:#fff;margin-bottom:14px}
+.prof-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.prof-stat{background:var(--bg3);border-radius:14px;padding:12px 8px;text-align:center}
+.prof-stat-num{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:3px}
+.prof-stat-label{font-size:10px;color:var(--muted);font-weight:700}
+.level-bar-wrap{margin-top:16px}
+.level-bar-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:6px}
+
+/* REVIEWS */
+.review-card{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:14px;margin-bottom:10px;animation:pageIn .3s cubic-bezier(.16,1,.3,1) both}
+.review-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.review-avatar{width:34px;height:34px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.review-author{font-weight:800;font-size:13px;margin-bottom:2px}
+.review-date{font-size:11px;color:var(--muted)}
+.review-stars{display:flex;gap:2px;margin-bottom:6px}
+.review-star{font-size:14px;filter:grayscale(1);transition:.2s}
+.review-star.lit{filter:none}
+.review-text{font-size:13px;line-height:1.6;color:rgba(241,240,255,.85)}
+.star-picker{display:flex;gap:6px;margin:10px 0}
+.star-pick-btn{font-size:24px;filter:grayscale(1);cursor:pointer;transition:.2s;background:none;border:none}
+.star-pick-btn.lit{filter:none}
+
+/* ═══════════════════════════════ ADMIN */
+.admin-section{margin-bottom:20px}
+.admin-card{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:16px;margin-bottom:10px}
+.admin-card-title{font-family:'Unbounded',sans-serif;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.pending-card{background:var(--bg2);border:1px solid rgba(251,191,36,.2);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
+.pending-img{width:60px;height:60px;border-radius:12px;object-fit:cover;background:var(--bg3);flex-shrink:0}
+.pending-info{flex:1}
+.pending-name{font-weight:800;font-size:14px;margin-bottom:3px}
+.pending-meta{font-size:11px;color:var(--muted);margin-bottom:8px}
+.pending-actions{display:flex;gap:8px}
+.pend-btn{padding:7px 14px;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer;font-family:'Manrope',sans-serif;transition:.2s}
+.pend-btn:hover{transform:scale(1.04)}
+.pend-approve{background:var(--green);color:#000}
+.pend-reject{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.25)}
+.user-row-a{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg3);border-radius:12px;margin-bottom:8px;border:1px solid var(--border2)}
+.ua-name{flex:1;font-weight:700;font-size:13px}
+.ua-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-right:4px}
+.ua-adm{background:rgba(251,191,36,.1);color:var(--yellow)}
+.ua-ban{background:rgba(239,68,68,.1);color:var(--red)}
+.mini-btn{padding:5px 12px;border:none;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif;transition:.2s}
+.mini-btn:hover{opacity:.8}
+.mb-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.mb-green{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.mb-yellow{background:rgba(251,191,36,.1);color:var(--yellow);border:1px solid rgba(251,191,36,.2)}
+.mb-gray{background:rgba(107,107,138,.15);color:var(--muted);border:1px solid rgba(107,107,138,.2)}
+
+/* ═══════════════════════════════ INPUTS */
+input,select,textarea{width:100%;padding:13px 15px;margin:6px 0;border:1px solid var(--border2);border-radius:var(--r);box-sizing:border-box;font-family:'Manrope',sans-serif;outline:none;background:var(--bg3);color:var(--text);font-size:14px;transition:border-color .3s,box-shadow .3s;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--border);box-shadow:0 0 0 3px rgba(168,85,247,.1)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+select option{background:var(--bg2)}
+textarea{resize:none;min-height:80px;line-height:1.55}
+
+/* BUTTONS */
+.btn-grad{background:var(--grad);border:none;padding:14px 22px;border-radius:var(--r);font-weight:800;font-size:14px;color:#fff;cursor:pointer;width:100%;margin-top:10px;font-family:'Manrope',sans-serif;transition:.2s;position:relative;overflow:hidden}
+.btn-grad:hover{opacity:.88;transform:translateY(-1px)}
+.btn-grad:active{transform:scale(.97)}
+.btn-outline{background:transparent;border:1px solid var(--border);padding:12px 18px;border-radius:14px;font-weight:700;font-size:13px;color:var(--text);cursor:pointer;font-family:'Manrope',sans-serif;transition:.2s;width:100%;margin-top:8px}
+.btn-outline:hover{border-color:var(--p1);color:var(--p1)}
+.btn-sm{padding:10px 16px;border:none;border-radius:12px;font-weight:800;font-size:12px;cursor:pointer;font-family:'Manrope',sans-serif;transition:.2s;background:var(--grad);color:#fff}
+.btn-sm:hover{opacity:.85}
+
+/* ═══════════════════════════════ MODALS */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;justify-content:center;align-items:flex-end;z-index:1000;backdrop-filter:blur(6px)}
+.modal.modal-center{align-items:center}
+.modal-sheet{background:var(--bg2);border-radius:28px 28px 0 0;width:100%;max-width:480px;margin:0 auto;padding:20px 20px calc(20px + var(--safe));position:relative;animation:sheetIn .35s cubic-bezier(.16,1,.3,1) both;max-height:90vh;overflow-y:auto}
+.modal-center .modal-sheet{border-radius:28px;margin:20px;width:calc(100% - 40px);animation:modalIn .35s cubic-bezier(.16,1,.3,1) both}
+@keyframes sheetIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes modalIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.sheet-handle{width:40px;height:4px;background:rgba(255,255,255,.15);border-radius:4px;margin:0 auto 20px}
+.modal-title{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.close-x{position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:.2s;line-height:1}
+.close-x:hover{color:var(--text)}
+
+/* PAY OPTION */
+.pay-opt{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border2);padding:14px 16px;border-radius:14px;cursor:pointer;margin-top:10px;transition:.25s;font-weight:700}
+.pay-opt:hover{border-color:var(--border);transform:translateX(4px)}
+.pay-opt-icon{font-size:22px}
+.pay-opt-label{font-size:14px}
+.pay-opt-cost{margin-left:auto;display:flex;align-items:center;gap:4px;color:var(--yellow);font-size:12px;font-weight:800}
+
+/* UPLOAD */
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;transition:.2s;margin:10px 0}
+.upload-zone:hover{border-color:var(--border);background:rgba(168,85,247,.05)}
+.upload-zone-icon{font-size:32px;margin-bottom:8px;display:block}
+.upload-zone-text{font-size:13px;color:var(--muted);font-weight:600}
+.upload-preview{width:100%;max-height:200px;border-radius:14px;object-fit:cover;display:none;margin:10px 0}
+#file-input,#prod-file-input{display:none}
+
+/* STEP DOTS */
+.step-dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.step-dot{width:7px;height:7px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);transition:.3s}
+.step-dot.active{background:var(--p1);border-color:var(--p1);box-shadow:0 0 8px rgba(168,85,247,.5)}
+.step-dot.done{background:var(--green);border-color:var(--green)}
+
+/* ADDR NOTE */
+.note-box{background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.15);border-radius:12px;padding:10px 14px;font-size:12px;color:rgba(168,85,247,.9);margin:8px 0;line-height:1.5}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(74px + var(--safe) + 10px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--border);padding:12px 20px;border-radius:50px;font-weight:700;font-size:13px;z-index:9999;box-shadow:0 10px 40px rgba(0,0,0,.5);transition:all .35s cubic-bezier(.16,1,.3,1);opacity:0;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* RIPPLE */
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.25);animation:rip .6s linear;pointer-events:none}
+@keyframes rip{from{transform:scale(0);opacity:1}to{transform:scale(4);opacity:0}}
+
+/* EMPTY */
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty-icon{font-size:44px;margin-bottom:10px;opacity:.5}
+.empty-text{font-size:14px;font-weight:700}
+
+/* CHAT */
+.chat-wrap{background:var(--bg);border-radius:16px;padding:12px;height:200px;overflow-y:auto;margin:10px 0;display:flex;flex-direction:column;gap:6px;border:1px solid var(--border2)}
+.chat-msg{padding:8px 12px;border-radius:12px;background:var(--bg2);border:1px solid var(--border2);font-size:12px;animation:pageIn .25s cubic-bezier(.16,1,.3,1) both}
+.chat-msg b{color:var(--p1)}
+.chat-msg.sys{border-color:rgba(168,85,247,.2);background:rgba(168,85,247,.06)}
+.chat-msg.sys b{color:var(--p1)}
+.chat-msg.give{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.06)}
+.chat-msg.give b{color:var(--green)}
+.chat-msg.unveri{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.06)}
+.chat-msg.unveri b{color:var(--red)}
+.chat-input-row{display:flex;gap:8px}
+.chat-input-row input{margin:0;border-radius:50px}
+.chat-send{background:var(--grad);border:none;width:44px;height:44px;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;transition:.2s}
+.chat-send:hover{transform:scale(1.08)}
+
+/* SELL FORM */
+.sell-img-preview{width:100%;max-height:180px;object-fit:cover;border-radius:14px;display:none;margin-bottom:10px}
+
+/* ANNOUNCE BAR */
+#ann-bar{display:none;position:relative;z-index:99;background:rgba(56,189,248,.08);border-bottom:1px solid rgba(56,189,248,.2);padding:10px 18px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px}
+#ann-bar.visible{display:flex}
+
+/* BAN SCREEN */
+#ban-screen{position:fixed;inset:0;z-index:99999;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}
+#ban-screen.show{display:flex}
+.ban-icon{font-size:64px;margin-bottom:16px;animation:banRock .5s ease-in-out infinite alternate}
+@keyframes banRock{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+.ban-title{font-family:'Unbounded',sans-serif;font-size:22px;color:var(--red);margin-bottom:8px}
+.ban-sub{font-size:13px;color:var(--muted);max-width:320px;line-height:1.6}
+
+/* VERIFIED BADGE */
+.v-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}
+.vb-yes{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.vb-no{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+</style>
 </head>
 <body>
 
-    <div class="glow"></div>
-    
-    <div class="container">
-        <h1>404</h1>
-        <h2>Сайт перегружен</h2>
-        <p>Слишком много запросов. Пожалуйста, подождите...</p>
-        
-        <div class="loader">
-            <div class="loader-circle"></div>
-            <div class="loader-circle-inner"></div>
-        </div>
+<!-- BAN SCREEN -->
+<div id="ban-screen">
+  <div class="ban-icon">🔨</div>
+  <div class="ban-title">Аккаунт заблокирован</div>
+  <div class="ban-sub">Вы были заблокированы администратором. Для разблокировки обратитесь в поддержку.</div>
+</div>
+
+<!-- BG -->
+<div class="bg-grad"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- ANN BAR -->
+<div id="ann-bar"><span style="color:var(--blue)">📢</span><span id="ann-text" style="flex:1"></span><button onclick="document.getElementById('ann-bar').classList.remove('visible')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px">✕</button></div>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="header-logo" onclick="goPage('shop')">
+    <div class="logo-icon">💣</div>
+    <div class="logo-text">SNARYAD</div>
+  </div>
+  <div class="header-right" id="hdr-right">
+    <button class="hdr-login-btn" onclick="openMod('auth-modal')">Войти</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-scroll" id="main-scroll">
+  <div class="page-content">
+
+    <!-- ══ PAGE: SHOP ══ -->
+    <div id="page-shop" class="page active">
+      <div class="sec-title">🛍 Магазин</div>
+      <div class="shop-grid" id="shop-grid">
+        <div class="empty"><div class="empty-icon">💣</div><div class="empty-text">Загрузка...</div></div>
+      </div>
     </div>
 
+    <!-- ══ PAGE: CLICKER ══ -->
+    <div id="page-clicker" class="page">
+      <div class="clicker-header">
+        <div class="combo-badge"><span class="combo-text" id="combo-txt" style="display:none"></span></div>
+        <div class="clicker-coins" id="clk-coins">0</div>
+        <div class="clicker-sub">снаряд коинов · тап чтобы заработать</div>
+      </div>
+      <div class="clicker-tap-wrap" id="clicker-area">
+        <button class="clicker-btn" id="clicker-btn" onpointerdown="handleTap(event)">
+          💣
+          <div class="clicker-btn-ring"></div>
+          <div class="clicker-btn-ring2"></div>
+        </button>
+      </div>
+      <div class="prog-bar-wrap">
+        <div class="prog-bar-fill" id="clk-prog-fill" style="width:0%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px">
+        <span>Клик: <span id="clk-per-tap" style="color:var(--p1)">×1</span></span>
+        <span>Авто: <span id="clk-auto" style="color:var(--p2)">0/сек</span></span>
+        <span>Всего: <span id="clk-total" style="color:var(--yellow)">0</span></span>
+      </div>
+      <div class="upgrades-title">⚡ Улучшения</div>
+      <div class="upgrades-grid" id="upgrades-grid"></div>
+      <div class="upgrades-title">🏆 Лидерборд</div>
+      <div id="leaderboard"></div>
+    </div>
+
+    <!-- ══ PAGE: ORDERS ══ -->
+    <div id="page-orders" class="page">
+      <div class="sec-title">📦 Мои заказы</div>
+      <div id="orders-list"></div>
+    </div>
+
+    <!-- ══ PAGE: SELL ══ -->
+    <div id="page-sell" class="page">
+      <div class="sec-title">📤 Выставить товар</div>
+      <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:20px;margin-bottom:16px">
+        <div class="note-box">После отправки товар попадёт на проверку к администратору. После одобрения он появится в магазине.</div>
+        <label style="font-size:12px;color:var(--muted);font-weight:700;display:block;margin-bottom:4px">Название товара</label>
+        <input id="sell-name" placeholder="Например: Крутой Снаряд XL">
+        <label style="font-size:12px;color:var(--muted);font-weight:700;display:block;margin-bottom:4px;margin-top:8px">Цена (в коинах)</label>
+        <input type="number" id="sell-price" placeholder="Например: 5000" min="100">
+        <label style="font-size:12px;color:var(--muted);font-weight:700;display:block;margin-bottom:4px;margin-top:8px">Описание</label>
+        <textarea id="sell-desc" placeholder="Опиши свой товар..."></textarea>
+        <label style="font-size:12px;color:var(--muted);font-weight:700;display:block;margin-bottom:4px;margin-top:8px">Фото товара</label>
+        <img id="sell-preview" class="sell-img-preview">
+        <div class="upload-zone" onclick="document.getElementById('prod-file-input').click()">
+          <span class="upload-zone-icon">📷</span>
+          <div class="upload-zone-text">Нажми чтобы загрузить фото из галереи</div>
+        </div>
+        <input type="file" id="prod-file-input" accept="image/*" onchange="previewProd(event)">
+        <button class="btn-grad" onclick="submitProduct()">📤 Отправить на проверку</button>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: PROFILE ══ -->
+    <div id="page-profile" class="page">
+      <div id="profile-content">
+        <div class="empty"><div class="empty-icon">👤</div><div class="empty-text">Войдите чтобы увидеть профиль</div><button class="btn-grad" style="margin-top:16px;width:auto;padding:12px 24px" onclick="openMod('auth-modal')">Войти</button></div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: ADMIN ══ -->
+    <div id="page-admin" class="page">
+      <div class="sec-title" style="background:linear-gradient(135deg,var(--p1),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">⚡ Админ панель</div>
+
+      <!-- pending products -->
+      <div class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title"><span>⏳</span> Товары на проверке</div>
+          <div id="pending-list"><div style="color:var(--muted);font-size:13px">Загрузка...</div></div>
+        </div>
+      </div>
+
+      <!-- users -->
+      <div class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title"><span>👥</span> Пользователи</div>
+          <input placeholder="🔍 Поиск..." id="adm-user-search" oninput="filterAdmUsers()" style="margin-bottom:10px">
+          <div id="adm-users-list" style="max-height:360px;overflow-y:auto"></div>
+        </div>
+      </div>
+
+      <!-- announce -->
+      <div class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title"><span>📢</span> Объявление всем</div>
+          <textarea id="ann-input" placeholder="Текст объявления..." style="min-height:70px"></textarea>
+          <button class="btn-sm" style="width:100%;margin-top:8px;padding:12px" onclick="sendAnnounce()">📢 Отправить</button>
+        </div>
+      </div>
+
+      <!-- orders admin -->
+      <div class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-title"><span>📦</span> Все заказы</div>
+          <div id="adm-orders-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-item active" onclick="goPage('shop')" data-page="shop">
+    <div class="nav-icon">🛍</div><div class="nav-label">Магазин</div><div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" onclick="goPage('clicker')" data-page="clicker">
+    <div class="nav-icon">💣</div><div class="nav-label">Тапать</div><div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-orders" style="display:none" onclick="goPage('orders')" data-page="orders">
+    <div class="nav-icon">📦</div><div class="nav-label">Заказы</div><div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-sell" style="display:none" onclick="goPage('sell')" data-page="sell">
+    <div class="nav-icon">📤</div><div class="nav-label">Продать</div><div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" onclick="goPage('profile')" data-page="profile">
+    <div class="nav-icon">👤</div><div class="nav-label">Профиль</div><div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-admin" style="display:none" onclick="goPage('admin')" data-page="admin">
+    <div class="nav-icon">⚡</div><div class="nav-label">Админ</div><div class="nav-dot"></div>
+  </button>
+</nav>
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- AUTH -->
+<div id="auth-modal" class="modal modal-center">
+  <div class="modal-sheet">
+    <button class="close-x" onclick="closeMods()">✕</button>
+    <div class="modal-title">💣 Вход / Регистрация</div>
+    <input id="l-u" placeholder="Логин (никнейм)">
+    <input id="l-p" type="password" placeholder="Пароль" onkeydown="if(event.key==='Enter')authGo()">
+    <button class="btn-grad" onclick="authGo()">Войти / Зарегистрироваться</button>
+  </div>
+</div>
+
+<!-- PAY (addr + chat) -->
+<div id="pay-modal" class="modal">
+  <div class="modal-sheet" style="max-height:95vh">
+    <div class="sheet-handle"></div>
+    <button class="close-x" onclick="closeMods()">✕</button>
+    <div class="step-dots" id="step-dots" style="display:none">
+      <div class="step-dot active" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+    </div>
+    <!-- Step 1: address -->
+    <div id="addr-step" style="display:none">
+      <div class="modal-title">📍 Адрес доставки</div>
+      <div class="note-box">🔒 Адрес виден только администратору, в чате покупателя не отображается</div>
+      <textarea id="addr-input" placeholder="Улица, дом, кв.&#10;Этаж, код домофона..."></textarea>
+      <button class="btn-grad" onclick="stepToPay()">Далее →</button>
+    </div>
+    <!-- Step 2: pay -->
+    <div id="pay-opts" style="display:none">
+      <div class="modal-title">💰 Оплата коинами</div>
+      <div id="pay-coin-info" class="note-box"></div>
+      <div class="pay-opt" id="pay-confirm-btn" onclick="createOrder()">
+        <span class="pay-opt-icon">🪙</span>
+        <span class="pay-opt-label">Снаряд Коины</span>
+        <span class="pay-opt-cost" id="pay-cost-show">0 <span>🪙</span></span>
+      </div>
+    </div>
+    <!-- Step 3: chat -->
+    <div id="chat-step" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div class="modal-title" id="chat-title" style="flex:1;margin:0">Чат</div>
+        <div id="chat-status-badge" class="v-badge vb-no">Ожидание</div>
+      </div>
+      <div class="chat-wrap" id="chat-box"></div>
+      <div class="chat-input-row">
+        <input id="msg-in" placeholder="Сообщение..." onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="chat-send" onclick="sendMsg()">➤</button>
+      </div>
+      <div id="adm-chat-btns" style="display:none;margin-top:12px;border-top:1px solid var(--border2);padding-top:12px">
+        <div style="font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;font-family:'Unbounded',sans-serif;margin-bottom:10px">Панель администратора</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="mini-btn mb-green" onclick="updStat('Принят ✅')">✅ Принять</button>
+          <button class="mini-btn mb-red" onclick="updStat('Отказ ❌')">❌ Отказать</button>
+          <button class="mini-btn mb-yellow" onclick="giveOrder()">📦 Выдать</button>
+          <button class="mini-btn mb-yellow" onclick="setV()">✔ Верифицировать</button>
+          <button class="mini-btn mb-gray" style="grid-column:1/-1" onclick="removeV()">🚫 Снять верифку</button>
+          <button class="mini-btn mb-gray" id="complete-btn" style="grid-column:1/-1;display:none;background:linear-gradient(135deg,#7c4dff,#651fff);color:#fff;border:none" onclick="completeChat()">🏁 Завершить чат</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VERIFY REQUEST -->
+<div id="vreq-modal" class="modal">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <button class="close-x" onclick="closeMods()">✕</button>
+    <div class="modal-title">🔍 Верификация</div>
+    <input id="vr-code" placeholder="Код снаряда">
+    <select id="vr-item"><option>Снаряд</option><option>Мина</option><option>Парашут</option><option>Кал</option><option>Домофон</option></select>
+    <button class="btn-grad" onclick="sendVReq()">Отправить заявку</button>
+  </div>
+</div>
+
+<!-- WRITE REVIEW -->
+<div id="review-modal" class="modal">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <button class="close-x" onclick="closeMods()">✕</button>
+    <div class="modal-title">⭐ Оставить отзыв</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Рейтинг:</div>
+    <div class="star-picker" id="star-picker">
+      <button class="star-pick-btn" data-s="1" onclick="pickStar(1)">⭐</button>
+      <button class="star-pick-btn" data-s="2" onclick="pickStar(2)">⭐</button>
+      <button class="star-pick-btn" data-s="3" onclick="pickStar(3)">⭐</button>
+      <button class="star-pick-btn" data-s="4" onclick="pickStar(4)">⭐</button>
+      <button class="star-pick-btn" data-s="5" onclick="pickStar(5)">⭐</button>
+    </div>
+    <textarea id="review-text" placeholder="Твой отзыв о магазине..."></textarea>
+    <button class="btn-grad" onclick="submitReview()">Отправить отзыв</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+/* particles */
+(()=>{
+  const c=document.getElementById('bg-canvas'),ctx=c.getContext('2d');
+  let W,H,pts;
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;init()}
+  function init(){pts=[];const n=Math.min(40,Math.floor(W*H/25000));for(let i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.2+.3,o:Math.random()*.2+.04})}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(168,85,247,${p.o})`;ctx.fill()});
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(168,85,247,${.04*(1-d/100)})`;ctx.lineWidth=.5;ctx.stroke()}}
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);resize();draw();
+})();
+
+/* ripple */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.btn-grad,.btn-sm,.pay-opt,.mini-btn');
+  if(!t)return;
+  const r=document.createElement('span');r.className='ripple';
+  const rect=t.getBoundingClientRect(),s=Math.max(rect.width,rect.height)*2;
+  r.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px`;
+  t.appendChild(r);setTimeout(()=>r.remove(),620);
+});
+
+/* page nav */
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelector(`[data-page="${id}"]`)?.classList.add('active');
+  document.getElementById('main-scroll').scrollTop=0;
+  if(id==='admin'){loadAdminData()}
+  if(id==='profile'){renderProfile()}
+  if(id==='clicker'){renderLeaderboard()}
+}
+
+/* toast */
+function toast(msg,dur=2600){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);
+}
+</script>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getDatabase,ref,set,get,update,remove,onValue,push}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const app=initializeApp({apiKey:"AIzaSyDLmvHA8eEptL5eURhRzJLL155RXWQ30eg",authDomain:"snaryadshop.firebaseapp.com",databaseURL:"https://snaryadshop-default-rtdb.firebaseio.com",projectId:"snaryadshop"});
+const auth=getAuth(app),db=getDatabase(app);
+const TG_TOKEN="8782923361:AAFmJdvhUGzKeIeaW9f4XSvAmZMDXLBRZgU";
+const TG_CHAT_ID="8208159801";
+
+let user=null,isAdmin=false,curId=null,temp=null,chatOff=null;
+let prodImgData=null,reviewStars=0,admUsersCache={};
+
+/* ── LEVELS ── */
+const LEVELS=[
+  {n:1,icon:'🌱',label:'Новобранец',req:0},
+  {n:2,icon:'💫',label:'Стрелок',req:200},
+  {n:3,icon:'🔥',label:'Подрывник',req:800},
+  {n:4,icon:'💥',label:'Снайпер',req:2500},
+  {n:5,icon:'🚀',label:'Командир',req:7000},
+  {n:6,icon:'⚡',label:'Легенда',req:18000},
+  {n:7,icon:'💣',label:'СНАРЯД БОГ',req:50000},
+];
+function getLevel(total){
+  let lv=LEVELS[0];
+  for(const l of LEVELS){if(total>=l.req)lv=l;else break}
+  return lv;
+}
+function getNextLevel(total){
+  for(const l of LEVELS){if(total<l.req)return l}
+  return null;
+}
+
+/* ── UPGRADES ── */
+const UPGRADES=[
+  {id:'multi2',icon:'🔥',name:'Двойной удар',desc:'×2 коина за тап',costs:[500,1500,4000,10000],effect:(s,lv)=>{s.tapMult=1+lv+1}},
+  {id:'auto1', icon:'🤖',name:'Авто-тапер I', desc:'+1 коин/сек',    costs:[300,900,2500,7000], effect:(s,lv)=>{s.autoRate=(s.autoRate||0)+lv+1}},
+  {id:'multi5',icon:'💥',name:'Крит-удар',    desc:'×1.5 кликов',   costs:[2000,6000,15000],   effect:(s,lv)=>{s.tapMult=(s.tapMult||1)*1.5}},
+  {id:'auto5', icon:'⚙️',name:'Авто-тапер II',desc:'+5 коин/сек',   costs:[5000,15000,40000],  effect:(s,lv)=>{s.autoRate=(s.autoRate||0)+(lv+1)*5}},
+  {id:'combo', icon:'🌀',name:'Комбо-бонус',  desc:'Множитель комбо',costs:[1000,4000,12000],   effect:(s,lv)=>{s.comboMult=(s.comboMult||1)+.5*(lv+1)}},
+  {id:'lucky', icon:'🍀',name:'Удача',        desc:'Шанс ×10 удар', costs:[3000,9000,25000],   effect:(s,lv)=>{s.luckyChance=.05*(lv+1)}},
+];
+
+/* ── DEFAULT PRODUCTS ── */
+const DEF_PRODUCTS=[
+  {id:'p_snaryad',name:'Снаряд',    price:2000, img:'snaryad.png',needAddr:false},
+  {id:'p_mina',   name:'Мина',      price:3000, img:'mina.png',   needAddr:false},
+  {id:'p_parashut',name:'Парашут',  price:1200, img:'parashut.png',needAddr:false},
+  {id:'p_kal',    name:'Кал',       price:4500, img:'kal.png',    needAddr:false},
+  {id:'p_domofon',name:'Обмаз домофон',price:10000,img:'obmaz.png',needAddr:true},
+  {id:'p_verif',  name:'Верификация',price:0,   img:'check.png',  needAddr:false,isVerif:true},
+];
+let PRODUCTS=DEF_PRODUCTS;
+
+/* ── CLICKER STATE ── */
+let coins=0,totalEarned=0;
+let tapMult=1,autoRate=0,comboMult=1,luckyChance=0;
+let comboCount=0,comboTimer=null;
+let upgradeLevels={};
+let saveTimer=null;
+
+/* ── FAKE LEADERBOARD ── */
+const FAKE_LB=[
+  {name:'снаряд_346',score:89420},
+  {name:'тапер_про',score:67890},
+  {name:'zero_x_cool',score:45230},
+  {name:'bomberman777',score:34560},
+  {name:'ghostclick',score:23780},
+  {name:'phantom_tap',score:12340},
+  {name:'neon_sniper',score:8670},
+  {name:'void_runner',score:4210},
+];
+
+/* ═══════════ HELPERS ═══════════ */
+function fmt(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return Math.floor(n).toString()}
+async function tg(msg){try{await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg,parse_mode:'HTML'})})}catch(e){}}
+function stCls(s){if(!s)return'vb-no';if(s.includes('Ожидание')||s.includes('Проверка'))return'vb-no';if(s.includes('Принят')||s.includes('Выдан')||s.includes('Завершён'))return'vb-yes';if(s.includes('Отказ'))return'vb-no';return'vb-no'}
+function mCls(m){if(m.give)return'chat-msg give';if(m.unveri)return'chat-msg unveri';if(m.sys)return'chat-msg sys';return'chat-msg'}
+function setDot(a){[1,2,3].forEach(i=>{const d=document.getElementById('dot-'+i);d.className='step-dot'+(i<a?' done':i===a?' active':'')})}
+
+window.openMod=id=>{document.getElementById(id).style.display='flex'};
+window.closeMods=()=>document.querySelectorAll('.modal').forEach(m=>m.style.display='none');
+
+/* ═══════════ AUTH ═══════════ */
+onAuthStateChanged(auth,async u=>{
+  if(u){
+    user=u;const n=u.email.split('@')[0];
+    const banSnap=await get(ref(db,'bans/'+n));
+    if(banSnap.val()===true){document.getElementById('ban-screen').classList.add('show');return}
+    document.getElementById('hdr-right').innerHTML=`
+      <div class="hdr-coin-badge">🪙 <span id="hdr-coins">0</span></div>
+      <div class="hdr-avatar" onclick="goPage('profile')">${n[0].toUpperCase()}</div>`;
+    document.getElementById('nav-orders').style.display='flex';
+    document.getElementById('nav-sell').style.display='flex';
+    onValue(ref(db,'admins/'+n),s=>{
+      isAdmin=s.val()===true;
+      document.getElementById('nav-admin').style.display=isAdmin?'flex':'none';
+    });
+    set(ref(db,'users/'+n),{name:n,lastSeen:new Date().toLocaleString('ru-RU')});
+    loadCoins();
+    loadOrders();
+  }
+  loadProducts();
+});
+
+window.authGo=async()=>{
+  const u=document.getElementById('l-u').value.trim(),p=document.getElementById('l-p').value;
+  if(!u||!p)return toast("⚠️ Введи логин и пароль!");
+  const email=u+'@snaryad.shop';
+  try{await signInWithEmailAndPassword(auth,email,p);closeMods();toast("✅ Добро пожаловать, "+u+"!")}
+  catch(e){
+    if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'){
+      try{await createUserWithEmailAndPassword(auth,email,p);closeMods();toast("🎉 Аккаунт создан: "+u)}
+      catch(re){toast(re.code==='auth/email-already-in-use'?"❌ Неверный пароль!":"Ошибка: "+re.message)}
+    }else toast("Ошибка: "+e.message)
+  }
+};
+
+/* ═══════════ PRODUCTS ═══════════ */
+function loadProducts(){
+  onValue(ref(db,'site/products'),snap=>{
+    if(snap.exists()){
+      const arr=snap.val();
+      if(Array.isArray(arr)&&arr.length)PRODUCTS=arr;
+    }
+    renderShop();
+  });
+}
+function renderShop(){
+  const g=document.getElementById('shop-grid');g.innerHTML='';
+  PRODUCTS.forEach(p=>{
+    const d=document.createElement('div');d.className='shop-card';
+    const priceLabel=p.price===0?'Бесплатно':`${fmt(p.price)} 🪙`;
+    d.innerHTML=`<img class="shop-card-img" src="${p.img}" onerror="this.src='https://placehold.co/200x200/1a1a26/6b6b8a?text=💣'"><div class="shop-card-body"><div class="shop-card-name">${p.name}</div><div class="shop-card-price">${priceLabel}</div></div>`;
+    if(p.needAddr)d.innerHTML+=`<div class="shop-card-badge">📍 Доставка</div>`;
+    d.onclick=()=>{if(!user){toast("👤 Войди чтобы купить");return openMod('auth-modal')}p.isVerif?openMod('vreq-modal'):startBuy(p)};
+    g.appendChild(d);
+  });
+}
+
+/* ═══════════ BUY FLOW ═══════════ */
+window.startBuy=(p)=>{
+  if(coins<p.price){return toast(`❌ Не хватает коинов! Нужно ${fmt(p.price)} 🪙`)}
+  temp={...p};
+  openMod('pay-modal');
+  document.getElementById('chat-step').style.display='none';
+  if(p.needAddr){
+    document.getElementById('step-dots').style.display='flex';setDot(1);
+    document.getElementById('addr-step').style.display='block';
+    document.getElementById('pay-opts').style.display='none';
+    document.getElementById('addr-input').value='';
+  }else{
+    document.getElementById('step-dots').style.display='none';
+    document.getElementById('addr-step').style.display='none';
+    document.getElementById('pay-opts').style.display='block';
+    document.getElementById('pay-coin-info').textContent=`💰 Баланс: ${fmt(coins)} 🪙 · Стоимость: ${fmt(p.price)} 🪙`;
+    document.getElementById('pay-cost-show').innerHTML=`${fmt(p.price)} <span>🪙</span>`;
+  }
+};
+window.stepToPay=()=>{
+  const a=document.getElementById('addr-input').value.trim();
+  if(!a)return toast("⚠️ Введи адрес!");
+  temp.addr=a;setDot(2);
+  document.getElementById('addr-step').style.display='none';
+  document.getElementById('pay-opts').style.display='block';
+  document.getElementById('pay-coin-info').textContent=`💰 Баланс: ${fmt(coins)} 🪙 · Стоимость: ${fmt(temp.price)} 🪙`;
+  document.getElementById('pay-cost-show').innerHTML=`${fmt(temp.price)} <span>🪙</span>`;
+};
+window.createOrder=async()=>{
+  if(!temp||!user)return;
+  if(coins<temp.price)return toast("❌ Не хватает коинов!");
+  const id=Math.floor(1000+Math.random()*9000).toString();
+  const n=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  const chat=[
+    {f:'🤖 Система',t:`Заказ #${id} создан — ${temp.name}`,sys:true},
+    {f:'💰 Оплата',t:`Оплачено: ${fmt(temp.price)} Снаряд Коинов 🪙`,sys:true}
+  ];
+  await set(ref(db,'orders/'+id),{id,user:n,item:temp.name,price:temp.price,pay:'Снаряд Коины',status:'Ожидание ⏳',date:now,img:temp.img,v:false,completed:false,address:temp.addr||null,issuedBy:null,issuedAt:null,chat});
+  // deduct coins
+  coins-=temp.price;
+  saveCoins();
+  if(temp.needAddr)setDot(3);
+  await tg(`🛒 <b>НОВЫЙ ЗАКАЗ #${id}</b>\n👤 @${n}\n📦 ${temp.name}\n💰 ${temp.price} коинов${temp.addr?'\n📍 '+temp.addr:''}\n📅 ${now}`);
+  toast("✅ Заказ #"+id+" создан!");
+  openChat(id);
+};
+
+/* ═══════════ VERIFY ═══════════ */
+window.sendVReq=async()=>{
+  if(!user)return openMod('auth-modal');
+  const c=document.getElementById('vr-code').value.trim();
+  if(!c)return toast("⚠️ Введи код!");
+  const n=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  await set(ref(db,'orders/'+c),{id:c,user:n,item:'ВЕРИФ: '+document.getElementById('vr-item').value,price:0,pay:'Бесплатно',status:'Проверка 🔍',date:now,img:'check.png',v:false,completed:false,address:null,issuedBy:null,issuedAt:null,chat:[{f:'🤖 Система',t:'Заявка на верификацию: '+c,sys:true}]});
+  await tg(`🔍 <b>Верификация</b>\n👤 @${n}\n🔑 ${c}\n📅 ${now}`);
+  closeMods();toast("📤 Заявка отправлена");openChat(c);
+};
+
+/* ═══════════ CHAT ═══════════ */
+function openChat(id){
+  curId=id;if(chatOff){chatOff();chatOff=null}
+  document.getElementById('addr-step').style.display='none';
+  document.getElementById('pay-opts').style.display='none';
+  document.getElementById('step-dots').style.display='none';
+  document.getElementById('chat-step').style.display='block';
+  document.getElementById('adm-chat-btns').style.display=isAdmin?'block':'none';
+  document.getElementById('chat-title').textContent='Заказ #'+id;
+  openMod('pay-modal');
+  chatOff=onValue(ref(db,`orders/${id}`),s=>{
+    const o=s.val();if(!o)return;
+    const badge=document.getElementById('chat-status-badge');
+    if(badge){badge.className='v-badge '+stCls(o.status);badge.textContent=o.status||''}
+    const cb=document.getElementById('complete-btn');
+    if(cb&&isAdmin)cb.style.display=(o.status&&(o.status.includes('Выдан')||o.status.includes('Принят')))&&!o.completed?'block':'none';
+    const box=document.getElementById('chat-box');
+    box.innerHTML=(o.chat||[]).map(m=>`<div class="${mCls(m)}"><b>${m.f}:</b> ${m.t}</div>`).join('');
+    box.scrollTop=box.scrollHeight;
+  });
+}
+window.sendMsg=()=>{
+  const t=document.getElementById('msg-in').value.trim();if(!t)return;
+  const n=user.email.split('@')[0];
+  get(ref(db,`orders/${curId}`)).then(s=>{const o=s.val();update(ref(db,`orders/${curId}`),{chat:[...(o.chat||[]),{f:n,t}]});document.getElementById('msg-in').value=''});
+};
+window.updStat=s=>{update(ref(db,`orders/${curId}`),{status:s});toast("Статус: "+s);if(s.includes('Принят')){const c=document.getElementById('complete-btn');if(c)c.style.display='block'}};
+window.giveOrder=()=>{
+  const a=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  get(ref(db,`orders/${curId}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} выдал заказ 📦`,give:true}];await update(ref(db,`orders/${curId}`),{chat:nc,status:'Выдан ✅',issuedBy:a,issuedAt:now});await tg(`📦 Заказ выдан\n#${curId} — @${o.user}\n👨‍💼 @${a}`);toast("📦 Выдан!");const c=document.getElementById('complete-btn');if(c)c.style.display='block'});
+};
+window.setV=()=>{const a=user.email.split('@')[0];get(ref(db,`orders/${curId}`)).then(async s=>{const o=s.val();await update(ref(db,`orders/${curId}`),{v:true,chat:[...(o.chat||[]),{f:'✅ Администратор',t:`${a} верифицировал`,give:true}]});toast("✅ Верифицирован!")})};
+window.removeV=()=>{const a=user.email.split('@')[0];get(ref(db,`orders/${curId}`)).then(async s=>{const o=s.val();await update(ref(db,`orders/${curId}`),{v:false,chat:[...(o.chat||[]),{f:'🔴 Администратор',t:`${a} снял верифку`,unveri:true}]});toast("🚫 Снята!")})};
+window.completeChat=()=>{const a=user.email.split('@')[0];get(ref(db,`orders/${curId}`)).then(async s=>{const o=s.val();await update(ref(db,`orders/${curId}`),{completed:true,status:'Завершён 🏁',chat:[...(o.chat||[]),{f:'🏁 Система',t:`Завершён — ${a}`,sys:true}]});toast("🏁 Чат завершён");closeMods()})};
+
+/* ═══════════ ORDERS ═══════════ */
+function loadOrders(){
+  if(!user)return;
+  const n=user.email.split('@')[0];
+  onValue(ref(db,'orders'),s=>{
+    const l=document.getElementById('orders-list');if(!l)return;l.innerHTML='';
+    let count=0;
+    s.forEach(c=>{
+      const o=c.val();if(o.user!==n&&!isAdmin)return;count++;
+      const d=document.createElement('div');
+      d.style.cssText='background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:12px';
+      d.innerHTML=`<img src="${o.img||'check.png'}" style="width:44px;height:44px;border-radius:12px;object-fit:cover;background:var(--bg3);flex-shrink:0" onerror="this.src='https://placehold.co/44x44/1a1a26/6b6b8a?text=💣'"><div style="flex:1"><div style="font-size:10px;color:var(--muted);font-family:'Unbounded',sans-serif;margin-bottom:3px">#${o.id}</div><div style="font-weight:800;font-size:14px;margin-bottom:4px">${o.item}</div><div class="v-badge ${stCls(o.status)}">${o.status||'?'}</div></div><span style="color:var(--muted);font-size:20px">›</span>`;
+      d.addEventListener('mouseenter',()=>d.style.transform='translateX(4px)');
+      d.addEventListener('mouseleave',()=>d.style.transform='');
+      d.onclick=()=>openChat(o.id);
+      l.appendChild(d);
+    });
+    if(!count)l.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">Заказов пока нет</div></div>`;
+  });
+}
+
+/* ═══════════ CLICKER ═══════════ */
+function loadCoins(){
+  if(!user)return;
+  const n=user.email.split('@')[0];
+  onValue(ref(db,'clicker/'+n),s=>{
+    const d=s.val()||{};
+    coins=d.coins||0;totalEarned=d.total||0;
+    upgradeLevels=d.upgrades||{};
+    recalcUpgrades();
+    updateClickerUI();
+    renderUpgrades();
+    renderLeaderboard();
+    // leaderboard save
+    set(ref(db,'leaderboard/'+n),{name:n,score:totalEarned});
+  });
+}
+function saveCoins(){
+  if(!user)return;
+  const n=user.email.split('@')[0];
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    set(ref(db,'clicker/'+n),{coins,total:totalEarned,upgrades:upgradeLevels});
+    set(ref(db,'leaderboard/'+n),{name:n,score:totalEarned});
+    const hc=document.getElementById('hdr-coins');if(hc)hc.textContent=fmt(coins);
+  },800);
+}
+function recalcUpgrades(){
+  tapMult=1;autoRate=0;comboMult=1;luckyChance=0;
+  UPGRADES.forEach(u=>{
+    const lv=upgradeLevels[u.id]||0;
+    if(lv>0){const s={tapMult,autoRate,comboMult,luckyChance};u.effect(s,lv-1);tapMult=s.tapMult;autoRate=s.autoRate;comboMult=s.comboMult;luckyChance=s.luckyChance}
+  });
+}
+function updateClickerUI(){
+  document.getElementById('clk-coins').textContent=fmt(coins);
+  document.getElementById('clk-total').textContent=fmt(totalEarned);
+  document.getElementById('clk-per-tap').textContent='×'+tapMult.toFixed(1);
+  document.getElementById('clk-auto').textContent=autoRate.toFixed(0)+'/сек';
+  const hc=document.getElementById('hdr-coins');if(hc)hc.textContent=fmt(coins);
+  // progress to next level
+  const lv=getLevel(totalEarned),nx=getNextLevel(totalEarned);
+  if(nx){const pct=(totalEarned-lv.req)/(nx.req-lv.req)*100;document.getElementById('clk-prog-fill').style.width=Math.min(100,pct)+'%'}
+  else document.getElementById('clk-prog-fill').style.width='100%';
+}
+
+/* auto clicker */
+let autoInt=null;
+function startAuto(){
+  clearInterval(autoInt);
+  if(autoRate>0){autoInt=setInterval(()=>{if(autoRate>0){coins+=autoRate;totalEarned+=autoRate;updateClickerUI();saveCoins()}},1000)}
+}
+setInterval(()=>{startAuto()},5000);
+setTimeout(()=>startAuto(),2000);
+
+/* tap handler */
+let lastTap=0,tapCount=0;
+window.handleTap=e=>{
+  if(!user)return toast("👤 Войди чтобы тапать");
+  e.preventDefault();
+  const now=Date.now();
+  // combo
+  if(now-lastTap<600){tapCount++;comboCount=tapCount}else{tapCount=1;comboCount=0}
+  lastTap=now;clearTimeout(comboTimer);
+  comboTimer=setTimeout(()=>{comboCount=0;tapCount=0;const ct=document.getElementById('combo-txt');if(ct)ct.style.display='none'},800);
+  // calc earn
+  let earn=tapMult;
+  if(luckyChance>0&&Math.random()<luckyChance)earn*=10;
+  if(comboCount>5)earn*=(comboMult||1);
+  earn=Math.ceil(earn);
+  coins+=earn;totalEarned+=earn;
+  updateClickerUI();saveCoins();
+  // combo text
+  const ct=document.getElementById('combo-txt');
+  if(ct&&comboCount>3){ct.style.display='inline-block';ct.textContent=`COMBO ×${comboCount} 🔥`}
+  else if(ct)ct.style.display='none';
+  // float
+  const area=document.getElementById('clicker-area');
+  const btn=document.getElementById('clicker-btn');
+  const r=btn.getBoundingClientRect(),ar=area.getBoundingClientRect();
+  const f=document.createElement('div');f.className='click-float';
+  f.textContent=earn>tapMult?`+${earn} 🍀`:`+${earn}`;
+  f.style.left=(r.left-ar.left+r.width/2+Math.random()*40-20)+'px';
+  f.style.top=(r.top-ar.top+r.height/4)+'px';
+  area.appendChild(f);setTimeout(()=>f.remove(),900);
+  renderUpgrades();
+};
+
+function renderUpgrades(){
+  const g=document.getElementById('upgrades-grid');if(!g)return;g.innerHTML='';
+  UPGRADES.forEach(u=>{
+    const lv=upgradeLevels[u.id]||0;const maxLv=u.costs.length;const isMax=lv>=maxLv;
+    const cost=isMax?0:u.costs[lv];const canAfford=coins>=cost;
+    const d=document.createElement('div');
+    d.className='upgrade-card'+(isMax?' maxed':!canAfford?' cant-afford':'');
+    d.innerHTML=`<div class="upg-icon">${u.icon}</div><div class="upg-name">${u.name}</div><div class="upg-desc">${u.desc}</div>${isMax?'<div class="upg-cost" style="background:rgba(34,197,94,.1);color:var(--green);border-color:rgba(34,197,94,.2)">MAX</div>':`<div class="upg-cost">${fmt(cost)} 🪙</div>`}<div class="upg-lvl">LV${lv}</div>`;
+    if(!isMax)d.onclick=()=>{
+      if(coins<cost)return toast("❌ Не хватает коинов!");
+      coins-=cost;upgradeLevels[u.id]=(upgradeLevels[u.id]||0)+1;
+      recalcUpgrades();startAuto();updateClickerUI();saveCoins();renderUpgrades();
+      toast(`✅ ${u.name} улучшен до LV${upgradeLevels[u.id]}!`);
+    };
+    g.appendChild(d);
+  });
+}
+
+window.renderLeaderboard=()=>{
+  const lb=document.getElementById('leaderboard');if(!lb)return;
+  get(ref(db,'leaderboard')).then(s=>{
+    const realUsers=s.exists()?Object.values(s.val()):[];
+    const myName=user?user.email.split('@')[0]:'';
+    // merge fake + real, remove duplicates vs real
+    const fakeFiltered=FAKE_LB.filter(f=>!realUsers.find(r=>r.name===f.name));
+    const all=[...realUsers,...fakeFiltered].sort((a,b)=>b.score-a.score).slice(0,15);
+    lb.innerHTML='';
+    all.forEach((u,i)=>{
+      const isMe=u.name===myName;
+      const rank=i+1;
+      let rankCls='',rankTxt=`#${rank}`;
+      if(rank===1){rankCls='gold';rankTxt='🥇'}
+      else if(rank===2){rankCls='silver';rankTxt='🥈'}
+      else if(rank===3){rankCls='bronze';rankTxt='🥉'}
+      const d=document.createElement('div');d.className='lb-item'+(isMe?' me':'');
+      d.innerHTML=`<div class="lb-rank ${rankCls}">${rankTxt}</div><div class="lb-avatar">${u.name[0].toUpperCase()}</div><div class="lb-info"><div class="lb-name">@${u.name}${isMe?' (ты)':''}</div><div class="lb-score">${fmt(u.score)} 🪙 всего</div></div>`;
+      lb.appendChild(d);
+    });
+  });
+};
+
+/* ═══════════ PRODUCT UPLOAD ═══════════ */
+let prodImgDataUrl=null;
+window.previewProd=e=>{
+  const file=e.target.files[0];if(!file)return;
+  if(file.size>800000)return toast("❌ Фото слишком большое (макс 800KB)");
+  const reader=new FileReader();
+  reader.onload=ev=>{prodImgDataUrl=ev.target.result;const p=document.getElementById('sell-preview');p.src=prodImgDataUrl;p.style.display='block'};
+  reader.readAsDataURL(file);
+};
+window.submitProduct=async()=>{
+  if(!user)return openMod('auth-modal');
+  const name=document.getElementById('sell-name').value.trim();
+  const price=parseInt(document.getElementById('sell-price').value)||0;
+  const desc=document.getElementById('sell-desc').value.trim();
+  if(!name)return toast("⚠️ Введи название");
+  if(!price)return toast("⚠️ Введи цену");
+  if(!prodImgDataUrl)return toast("⚠️ Загрузи фото");
+  const n=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  const pid='pending_'+Date.now();
+  await set(ref(db,'pending_products/'+pid),{id:pid,seller:n,name,price,desc,img:prodImgDataUrl,date:now,status:'pending'});
+  await tg(`📤 <b>Новый товар на проверку</b>\n👤 @${n}\n📦 ${name}\n💰 ${price} коинов\n📝 ${desc||'—'}\n📅 ${now}`);
+  toast("✅ Товар отправлен на проверку!");
+  document.getElementById('sell-name').value='';
+  document.getElementById('sell-price').value='';
+  document.getElementById('sell-desc').value='';
+  document.getElementById('sell-preview').style.display='none';
+  prodImgDataUrl=null;
+};
+
+/* ═══════════ PROFILE ═══════════ */
+window.renderProfile=()=>{
+  const c=document.getElementById('profile-content');
+  if(!user){c.innerHTML=`<div class="empty"><div class="empty-icon">👤</div><div class="empty-text">Войдите чтобы увидеть профиль</div><button class="btn-grad" style="margin-top:16px;width:auto;padding:12px 24px" onclick="openMod('auth-modal')">Войти</button></div>`;return}
+  const n=user.email.split('@')[0];
+  const lv=getLevel(totalEarned),nx=getNextLevel(totalEarned);
+  const lvPct=nx?Math.min(100,((totalEarned-lv.req)/(nx.req-lv.req)*100)):100;
+  // count orders
+  get(ref(db,'orders')).then(os=>{
+    let myOrders=0;os.forEach(x=>{if(x.val().user===n)myOrders++});
+    c.innerHTML=`
+    <div class="profile-hero">
+      <div class="prof-avatar">${n[0].toUpperCase()}</div>
+      <div class="prof-name">@${n}</div>
+      <div class="prof-level">${lv.icon} ${lv.label} — Уровень ${lv.n}</div>
+      <div class="prof-stats">
+        <div class="prof-stat"><div class="prof-stat-num">${fmt(coins)}</div><div class="prof-stat-label">🪙 Коинов</div></div>
+        <div class="prof-stat"><div class="prof-stat-num">${fmt(totalEarned)}</div><div class="prof-stat-label">📊 Всего</div></div>
+        <div class="prof-stat"><div class="prof-stat-num">${myOrders}</div><div class="prof-stat-label">📦 Заказов</div></div>
+      </div>
+      <div class="level-bar-wrap">
+        <div class="level-bar-labels"><span>${lv.icon} ${lv.label}</span><span>${nx?nx.icon+' '+nx.label:'MAX'}</span></div>
+        <div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:${lvPct}%"></div></div>
+        <div style="font-size:11px;color:var(--muted);text-align:center;font-weight:600">${nx?fmt(totalEarned-lv.req)+' / '+fmt(nx.req-lv.req):'Максимальный уровень!'}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="btn-grad" style="padding:12px" onclick="openMod('review-modal')">⭐ Написать отзыв</button>
+    </div>
+    <div class="sec-title">⭐ Отзывы</div>
+    <div id="reviews-list"><div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Загрузка...</div></div>`;
+    loadReviews();
+  });
+};
+
+/* ═══════════ REVIEWS ═══════════ */
+window.pickStar=n=>{
+  reviewStars=n;
+  document.querySelectorAll('.star-pick-btn').forEach((b,i)=>{b.classList.toggle('lit',i<n)});
+};
+window.submitReview=async()=>{
+  if(!user)return openMod('auth-modal');
+  if(!reviewStars)return toast("⚠️ Выбери рейтинг");
+  const text=document.getElementById('review-text').value.trim();
+  if(!text)return toast("⚠️ Напиши отзыв");
+  const n=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  await set(ref(db,'reviews/'+n),{author:n,stars:reviewStars,text,date:now});
+  toast("✅ Отзыв опубликован!");closeMods();reviewStars=0;
+  document.getElementById('review-text').value='';
+  document.querySelectorAll('.star-pick-btn').forEach(b=>b.classList.remove('lit'));
+  loadReviews();
+};
+function loadReviews(){
+  const l=document.getElementById('reviews-list');if(!l)return;
+  get(ref(db,'reviews')).then(s=>{
+    if(!s.exists()){l.innerHTML=`<div class="empty"><div class="empty-icon">💬</div><div class="empty-text">Отзывов пока нет</div></div>`;return}
+    l.innerHTML='';
+    s.forEach(c=>{
+      const r=c.val();
+      const stars='⭐'.repeat(r.stars)+'☆'.repeat(5-r.stars);
+      const d=document.createElement('div');d.className='review-card';
+      d.innerHTML=`<div class="review-header"><div class="review-avatar">${r.author[0].toUpperCase()}</div><div><div class="review-author">@${r.author}</div><div class="review-date">${r.date}</div></div></div><div style="font-size:16px;margin-bottom:6px">${stars}</div><div class="review-text">${r.text}</div>`;
+      l.appendChild(d);
+    });
+  });
+}
+
+/* ═══════════ ADMIN ═══════════ */
+window.loadAdminData=()=>{
+  if(!isAdmin)return;
+  // pending products
+  onValue(ref(db,'pending_products'),s=>{
+    const l=document.getElementById('pending-list');if(!l)return;l.innerHTML='';
+    let cnt=0;
+    s.forEach(c=>{
+      const p=c.val();cnt++;
+      const d=document.createElement('div');d.className='pending-card';
+      d.innerHTML=`<img class="pending-img" src="${p.img}" onerror="this.src='https://placehold.co/60x60/1a1a26/6b6b8a?text=?'"><div class="pending-info"><div class="pending-name">${p.name}</div><div class="pending-meta">👤 @${p.seller} · 💰 ${fmt(p.price)} 🪙 · 📅 ${p.date}</div>${p.desc?`<div style="font-size:12px;color:var(--muted);margin-bottom:6px">${p.desc}</div>`:''}<div class="pending-actions"><button class="pend-btn pend-approve" onclick="approveProduct('${p.id}')">✅ Одобрить</button><button class="pend-btn pend-reject" onclick="rejectProduct('${p.id}')">❌ Отклонить</button></div></div>`;
+      l.appendChild(d);
+    });
+    if(!cnt)l.innerHTML=`<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">Нет товаров на проверке</div>`;
+  });
+  // users
+  get(ref(db,'users')).then(us=>{
+    get(ref(db,'admins')).then(ad=>{
+      get(ref(db,'bans')).then(bn=>{
+        const users=us.exists()?us.val():{};const admins=ad.exists()?ad.val():{};const bans=bn.exists()?bn.val():{};
+        admUsersCache={users,admins,bans};renderAdmUsers(users,admins,bans,'');
+      });
+    });
+  });
+  // all orders
+  onValue(ref(db,'orders'),s=>{
+    const l=document.getElementById('adm-orders-list');if(!l)return;l.innerHTML='';
+    let cnt=0;
+    s.forEach(c=>{
+      const o=c.val();cnt++;
+      const d=document.createElement('div');d.style.cssText='background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:12px;margin-bottom:8px';
+      const addrBlock=o.address?`<div style="font-size:11px;color:var(--p1);margin-top:4px">📍 ${o.address}</div>`:'';
+      d.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><img src="${o.img}" style="width:36px;height:36px;border-radius:10px;object-fit:cover" onerror="this.src='https://placehold.co/36x36'"><div style="flex:1"><div style="font-size:10px;color:var(--muted)">ЗАКАЗ #${o.id} · @${o.user}</div><div style="font-weight:800;font-size:13px">${o.item} · ${o.price} 🪙</div>${addrBlock}</div><div class="v-badge ${stCls(o.status)}">${o.status||'?'}</div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"><button class="mini-btn mb-green" onclick="admOrd('accept','${o.id}')">✅</button><button class="mini-btn mb-red" onclick="admOrd('reject','${o.id}')">❌</button><button class="mini-btn mb-yellow" onclick="admOrd('give','${o.id}')">📦</button><button class="mini-btn mb-yellow" onclick="admOrd('verify','${o.id}')">✔</button><button class="mini-btn mb-gray" onclick="openChatAdmin('${o.id}')">💬</button>${!o.completed&&(o.status||'').includes('Выдан')?`<button class="mini-btn" style="background:linear-gradient(135deg,#7c4dff,#651fff);color:#fff;border:none" onclick="admOrd('complete','${o.id}')">🏁</button>`:''}</div>`;
+      l.appendChild(d);
+    });
+    if(!cnt)l.innerHTML=`<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">Нет заказов</div>`;
+  });
+};
+
+window.approveProduct=async id=>{
+  const snap=await get(ref(db,'pending_products/'+id));if(!snap.exists())return;
+  const p=snap.val();
+  // Add to site products
+  const prods=PRODUCTS.filter(x=>x.id!=='p_verif');
+  prods.push({id:'p_'+Date.now(),name:p.name,price:p.price,img:p.img,needAddr:false,sellerApproved:true});
+  prods.push(PRODUCTS.find(x=>x.id==='p_verif'));
+  await set(ref(db,'site/products'),prods);
+  await remove(ref(db,'pending_products/'+id));
+  await tg(`✅ <b>Товар одобрен</b>\n📦 ${p.name}\n👤 @${p.seller}`);
+  toast(`✅ "${p.name}" одобрен и появился в магазине!`);
+};
+window.rejectProduct=async id=>{
+  const snap=await get(ref(db,'pending_products/'+id));if(!snap.exists())return;
+  const p=snap.val();
+  await remove(ref(db,'pending_products/'+id));
+  toast(`❌ "${p.name}" отклонён`);
+};
+
+function renderAdmUsers(users,admins,bans,filter){
+  const l=document.getElementById('adm-users-list');if(!l)return;l.innerHTML='';
+  Object.keys(users).filter(n=>n.toLowerCase().includes(filter.toLowerCase())).forEach(n=>{
+    const isAdm=admins[n]===true,isBan=bans[n]===true;
+    const d=document.createElement('div');d.className='user-row-a';
+    d.innerHTML=`<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p1),var(--p3));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px">${n[0].toUpperCase()}</div><div class="ua-name">@${n}${isAdm?'<span class="ua-badge ua-adm">👑</span>':''}${isBan?'<span class="ua-badge ua-ban">🔨</span>':''}</div><div style="display:flex;gap:5px">${isBan?`<button class="mini-btn mb-green" onclick="unbanU('${n}')">Разбан</button>`:`<button class="mini-btn mb-red" onclick="banU('${n}')">Бан</button>`}${isAdm?`<button class="mini-btn mb-gray" onclick="rmAdm('${n}')">-Адм</button>`:`<button class="mini-btn mb-yellow" onclick="mkAdm('${n}')">+Адм</button>`}</div>`;
+    l.appendChild(d);
+  });
+}
+window.filterAdmUsers=()=>{const{users,admins,bans}=admUsersCache;if(!users)return;renderAdmUsers(users,admins,bans,document.getElementById('adm-user-search').value)};
+window.banU=async n=>{await set(ref(db,'bans/'+n),true);toast(`🔨 @${n} забанен`);loadAdminData()};
+window.unbanU=async n=>{await remove(ref(db,'bans/'+n));toast(`✅ @${n} разбанен`);loadAdminData()};
+window.mkAdm=async n=>{await set(ref(db,'admins/'+n),true);toast(`👑 @${n} теперь админ`);loadAdminData()};
+window.rmAdm=async n=>{await remove(ref(db,'admins/'+n));toast(`🚫 Права сняты`);loadAdminData()};
+
+window.admOrd=(action,id)=>{
+  const a=user.email.split('@')[0],now=new Date().toLocaleString('ru-RU');
+  if(action==='accept'){update(ref(db,`orders/${id}`),{status:'Принят ✅'});toast("✅ Принят")}
+  else if(action==='reject'){update(ref(db,`orders/${id}`),{status:'Отказ ❌'});toast("❌ Отказ")}
+  else if(action==='give'){get(ref(db,`orders/${id}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} выдал заказ 📦`,give:true}];await update(ref(db,`orders/${id}`),{chat:nc,status:'Выдан ✅',issuedBy:a,issuedAt:now});await tg(`📦 Заказ выдан\n#${id} @${o.user}\n👨‍💼 @${a}`);toast("📦 Выдан")})}
+  else if(action==='verify'){get(ref(db,`orders/${id}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'✅ Администратор',t:`${a} верифицировал`,give:true}];await update(ref(db,`orders/${id}`),{v:true,chat:nc});toast("✅ Верифицирован")})}
+  else if(action==='complete'){get(ref(db,`orders/${id}`)).then(async s=>{const o=s.val();const nc=[...(o.chat||[]),{f:'🏁 Система',t:`Завершён`,sys:true}];await update(ref(db,`orders/${id}`),{completed:true,status:'Завершён 🏁',chat:nc});toast("🏁 Завершён")})}
+};
+window.openChatAdmin=id=>{curId=id;openChat(id)};
+
+window.sendAnnounce=async()=>{
+  const text=document.getElementById('ann-input').value.trim();
+  if(!text)return toast("⚠️ Введи текст");
+  const a=user.email.split('@')[0];
+  await set(ref(db,'site/announcement'),{text,from:a,date:new Date().toLocaleString('ru-RU')});
+  await tg(`📢 <b>Объявление от @${a}</b>\n${text}`);
+  toast("📢 Отправлено!");document.getElementById('ann-input').value='';
+};
+
+/* listen announce */
+onValue(ref(db,'site/announcement'),s=>{
+  if(!s.exists())return;
+  const ann=s.val();
+  const bar=document.getElementById('ann-bar');
+  const txt=document.getElementById('ann-text');
+  if(ann.text&&bar&&txt){txt.textContent=`${ann.from||'Админ'}: ${ann.text}`;bar.classList.add('visible')}
+});
+</script>
 </body>
 </html>
